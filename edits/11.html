@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Records in Contexts — Resource List</title>
+    <link rel="stylesheet" href="../ric_resources.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  </head>
+  <body>
+    <div class="header">
+      <a href="../resource_list.html" class="title"><h1>Records in Contexts — Resource List</h1></a>
+    </div>
+    <div class="ric-links">
+      <p><span><a href="https://www.ica.org/resource/records-in-contexts-conceptual-model/">RiC-CM</a></span><span><a href="https://www.ica.org/standards/RiC/ontology">RiC-O</a></span><span class="last"><a href="https://groups.google.com/g/Records_in_Contexts_users">RiC users group</a></span></p>
+    </div>    <div class="introduction">
+      <p>Please make use of the form to edit the details of the resource you wish to add. The first five fields (up to and including 'Description') are required. The submission will be checked by moderators, and the edits should appear in a few days.</p>
+    </div>
+    <div class="menu" id="menu" data-filter-applied="none">
+
+
+    </div>
+    <div class="add-resource">
+      <form action="" method="post">
+        <div class="add-resource-section">
+          <label for="title">Title <span class="format-instruction">(can be provided in more than one language, each ending in a language tag such as [en], separated by |)</label>
+          <input type="text" id="title" name="title" value="The RDF knowledge graph of the Archives nationales of France Sparnatural prototype" required/>
+        </div>
+        <div class="add-resource-section">
+          <fieldset>
+            <legend>Resource type</legend>
+            <div class="resource-type">
+              <input type="radio" id="application" name="type" value="application"  required/>
+              <label for="application">Application</label>
+            </div>
+            <div class="resource-type">
+              <input type="radio" id="article" name="type" value="article"  required/>
+              <label for="article">Article</label>
+            </div>
+            <div class="resource-type">
+              <input type="radio" id="dataset" name="type" value="dataset" checked required/>
+              <label for="dataset">Dataset</label>
+            </div>
+            <div class="resource-type">
+              <input type="radio" id="event" name="type" value="event"  required/>
+              <label for="event">Event</label>
+            </div>
+            <div class="resource-type">
+              <input type="radio" id="thesis" name="type" value="thesis"  required/>
+              <label for="thesis">Thesis</label>
+            </div>
+            <div class="resource-type">
+              <input type="radio" id="tool" name="type" value="tool"  required/>
+              <label for="tool">Tool</label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="add-resource-section">
+          <label for="responsible">Authors/creators/organisers <span class="format-instruction">(should be separated by |, and a webpage can optionally be provided in parantheses after each, e.g. name (webpage) | other name (webpage))</label>
+          <input type="text" id="responsible" name="responsible" value="The Lab at the Archives nationales de France" required/>
+        </div>
+        <div class="add-resource-section">
+          <label for="publication-date">Dates of publication/release/occurrence <span class="format-instruction">(as YYYY, YYYY-MM, or YYYY-MM-DD, optionally followed by [version n.n], and separated by | if more than one date is provided, e.g. 2023-12 or 2024-03 [version 1.0] | 2024-10 [version 2.0])</span></label>
+          <input type="text" id="publication-date" name="publication-date" value="2022-08 [version 1.0] " required/>
+        </div>
+        <div class="add-resource-section">
+          <label for="description">Description <span class="format-instruction">(simple Markdown syntax can optionally be used, e.g. for links as [text to display](url), and more than one language can be provided, separated by |, each ending with a language tag such as [en])</label>
+          <textarea id="description" name="description" rows="10" required/>The RDF data published in the Sparnatural prototype of the Archives nationales of France: https://sparna-git.github.io/sparnatural-demonstrateur-an/. Scope and content: description of the archives of 40 notarial offices (out of 122 offices) in Paris, produced and preserved continuously since the end of the 15th to the beginning of the 20th century, and kept by the Archives nationales of France. Number of triples: 57,9 million, including about 37 million inferred (in a GraphDB repository that has been configured using RDFS-Plus Optimized inference rules).</textarea>
+        </div>
+        <div class="add-resource-section">
+          <label for="links">Links <span class="format-instruction">(should be separated by a | symbol, and each either in Markdown format [text to display](url) or a verbatim URL)</span></label>
+          <input type="text" id="links" name="links" value="https://github.com/ArchivesNationalesFR/Sparnatural_prototype_data"/>
+        </div>
+        <div class="add-resource-section">
+          <label for="languages">Languages available in <span class="format-instruction">(should be separated by a | symbol, and short clarifications can be provided in parentheses, e.g. French | English (abstract))</span></label>
+          <input type="text" id="languages" name="languages" value="French"/>
+        </div>
+        <div class="add-resource-section">
+          <fieldset>
+            <legend>Relevant parts of RiC <span class="format-instruction">(ignoring patch versions, i.e. treating n.n.n as n.n)</span></legend>
+            <div class="ric-part">
+              <input type="checkbox" id="ric-cm-1-0" name="links" />
+              <label for="ric-cm-1-0">RiC-CM 1.0</label>
+            </div>
+            <div class="ric-part">
+              <input type="checkbox" id="ric-cm-0-2" name="links" />
+              <label for="ric-cm-0-2">RiC-CM 0.2</label>
+            </div>
+            <div class="ric-part">
+              <input type="checkbox" id="ric-o-1-0" name="links" />
+              <label for="ric-o-1-0">RiC-O 1.0</label>
+            </div>
+            <div class="ric-part">
+              <input type="checkbox" id="ric-o-0-2" name="links" checked/>
+              <label for="ric-o-0-2">RiC-O 0.2</label>
+            </div>
+            <div class="ric-part">
+              <input type="checkbox" id="ric-other" name="links" />
+              <label for="ric-other">Other</label>
+            </div>
+          </fieldset>
+        </div>
+        <div class="add-resource-section">
+          <label for="prospects">Prospects / status</label>
+          <textarea id="prospects" name="prospects" rows="10"/>New releases to be made in 2025 (updating the content as the source data, enhancing their granularity and quality, moving to RiC-O 1.0)</textarea>
+        </div>
+        <div class="add-resource-section">
+          <label for="contact">Contacts <span class="format-instruction">(should be separated by a | symbol, can e.g. be an email address)</span></label>
+          <input type="text" id="contact" name="contact" value="le-lab.archives-nationales@culture.gouv.fr | florence.clavaud@culture.gouv.fr"/>
+        </div>
+        <div class="add-resource-section">
+          <label for="related-to">Related resources <span class="format-instruction">(should be separated by a | symbol, and can be either be the URL of another resource in the list, or be in the format #n, where n is the number at the end of such an URL)</span></label>
+          <input type="text" id="related-to" name="related-to" value="#12"/>
+        </div>
+        <div class="add-resource-section add-resource-section-button">
+            <input type="submit" class="add-button" value="Edit"/>
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

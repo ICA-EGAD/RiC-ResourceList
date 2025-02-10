@@ -1,0 +1,324 @@
+body {
+  font-family: serif;
+  max-width: 1250px;
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 10pt;
+  font-size: 95%;
+  margin: auto;
+}
+
+div.header {
+  text-align: center;
+}
+
+div.resource-list {
+  text-align: left;
+}
+
+div.resource-list:after {
+  content: '';
+  display: block;
+  border: 1px solid black;
+  margin-bottom: 1em;
+  margin-top: 2em;
+}
+
+div.ric-links {
+  margin-top: 1em;
+  text-align: center;
+  margin-bottom: 1.5em;
+}
+
+div.ric-links span {
+  margin-right: 5em;
+}
+
+div.ric-links span.last {
+  margin-right: 0em;
+}
+
+div.introduction {
+  font-size: smaller;
+  text-align: center;
+  max-width: 75%;
+  margin: auto;
+  margin-bottom: 1.5em;
+}
+
+div.menu:after {
+  content: '';
+  display: block;
+  border: 1px solid black;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+div.menu {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+div.menu img {
+  vertical-align: middle;
+}
+
+div.menu figure {
+  display: inline-block;
+  margin: 0 0 0 1em;
+}
+
+div.menu figcaption {
+  font-size: 70%;
+  margin-top: 0.5em;
+}
+
+div.footnote {
+  text-align: center;
+  font-style: italic;
+  font-size: 85%;
+}
+
+h1 {
+  font-weight: lighter;
+}
+
+h2 {
+  font-weight: lighter;
+  font-size: 1.15em;
+  line-height: 1.55em;
+}
+
+ul.resource-list {
+  list-style-type: none;
+  padding-left: 0em;
+}
+
+li.resource {
+  margin-top: 1em;
+  line-height: 1.33em;
+}
+
+li.resource:hover {
+  cursor: pointer;
+}
+
+span.resource-list-key {
+  font-style: normal;
+  margin-right: 0.5em;
+}
+
+span.menu-key {
+  font-style: italic;
+}
+
+span.add-edit-menu {
+  margin-right: 0em;
+}
+
+img.icon {
+  width: 25px;
+}
+
+img.inline-icon {
+  width: 1.25em;
+  margin-bottom: -0.25em;
+}
+
+img.inline-icon-grayscale {
+  filter: grayscale(1);
+}
+
+img.resource-details-icon {
+  width: 1.5em;
+  margin-bottom: -0.5em;
+  margin-right: 1em;
+}
+
+a {
+  padding-bottom: 1px;
+  border-bottom: 1px solid;
+  text-decoration: none;
+  color: #1F51FF;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+a.resource-link, a.title, a.filter-link, a.add-or-edit-link {
+  border-bottom: none;
+  color: inherit;
+}
+
+a.link-from-resource, a.related-to {
+  color: #E35335;
+}
+
+span.resource-list-title {
+  font-style: italic;
+  margin-left: 5px;
+}
+
+div.resource-details {
+  max-width: 100%;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+div.resource-details ul {
+  list-style-type: none;
+  padding-left: 0em;
+}
+
+div.resource-details ul li {
+  margin-top: 1.5em;
+}
+
+span.resource-details-responsible {
+  font-style: italic;
+}
+
+p.after-language-change {
+  margin-top: 2em;
+}
+
+span.resource-details-date {
+  margin-right: 1.5em;
+}
+
+div.resource-details ul li.responsible, div.resource-details ul li.version {
+  margin-top: 0.5em;
+}
+
+div.add-resource-section {
+  margin-top: 1.5em;
+  max-width: 750px;
+  margin: auto;
+}
+
+div.add-resource-section label {
+  display: block;
+  margin-right: 1em;
+}
+
+div.add-resource-section input:not(fieldset input) {
+  margin-top: 0.75em;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.3em;
+  margin-bottom: 2.5em;
+}
+
+div.add-resource-section fieldset {
+  padding-top: 0.4em;
+  padding-bottom: 0px;
+  margin-right: 0em;
+  margin-bottom: 2.5em;
+}
+
+div.add-resource-section fieldset input {
+  margin-top: 0em;
+}
+
+div.add-resource-section fieldset label {
+  display: inline;
+  margin-right: 2em;
+  margin-bottom: 1em;
+}
+
+div.add-resource-section textarea {
+  vertical-align: top;
+  margin-top: 0.75em;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.3em;
+  font-family: serif;
+  margin-bottom: 2.5em;
+}
+
+div.resource-type, div.ric-part {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+span.format-instruction {
+  font-size: 75%;
+}
+
+div.add-resource-section input.add-button {
+  max-width: 100px;
+  height: 40px;
+  border-radius: 15px;
+  border: none;
+  background-color: #E35335;
+  cursor: pointer;
+  color: white;
+  margin: auto;
+  margin-top: 1em;
+}
+
+div.add-resource-section-button {
+  width: 100%;
+  text-align: center;
+}
+
+span.responsible-webpage {
+  font-style: normal;
+}
+
+span.ric-part {
+  border: 1.5px dashed #9F2B68;
+  padding: 3px;
+}
+
+span.contact-details {
+  font-style: italic;
+}
+
+@media only screen and (max-width: 800px) {
+  body {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 0px;
+  }
+
+  div.introduction {
+    max-width: 100%;
+  }
+
+  div.header {
+    font-size: 0.7em;
+  }
+
+div.ric-links {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+div.ric-links span {
+  margin-right: 3em;
+}
+
+img.resource-details-icon {
+  margin-right: 5px;
+}
+
+div.resource-list {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+div.introduction {
+  margin-bottom: 1em;
+}
+
+div.add-resource-section fieldset label {
+  margin-right: 5px;
+}
+
+div.add-resource {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+}
