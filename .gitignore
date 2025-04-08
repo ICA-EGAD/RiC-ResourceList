@@ -1,0 +1,5 @@
+scripts/package
+scripts/*.zip
+scripts/requirements_dev
+scripts/*.pem
+venv
