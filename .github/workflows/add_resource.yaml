@@ -1,0 +1,12 @@
+name: add-resource
+
+on:
+  repository_dispatch:
+    types: "add_resource"
+
+jobs:
+  add-resource:
+    name: "Add resource"
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ github.event.client_payload.form_submission }}"
