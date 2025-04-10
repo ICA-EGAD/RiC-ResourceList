@@ -1,12 +1,16 @@
+"""
+A tool which generates the static files of the Resource List website. Organised
+into several sub-commands which generate different parts of the website.
+"""
+
 from argparse import ArgumentParser
 from csv import DictReader
-from datetime import datetime, UTC
 from os import environ
 from pathlib import Path
 from re import match as regex_match, split as regex_split
 from string import Template
 from sys import exit as sys_exit
-from typing import Callable, Generator, TypeVar
+from typing import Any, Callable, Generator, TypeVar
 from urllib.parse import urlparse as parse_url
 
 CSS_FILE_NAME = "ric_resources.css"
@@ -29,7 +33,7 @@ _site_template = Template("""<!DOCTYPE html>
     <div class="ric-links">
       <p><span><a href="https://www.ica.org/resource/records-in-contexts-conceptual-model/">RiC-CM</a></span><span><a href="https://www.ica.org/standards/RiC/ontology">RiC-O</a></span><span class="last"><a href="https://groups.google.com/g/Records_in_Contexts_users">RiC users group</a></span></p>
     </div>$introduction
-    <div class="menu" id="menu" data-filter-applied="none">
+    <div class="menu" id="menu">
 $add_or_edit_menu
 $filter_menu
     </div>
@@ -37,23 +41,23 @@ $content
   </body>
 </html>""")
 
-_javascript_html = """
+_JAVASCRIPT_HTML = """
     <script src="ric_resources.js" async></script>"""
 
-_resource_list_introduction_html = """
+_RESOURCE_LIST_INTRODUCTION_HTML = """
     <div class="introduction">
       <p>Click on a resource for more details! The buttons below can be used to filter by resource type. We need your help to keep the list up to date and as complete as possible! Use the 'Add' button to include a resource.</p>
     </div>"""
 
-_resource_details_introduction_html = """    <div class="introduction">
+_RESOURCE_DETAILS_INTRODUCTION_HTML = """    <div class="introduction">
       <p>Use the green button to edit the resource (moderated: it may take a few days before changes appear).</p>
     </div>"""
 
-_add_resource_introduction_html = """    <div class="introduction">
+_ADD_RESOURCE_INTRODUCTION_HTML = """    <div class="introduction">
       <p>Please fill in the form with the details of the resource you wish to add. The first five fields (up to and including 'Description') are required. The submission will be checked by moderators, and the new resource should appear in the list in a few days.</p>
     </div>"""
 
-_edit_resource_introduction_html = """    <div class="introduction">
+_EDIT_RESOURCE_INTRODUCTION_HTML = """    <div class="introduction">
       <p>Please make use of the form to edit the details of the resource you wish to add. The first five fields (up to and including 'Description') are required. The submission will be checked by moderators, and the edits should appear in a few days.</p>
     </div>"""
 
@@ -61,9 +65,10 @@ _add_or_edit_menu_html_template = Template("""      <span class="add-edit-menu">
 $components
       </span>""")
 
+
 _add_or_edit_menu_components = {
-    "add": Template("""        <a href="$add_resource_path/add_resource.html" class="add-or-edit-link"><figure><img class="icon" src="$icons_path/add.svg" alt="Add resource" id="add-resource"/><figcaption>Add</figcaption></figure></a>"""),
-    "edit": Template("""        <a href="$edit_resource_path/$resource_id.html" class="add-or-edit-link"><figure><img class="icon" src="$icons_path/edit.svg" alt="Edit resource"/><figcaption>Edit</figcaption></figure></a>""")
+    "add": Template("""        <a href="$add_resource_path/add_resource.html" class="add-or-edit-link"><figure><img class="icon" src="$icons_path/add.svg" alt="Add resource" id="add-resource"/><figcaption>Add</figcaption></figure></a>"""),  # pylint: disable=line-too-long
+    "edit": Template("""        <a href="$edit_resource_path/$resource_id.html" class="add-or-edit-link"><figure><img class="icon" src="$icons_path/edit.svg" alt="Edit resource"/><figcaption>Edit</figcaption></figure></a>""")  # pylint: disable=line-too-long
 }
 
 _filter_menu_html_template = Template("""      <span class="filter-menu">
@@ -71,30 +76,32 @@ $components
       </span>""")
 
 _filter_menu_components = {
-    "article": Template("""        <a href="$filterings_path/articles.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/article.svg" alt="Articles" id="filter-articles"/><figcaption>Articles</figcaption></figure></a>"""),
-    "tool": Template("""        <a href="$filterings_path/tools.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/tool.svg" alt="Tools" id="filter-tools"/><figcaption>Tools</figcaption></figure></a>"""),
-    "event": Template("""        <a href="$filterings_path/events.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/event.svg" alt="Events" id="filter-events"/><figcaption>Events</figcaption></figure></a>"""),
-    "thesis": Template("""        <a href="$filterings_path/theses.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/thesis.svg" alt="Theses" id="filter-theses"/><figcaption>Theses</figcaption></figure></a>"""),
-    "web application": Template("""        <a href="$filterings_path/applications.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/web_application.svg" alt="Web applications" id="filter-applications"/><figcaption>Apps</figcaption></figure></a>"""),
-    "dataset": Template("""        <a href="$filterings_path/datasets.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/dataset.svg" alt="Datasets" id="filter-datasets"/><figcaption>Datasets</figcaption></figure></a>""")
+    "article": Template("""        <a href="$filterings_path/articles.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/article.svg" alt="Articles" id="filter-articles"/><figcaption>Articles</figcaption></figure></a>"""),  # pylint: disable=line-too-long
+    "tool": Template("""        <a href="$filterings_path/tools.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/tool.svg" alt="Tools" id="filter-tools"/><figcaption>Tools</figcaption></figure></a>"""),  # pylint: disable=line-too-long
+    "event": Template("""        <a href="$filterings_path/events.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/event.svg" alt="Events" id="filter-events"/><figcaption>Events</figcaption></figure></a>"""),  # pylint: disable=line-too-long
+    "thesis": Template("""        <a href="$filterings_path/theses.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/thesis.svg" alt="Theses" id="filter-theses"/><figcaption>Theses</figcaption></figure></a>"""),  # pylint: disable=line-too-long
+    "web application": Template("""        <a href="$filterings_path/applications.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/web_application.svg" alt="Web applications" id="filter-applications"/><figcaption>Apps</figcaption></figure></a>"""),  # pylint: disable=line-too-long
+    "dataset": Template("""        <a href="$filterings_path/datasets.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/dataset.svg" alt="Datasets" id="filter-datasets"/><figcaption>Datasets</figcaption></figure></a>""")  # pylint: disable=line-too-long
 }
 
-_resource_list_html_template = Template("""    <div class="resource-list" id="resource-list">
+_resource_list_html_template = Template(
+    """    <div class="resource-list" id="resource-list">
       <ul class="resource-list">$list_entries
       </ul>
     </div>""")
 
 _resource_entry_template = Template("""
-        <li class="resource"><a href="$resource_details_path/$resource_id.html" class="resource-link"><img class="inline-icon" src="$icons_path/$resource_icon" alt="$resource_icon_alt"/><span class="resource-list-title">$title</span>. $responsible. $date.</a></li>""")
+        <li class="resource"><a href="$resource_details_path/$resource_id.html" class="resource-link"><img class="inline-icon" src="$icons_path/$resource_icon" alt="$resource_icon_alt"/><span class="resource-list-title">$title</span>. $responsible. $date.</a></li>""")  # pylint: disable=line-too-long
 
-_resource_details_html_template = Template("""    <div class="resource-details" id="resource-details">
+_resource_details_html_template = Template(
+    """    <div class="resource-details" id="resource-details">
       <h2><img class="resource-details-icon" src="$resource_icon" alt="$resource_icon_alt"/>$title</h2>
       <ul>$alternative_title
         <li><span class="resource-details-responsible">$responsible</span></li>
         <li>$date</li>
         <li>$description</li>$remainder
       </ul>
-    </div>""")
+    </div>""")  # pylint: disable=line-too-long
 
 _add_resource_html_template = Template("""    <div class="add-resource">
       <form action="$backend_url" method="post">
@@ -106,7 +113,7 @@ _add_resource_html_template = Template("""    <div class="add-resource">
           <fieldset>
             <legend>Resource type</legend>
             <div class="resource-type">
-              <input type="radio" id="application" name="type" value="application" $checked_application required/>
+              <input type="radio" id="application" name="type" value="web application" $checked_application required/>
               <label for="application">Application</label>
             </div>
             <div class="resource-type">
@@ -137,7 +144,7 @@ _add_resource_html_template = Template("""    <div class="add-resource">
         </div>
         <div class="add-resource-section">
           <label for="publication-date">Dates of publication/release/occurrence <span class="format-instruction">(as YYYY, YYYY-MM, or YYYY-MM-DD, optionally followed by [version n.n], and separated by | if more than one date is provided, e.g. 2023-12 or 2024-03 [version 1.0] | 2024-10 [version 2.0])</span></label>
-          <input type="text" id="publication-date" name="publication-date" value="$publication_date_value" required/>
+          <input type="text" id="publication-date" name="publication_date" value="$publication_date_value" required/>
         </div>
         <div class="add-resource-section">
           <label for="description">Description <span class="format-instruction">(simple Markdown syntax can optionally be used, e.g. for links as [text to display](url), and more than one language can be provided, separated by |, each ending with a language tag such as [en])</label>
@@ -155,23 +162,23 @@ _add_resource_html_template = Template("""    <div class="add-resource">
           <fieldset>
             <legend>Relevant parts of RiC <span class="format-instruction">(ignoring patch versions, i.e. treating n.n.n as n.n)</span></legend>
             <div class="ric-part">
-              <input type="checkbox" id="ric-cm-1-0" name="links" $checked_ric_cm_1_0/>
+              <input type="checkbox" id="ric-cm-1-0" name="relevant_parts_of_ric" value="RiC-CM 1.0" $checked_ric_cm_1_0/>
               <label for="ric-cm-1-0">RiC-CM 1.0</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-cm-0-2" name="links" $checked_ric_cm_0_2/>
+              <input type="checkbox" id="ric-cm-0-2" name="relevant_parts_of_ric" value="RiC-CM 0.2" $checked_ric_cm_0_2/>
               <label for="ric-cm-0-2">RiC-CM 0.2</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-o-1-0" name="links" $checked_ric_o_1_0/>
+              <input type="checkbox" id="ric-o-1-0" name="relevant_parts_of_ric" value="RiC-O 1.0" $checked_ric_o_1_0/>
               <label for="ric-o-1-0">RiC-O 1.0</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-o-0-2" name="links" $checked_ric_o_0_2/>
+              <input type="checkbox" id="ric-o-0-2" name="relevant_parts_of_ric" value="RiC-O 0.2" $checked_ric_o_0_2/>
               <label for="ric-o-0-2">RiC-O 0.2</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-other" name="links" $checked_ric_other/>
+              <input type="checkbox" id="ric-other" name="relevant_parts_of_ric" value="Other" $checked_ric_other/>
               <label for="ric-other">Other</label>
             </div>
           </fieldset>
@@ -186,11 +193,10 @@ _add_resource_html_template = Template("""    <div class="add-resource">
         </div>
         <div class="add-resource-section">
           <label for="related-to">Related resources <span class="format-instruction">(should be separated by a | symbol, and can be either be the URL of another resource in the list, or be in the format #n, where n is the number at the end of such an URL)</span></label>
-          <input type="text" id="related-to" name="related-to" value="$related_to_value"/>
-        </div>
+          <input type="text" id="related-to" name="related_to" value="$related_to_value"/>
+        </div>$id_field
         <div class="add-resource-section add-resource-section-button">
-            <input type="submit" class="add-button" value="$submit_value"/>
-          </div>
+          <input type="submit" class="add-button" value="$submit_value"/>
         </div>
       </form>
     </div>""")
@@ -202,47 +208,48 @@ HTML = str
 ResourceId = str
 ResourceType = str
 RiCPart = str
+Row = dict[str, str]
 Title = str
 Version = str
 Word = str
 URL = str
 
-T = TypeVar("T", tuple[HTML, ResourceId], tuple[HTML, Date])
+T = TypeVar("T", tuple[HTML, ResourceId], tuple[HTML, Date, ResourceType])
 
 _type = {
-  "article": "Journal article",
-  "dataset": "Dataset",
-  "event": "Event",
-  "thesis": "Thesis",
-  "tool": "Tool",
-  "web application": "Application"
+    "article": "Journal article",
+    "dataset": "Dataset",
+    "event": "Event",
+    "thesis": "Thesis",
+    "tool": "Tool",
+    "web application": "Application"
 }
 
 _responsible_keys = {
-  "Application": "Maintainers",
-  "Dataset": "Authors",
-  "Event": "Responsible",
-  "Journal article": "Authors",
-  "Thesis": "Author",
-  "Tool": "Maintainers"
+    "Application": "Maintainers",
+    "Dataset": "Authors",
+    "Event": "Responsible",
+    "Journal article": "Authors",
+    "Thesis": "Author",
+    "Tool": "Maintainers"
 }
 
 _date_keys = {
-  "Application": "Released",
-  "Dataset": "Published",
-  "Event": "Takes/took place",
-  "Journal article": "Published",
-  "Thesis": "Published",
-  "Tool": "Released"
+    "Application": "Released",
+    "Dataset": "Published",
+    "Event": "Takes/took place",
+    "Journal article": "Published",
+    "Thesis": "Published",
+    "Tool": "Released"
 }
 
 _resource_icons = {
-  "article": "article.svg",
-  "dataset": "dataset.svg",
-  "event": "event.svg",
-  "thesis": "thesis.svg",
-  "tool": "tool.svg",
-  "web application": "web_application.svg"
+    "article": "article.svg",
+    "dataset": "dataset.svg",
+    "event": "event.svg",
+    "thesis": "thesis.svg",
+    "tool": "tool.svg",
+    "web application": "web_application.svg"
 }
 
 _languages = {
@@ -252,19 +259,21 @@ _languages = {
 }
 
 _resource_type_filters = {
-  "article": "articles",
-  "dataset": "datasets",
-  "event": "events",
-  "thesis": "theses",
-  "tool": "tools",
-  "web application": "applications"
+    "article": "articles",
+    "dataset": "datasets",
+    "event": "events",
+    "thesis": "theses",
+    "tool": "tools",
+    "web application": "applications"
 }
+
 
 def _is_link(word: str) -> bool:
     try:
-        return parse_url(word).scheme in [ "http", "https", "ftp" ]
+        return parse_url(word).scheme in ["http", "https", "ftp"]
     except ValueError:
         return False
+
 
 def _to_link(word: str, url: str, css_class: str | None = None) -> str:
     if url[-1] in [".", ",", "\n", ";", ":"]:
@@ -275,6 +284,7 @@ def _to_link(word: str, url: str, css_class: str | None = None) -> str:
     if css_class is None:
         return f"<a href=\"{url}\">{word}</a>"
     return f"<a href=\"{url}\" class=\"{css_class}\">{word}</a>"
+
 
 def _links_in_text(text: str) -> Generator[Word, None, None]:
     """
@@ -298,7 +308,8 @@ def _links_in_text(text: str) -> Generator[Word, None, None]:
                 continue
         yield part
 
-def _description(row) -> Generator[HTML, None, None]:
+
+def _description(row: Row) -> Generator[HTML, None, None]:
     changed_language = False
     language = None
     for description in row["description"].split("|"):
@@ -327,7 +338,8 @@ def _description(row) -> Generator[HTML, None, None]:
                 yield f"<p>{paragraph}</p>"
         changed_language = True
 
-def _title(row) -> tuple[Title, AlternativeTitle | None]:
+
+def _title(row: Row) -> tuple[Title, AlternativeTitle | None]:
     title = row["title"].strip()
     if "|" not in title:
         return title, None
@@ -349,7 +361,8 @@ def _title(row) -> tuple[Title, AlternativeTitle | None]:
         title_parts[1].strip()[:-4].rstrip()
     )
 
-def _links(row) -> Generator[HTML, None, None]:
+
+def _links(row: Row) -> Generator[HTML, None, None]:
     for link in row["links"].split("|"):
         link = link.strip()
         language = None
@@ -374,7 +387,8 @@ def _links(row) -> Generator[HTML, None, None]:
         else:
             yield link
 
-def _responsible_without_links(row) -> Generator[HTML, None, None]:
+
+def _responsible_without_links(row: Row) -> Generator[HTML, None, None]:
     for responsible in row["responsible"].split("|"):
         responsible = responsible.strip()
         if "(" in responsible:
@@ -382,7 +396,8 @@ def _responsible_without_links(row) -> Generator[HTML, None, None]:
         else:
             yield responsible
 
-def _responsible_with_links(row) -> Generator[HTML, None, None]:
+
+def _responsible_with_links(row: Row) -> Generator[HTML, None, None]:
     for responsible in row["responsible"].split("|"):
         responsible = responsible.strip()
         if "(" in responsible:
@@ -394,14 +409,13 @@ def _responsible_with_links(row) -> Generator[HTML, None, None]:
             if not _is_link(link):
                 yield responsible
                 continue
-                raise ValueError(
-                    f"Expecting the following to be a link: {link}")
             yield (f"{entity.strip()} <span class=\"responsible-webpage\">"
                    f"(<a href=\"{link}\">webpage</a>)</span>")
         else:
             yield responsible
 
-def _dates(row) -> Generator[tuple[HTML, Version], None, None]:
+
+def _dates(row: Row) -> Generator[tuple[HTML, Version | None], None, None]:
     dates = row["publication_date"].split("|")
     if len(dates) == 1 and "[" not in dates[0]:
         yield row["publication_date"].strip(), None
@@ -420,7 +434,8 @@ def _dates(row) -> Generator[tuple[HTML, Version], None, None]:
         version = version[:-1].lstrip("version").strip()
         yield date, version
 
-def _available_languages(row) -> HTML | None:
+
+def _available_languages(row: Row) -> HTML | None:
     languages = row["languages"]
     if not languages:
         return None
@@ -428,14 +443,16 @@ def _available_languages(row) -> HTML | None:
     return f"{available_or_held} in: {", ".join(
         language.strip() for language in languages.split("|"))}"
 
-def _relevant_parts_of_ric(row) -> HTML | None:
+
+def _relevant_parts_of_ric(row: Row) -> HTML | None:
     relevant_parts = row["relevant_parts_of_ric"]
     if not relevant_parts:
         return None
     return " ".join(f"<span class=\"ric-part\">{ric_part.strip()}</span>"
-                      for ric_part in relevant_parts.split("|"))
+                    for ric_part in relevant_parts.split("|"))
 
-def _related_to(row) -> Generator[HTML, None, None]:
+
+def _related_to(row: Row) -> Generator[HTML, None, None]:
     related_to = row["related_to"]
     if not related_to:
         return
@@ -449,7 +466,8 @@ def _related_to(row) -> Generator[HTML, None, None]:
         yield (f"<a href=\"../resource-details/{resource_id}.html\" "
                f"class=\"related-to\">#{resource_id}</a>")
 
-def _remainder(row) -> HTML:
+
+def _remainder(row: Row) -> HTML:
     remainder = ""
     for link in _links(row):
         remainder += "\n" + " "*8 + f"<li>{link}</li>"
@@ -475,7 +493,8 @@ def _remainder(row) -> HTML:
             related_to}</li>"
     return remainder
 
-def _resource_details(row) -> tuple[HTML, ResourceId]:
+
+def _resource_details(row: Row) -> tuple[HTML, ResourceId]:
     resource_type = _type[row["type"]]
     title, alternative_title = _title(row)
     if alternative_title is not None:
@@ -496,7 +515,8 @@ def _resource_details(row) -> tuple[HTML, ResourceId]:
                 dates += f"<li class=\"version\">{date}</li>"
     "".join(
         f"<span class='resource-details-date'>{date} (v{version})</span>"
-        if version is not None else f"<span class='resource-details-date'>{date}</span>"
+        if version is not None else f"<span class='resource-details-date'>{
+            date}</span>"
         for date, version in _dates(row))
     if row["type"] != "article":
         responsibles = list(_responsible_with_links(row))
@@ -504,37 +524,38 @@ def _resource_details(row) -> tuple[HTML, ResourceId]:
             responsible = responsibles[0]
         else:
             responsible = "<ul>"
-            for part in responsibles:
-                responsible += f"<li class=\"responsible\">{part}</li>"
+            responsible += "".join(
+                f"<li class=\"responsible\">{part}</li>"
+                for part in responsibles)
             responsible += "</ul>"
     else:
         responsible = ", ".join(_responsible_with_links(row))
     resource_id = row["id"]
-    resource_details = _resource_details_html_template.substitute(
-        resource_id = resource_id,
-        resource_icon = f"../{ICONS_DIRECTORY_NAME}/{
+    resource_details_html = _resource_details_html_template.substitute(
+        resource_id=resource_id,
+        resource_icon=f"../{ICONS_DIRECTORY_NAME}/{
             _resource_icons[row["type"]]}",
-        resource_icon_alt = resource_type,
-        title = title,
-        alternative_title = alternative_title,
-        responsible = responsible,
-        date = dates,
-        description = description,
-        remainder = _remainder(row)
+        resource_icon_alt=resource_type,
+        title=title,
+        alternative_title=alternative_title,
+        responsible=responsible,
+        date=dates,
+        description=description,
+        remainder=_remainder(row)
     )
     return _site_template.substitute(
-        css_path = f"../{CSS_FILE_NAME}",
-        icons_path = f"../{ICONS_DIRECTORY_NAME}",
-        resource_list_path = "../resource_list.html",
-        javascript = "",
-        introduction = _resource_details_introduction_html,
-        add_or_edit_menu = _add_or_edit_menu_html_template.substitute(
-            components = _add_or_edit_menu_components["edit"].substitute(
-                edit_resource_path = f"../{EDITS_DIRECTORY_NAME}",
-                resource_id = resource_id,
-                icons_path = f"../{ICONS_DIRECTORY_NAME}")),
-        filter_menu = "",
-        content = resource_details), resource_id
+        css_path=f"../{CSS_FILE_NAME}",
+        icons_path=f"../{ICONS_DIRECTORY_NAME}",
+        resource_list_path="../resource_list.html",
+        javascript="",
+        introduction=_RESOURCE_DETAILS_INTRODUCTION_HTML,
+        add_or_edit_menu=_add_or_edit_menu_html_template.substitute(
+            components=_add_or_edit_menu_components["edit"].substitute(
+                edit_resource_path=f"../{EDITS_DIRECTORY_NAME}",
+                resource_id=resource_id,
+                icons_path=f"../{ICONS_DIRECTORY_NAME}")),
+        filter_menu="",
+        content=resource_details_html), resource_id
 
 
 def _resource(row, icons_path: str, resource_details_path: str) -> tuple[
@@ -549,25 +570,30 @@ def _resource(row, icons_path: str, resource_details_path: str) -> tuple[
                       for date, version in versioned_dates)
     earliest_date, _ = versioned_dates[-1]
     return _resource_entry_template.substitute(
-        resource_id = row["id"],
-        icons_path = icons_path,
-        resource_details_path = resource_details_path,
-        resource_icon = _resource_icons[row["type"]],
-        resource_icon_alt = _type[row["type"]],
-        title = title,
-        responsible = responsible,
-        date = dates,
+        resource_id=row["id"],
+        icons_path=icons_path,
+        resource_details_path=resource_details_path,
+        resource_icon=_resource_icons[row["type"]],
+        resource_icon_alt=_type[row["type"]],
+        title=title,
+        responsible=responsible,
+        date=dates,
     ), earliest_date, row["type"]
+
 
 def _process_master_document(
         path_to_csv: Path,
-        row_processor: Callable[[], T]) -> Generator[T, None, None]:
-    with open(path_to_csv, "r") as csv_file:
+        row_processor: Callable[[Any], T]) -> Generator[T, None, None]:
+    with open(path_to_csv, "r", encoding="utf-8") as csv_file:
         csv_reader = DictReader(csv_file)
         for row in csv_reader:
             yield row_processor(row)
 
+
 def resource_list(path_to_csv: Path) -> HTML:
+    """
+    Generates the HTML for the resource list (landing page of the website)
+    """
     list_entries_with_date = list(_process_master_document(
         path_to_csv,
         lambda row: _resource(
@@ -578,73 +604,93 @@ def resource_list(path_to_csv: Path) -> HTML:
     list_entries = "".join(
         [resource for resource, _, _ in list_entries_with_date])
     return _site_template.substitute(
-        css_path = CSS_FILE_NAME,
-        icons_path = ICONS_DIRECTORY_NAME,
-        resource_list_path = "",
-        javascript = "",
-        introduction = _resource_list_introduction_html,
-        add_or_edit_menu = _add_or_edit_menu_html_template.substitute(
-            components = _add_or_edit_menu_components["add"].substitute(
-                add_resource_path = ".",
-                icons_path = ICONS_DIRECTORY_NAME)),
-        filter_menu = _filter_menu_html_template.substitute(
-            components = "\n".join(
+        css_path=CSS_FILE_NAME,
+        icons_path=ICONS_DIRECTORY_NAME,
+        resource_list_path="",
+        javascript="",
+        introduction=_RESOURCE_LIST_INTRODUCTION_HTML,
+        add_or_edit_menu=_add_or_edit_menu_html_template.substitute(
+            components=_add_or_edit_menu_components["add"].substitute(
+                add_resource_path=".",
+                icons_path=ICONS_DIRECTORY_NAME)),
+        filter_menu=_filter_menu_html_template.substitute(
+            components="\n".join(
                 template.substitute(
-                    filterings_path = "filterings",
-                    icons_path = ICONS_DIRECTORY_NAME,
-                    css_class = "icon")
+                    filterings_path="filterings",
+                    icons_path=ICONS_DIRECTORY_NAME,
+                    css_class="icon")
                 for template in _filter_menu_components.values())),
-        content = _resource_list_html_template.substitute(
-            list_entries = list_entries)
+        content=_resource_list_html_template.substitute(
+            list_entries=list_entries)
     )
 
+
 def resource_details(path_to_csv: Path, path_to_resource_details: Path) -> None:
+    """
+    Generates HTML files with the details of each resource, one for each
+    resource, saving them into a directory specified in an environment
+    variable
+    """
     for resource_details_html, resource_id in _process_master_document(
             path_to_csv, _resource_details):
         with open(
-                path_to_resource_details/ f"{resource_id}.html",
-                "w") as resource_details_file:
+                path_to_resource_details / f"{resource_id}.html",
+                "w",
+                encoding="utf-8") as resource_details_file:
             resource_details_file.write(resource_details_html)
 
+
 def add_resource(backend_url: URL) -> HTML:
+    """
+    Generates the HTML of the page for adding a resource. Requires an
+    environment variable specifying the URL of the backend.
+    """
     return _site_template.substitute(
-        css_path = CSS_FILE_NAME,
-        resource_list_path = "resource_list.html",
-        javascript = "",
-        introduction = _add_resource_introduction_html,
-        add_or_edit_menu = "",
-        filter_menu = "",
-        content = _add_resource_html_template.substitute(
-            backend_url = backend_url,
-            title_value = "",
-            checked_application = "",
-            checked_article = "",
-            checked_dataset = "",
-            checked_event = "",
-            checked_thesis = "",
-            checked_tool = "",
-            responsible_value = "",
-            publication_date_value = "",
-            description_value = "",
-            links_value = "",
-            languages_value = "",
-            checked_ric_cm_1_0 = "",
-            checked_ric_cm_0_2 = "",
-            checked_ric_o_1_0 = "",
-            checked_ric_o_0_2 = "",
-            checked_ric_other = "",
-            prospects_value = "",
-            contact_value = "",
-            related_to_value = "",
-            submit_value = "Add")
+        css_path=CSS_FILE_NAME,
+        resource_list_path="resource_list.html",
+        javascript="",
+        introduction=_ADD_RESOURCE_INTRODUCTION_HTML,
+        add_or_edit_menu="",
+        filter_menu="",
+        content=_add_resource_html_template.substitute(
+            backend_url=backend_url,
+            title_value="",
+            checked_application="",
+            checked_article="",
+            checked_dataset="",
+            checked_event="",
+            checked_thesis="",
+            checked_tool="",
+            responsible_value="",
+            publication_date_value="",
+            description_value="",
+            links_value="",
+            languages_value="",
+            checked_ric_cm_1_0="",
+            checked_ric_cm_0_2="",
+            checked_ric_o_1_0="",
+            checked_ric_o_0_2="",
+            checked_ric_other="",
+            prospects_value="",
+            contact_value="",
+            related_to_value="",
+            id_field="",
+            submit_value="Add")
     )
+
 
 def _css_class(filter_type: ResourceType, resource_type: ResourceType) -> str:
     if filter_type != resource_type:
         return "icon inline-icon-grayscale"
     return "icon"
 
-def filterings(path_to_csv: Path, path_to_filterings: Path) -> HTML:
+
+def filterings(path_to_csv: Path, path_to_filterings: Path) -> None:
+    """
+    Generates HTML files for filterings of the resource list, one for each
+    filtering, saving them into a directory specified in an environment
+    variable
+    """
     list_entries_with_date = list(_process_master_document(
         path_to_csv,
         lambda row: _resource(
@@ -655,52 +701,57 @@ def filterings(path_to_csv: Path, path_to_filterings: Path) -> HTML:
     for filter_type, plural in _resource_type_filters.items():
         list_entries = "".join(
             [resource for resource, _, resource_type in list_entries_with_date
-                      if resource_type == filter_type ])
+             if resource_type == filter_type])
         plural += ".html"
-        with open(path_to_filterings / plural, "w") as filtering_file:
+        with open(
+                path_to_filterings / plural,
+                "w",
+                encoding="utf-8") as filtering_file:
             filtering_file.write(
                 _site_template.substitute(
-                    css_path = f"../{CSS_FILE_NAME}",
-                    icons_path = f"../{ICONS_DIRECTORY_NAME}",
-                    resource_list_path = "../resource_list.html",
-                    javascript = "",
-                    introduction = _resource_list_introduction_html,
-                    add_or_edit_menu = \
-                        _add_or_edit_menu_html_template.substitute(
-                        components = _add_or_edit_menu_components[
+                    css_path=f"../{CSS_FILE_NAME}",
+                    icons_path=f"../{ICONS_DIRECTORY_NAME}",
+                    resource_list_path="../resource_list.html",
+                    javascript="",
+                    introduction=_RESOURCE_LIST_INTRODUCTION_HTML,
+                    add_or_edit_menu=_add_or_edit_menu_html_template.substitute(
+                        components=_add_or_edit_menu_components[
                             "add"].substitute(
-                                add_resource_path = "..",
-                                icons_path = f"../{ICONS_DIRECTORY_NAME}")),
-                    filter_menu = _filter_menu_html_template.substitute(
-                        components = "\n".join(
+                                add_resource_path="..",
+                                icons_path=f"../{ICONS_DIRECTORY_NAME}")),
+                    filter_menu=_filter_menu_html_template.substitute(
+                        components="\n".join(
                             template.substitute(
-                                filterings_path = ".",
-                                icons_path = f"../{ICONS_DIRECTORY_NAME}",
-                                css_class = _css_class(
+                                filterings_path=".",
+                                icons_path=f"../{ICONS_DIRECTORY_NAME}",
+                                css_class=_css_class(
                                     filter_type, resource_type))
-                            for resource_type, template in \
-                                _filter_menu_components.items())),
-                    content = _resource_list_html_template.substitute(
-                        list_entries = list_entries)
+                            for resource_type, template in
+                            _filter_menu_components.items())),
+                    content=_resource_list_html_template.substitute(
+                        list_entries=list_entries)
                 )
             )
+
 
 def _checked_type(row, resource_type: ResourceType) -> str:
     if row["type"].strip() == resource_type:
         return "checked"
     return ""
 
-def _ric_parts_to_check(row) -> Generator[RiCPart, None, None]:
+
+def _ric_parts_to_check(row: Row) -> Generator[RiCPart, None, None]:
     for part in row["relevant_parts_of_ric"].split("|"):
         part = part.strip()
         found = False
         for ric_part in [
-                "RiC-CM 1.0", "RiC-CM 0.2", "RiC-O 1.0", "RiC-O 0.2" ]:
+                "RiC-CM 1.0", "RiC-CM 0.2", "RiC-O 1.0", "RiC-O 0.2"]:
             if part == ric_part:
                 yield ric_part
                 found = True
         if not found:
             yield "Other"
+
 
 def _checked_ric_part(
         ric_parts_to_check: list[RiCPart], ric_part: RiCPart) -> str:
@@ -708,54 +759,68 @@ def _checked_ric_part(
         return "checked"
     return ""
 
+
 def edits(
         backend_url: URL,
         path_to_edits: Path,
-        path_to_csv: Path) -> HTML:
-    with open(path_to_csv, "r") as csv_file:
+        path_to_csv: Path) -> None:
+    """
+    Generates HTML files for editing resource details, one for each
+    resource, saving them into a directory specified in an environment
+    variable. Requires an environment variable specifying the URL of the
+    backend.
+    """
+    with open(path_to_csv, "r", encoding="utf-8") as csv_file:
         csv_reader = DictReader(csv_file)
         for row in csv_reader:
             resource_id = row["id"]
+            id_field = f"<input type=\"hidden\" name=\"id\" value=\"{
+                resource_id}\">"
             ric_parts = list(_ric_parts_to_check(row))
-            with open(path_to_edits / f"{resource_id}.html", "w") as edit_file:
+            with open(
+                    path_to_edits / f"{resource_id}.html",
+                    "w",
+                    encoding="utf-8") as edit_file:
                 edit_file.write(_site_template.substitute(
-                    css_path = f"../{CSS_FILE_NAME}",
-                    resource_list_path = "../resource_list.html",
-                    javascript = "",
-                    introduction = _edit_resource_introduction_html,
-                    add_or_edit_menu = "",
-                    filter_menu = "",
-                    content = _add_resource_html_template.substitute(
-                        backend_url = backend_url,
-                        title_value = row["title"],
-                        checked_application = _checked_type(
+                    css_path=f"../{CSS_FILE_NAME}",
+                    resource_list_path="../resource_list.html",
+                    javascript="",
+                    introduction=_EDIT_RESOURCE_INTRODUCTION_HTML,
+                    add_or_edit_menu="",
+                    filter_menu="",
+                    content=_add_resource_html_template.substitute(
+                        backend_url=backend_url,
+                        title_value=row["title"],
+                        checked_application=_checked_type(
                             row, "web application"),
-                        checked_article = _checked_type(row, "article"),
-                        checked_dataset = _checked_type(row, "dataset"),
-                        checked_event = _checked_type(row, "event"),
-                        checked_thesis = _checked_type(row, "thesis"),
-                        checked_tool = _checked_type(row, "tool"),
-                        responsible_value = row["responsible"],
-                        publication_date_value = row["publication_date"],
-                        description_value = row["description"],
-                        links_value = row["links"],
-                        languages_value = row["languages"],
-                        checked_ric_cm_1_0 = _checked_ric_part(
+                        checked_article=_checked_type(row, "article"),
+                        checked_dataset=_checked_type(row, "dataset"),
+                        checked_event=_checked_type(row, "event"),
+                        checked_thesis=_checked_type(row, "thesis"),
+                        checked_tool=_checked_type(row, "tool"),
+                        responsible_value=row["responsible"],
+                        publication_date_value=row["publication_date"],
+                        description_value=row["description"],
+                        links_value=row["links"],
+                        languages_value=row["languages"],
+                        checked_ric_cm_1_0=_checked_ric_part(
                             ric_parts, "RiC-CM 1.0"),
-                        checked_ric_cm_0_2 = _checked_ric_part(
+                        checked_ric_cm_0_2=_checked_ric_part(
                             ric_parts, "RiC-CM 0.2"),
-                        checked_ric_o_1_0 = _checked_ric_part(
+                        checked_ric_o_1_0=_checked_ric_part(
                             ric_parts, "RiC-O 1.0"),
-                        checked_ric_o_0_2 = _checked_ric_part(
+                        checked_ric_o_0_2=_checked_ric_part(
                             ric_parts, "RiC-O 0.2"),
-                        checked_ric_other = _checked_ric_part(
+                        checked_ric_other=_checked_ric_part(
                             ric_parts, "Other"),
-                        prospects_value = row["prospects"],
-                        contact_value = row["contact"],
-                        related_to_value = row["related_to"],
-                        submit_value = "Edit"
+                        prospects_value=row["prospects"],
+                        contact_value=row["contact"],
+                        related_to_value=row["related_to"],
+                        id_field=id_field,
+                        submit_value="Edit"
                     )
                 ))
+
 
 def _arguments_parser() -> ArgumentParser:
     argument_parser = ArgumentParser(
@@ -765,58 +830,59 @@ def _arguments_parser() -> ArgumentParser:
         )
     )
     subparsers = argument_parser.add_subparsers(
-        dest = "subcommand")
+        dest="subcommand")
     resource_list_subparser = subparsers.add_parser(
         "resource-list",
-        help = "For generating the landing page with the summary resource "
-               "list. Outputs the HTML of the page to stdout")
+        help="For generating the landing page with the summary resource "
+        "list. Outputs the HTML of the page to stdout")
     resource_details_subparser = subparsers.add_parser(
         "resource-details",
-        help = "For generating the individual pages with details of the "
-               "resources. The environment variable RESOURCE_DETAILS_PATH "
-               "must be provided, which should be a path to a directory in "
-               "which to write the generated pages to")
-    add_resource_subparser = subparsers.add_parser(
+        help="For generating the individual pages with details of the "
+        "resources. The environment variable RESOURCE_DETAILS_PATH "
+        "must be provided, which should be a path to a directory in "
+        "which to write the generated pages to")
+    subparsers.add_parser(
         "add-resource",
-        help = "For generating the page for adding a resource. Outputs the "
-               "HTML of the page to stdout. The environment variable "
-               "BACKEND_URL must be provided, which should be the URL of "
-               "the backend endpoint to which the POST made when submitting "
-               "the form to add a resource is to be sent")
+        help="For generating the page for adding a resource. Outputs the "
+        "HTML of the page to stdout. The environment variable "
+        "BACKEND_URL must be provided, which should be the URL of "
+        "the backend endpoint to which the POST made when submitting "
+        "the form to add a resource is to be sent")
     filter_subparser = subparsers.add_parser(
         "filterings",
-        help = "For generating pages which are filterings of the summary "
-               "resource list by resource type. The environment variable "
-               "FILTERINGS_PATH must be provided, which should be a path to a "
-               "directory in which to write the generated pages to")
+        help="For generating pages which are filterings of the summary "
+        "resource list by resource type. The environment variable "
+        "FILTERINGS_PATH must be provided, which should be a path to a "
+        "directory in which to write the generated pages to")
     edit_resource_subparser = subparsers.add_parser(
         "edit-resource",
-        help = "For generating the pages for editing a resource. The "
-               "environment variable EDITS_PATH must be provided, which should "
-               "be a path to a directory in which to write the generated pages "
-               "to. The environment variable BACKEND_URL must also be "
-               "provided, which should be the URL of the backend endpoint to "
-               "which the POST made when submitting the form to edit a "
-               "resource is to be sent")
+        help="For generating the pages for editing a resource. The "
+        "environment variable EDITS_PATH must be provided, which should "
+        "be a path to a directory in which to write the generated pages "
+        "to. The environment variable BACKEND_URL must also be "
+        "provided, which should be the URL of the backend endpoint to "
+        "which the POST made when submitting the form to edit a "
+        "resource is to be sent")
     resource_list_subparser.add_argument(
         "path_to_master_document",
-        type = Path,
-        help = "Path to the CSV master document for the resource list")
+        type=Path,
+        help="Path to the CSV master document for the resource list")
     resource_details_subparser.add_argument(
         "path_to_master_document",
-        type = Path,
-        help = "Path to the CSV master document for the resource list")
+        type=Path,
+        help="Path to the CSV master document for the resource list")
     filter_subparser.add_argument(
         "path_to_master_document",
-        type = Path,
-        help = "Path to the CSV master document for the resource list")
+        type=Path,
+        help="Path to the CSV master document for the resource list")
     edit_resource_subparser.add_argument(
         "path_to_master_document",
-        type = Path,
-        help = "Path to the CSV master document for the resource list")
+        type=Path,
+        help="Path to the CSV master document for the resource list")
     return argument_parser
 
-def main() -> None:
+
+def _main() -> None:
     arguments = _arguments_parser().parse_args()
     if arguments.subcommand == "resource-list":
         print(resource_list(arguments.path_to_master_document))
@@ -856,5 +922,6 @@ def main() -> None:
     else:
         raise ValueError
 
+
 if __name__ == "__main__":
-    main()
+    _main()

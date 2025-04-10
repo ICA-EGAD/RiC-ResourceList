@@ -1,24 +1,24 @@
-name: add-resource
+name: edit-resource
 
 on:
   repository_dispatch:
-    types: "add_resource"
+    types: "edit_resource"
 
 jobs:
   add-resource:
-    name: "Add resource"
+    name: "Edit resource"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Update master document and push branch to repository
         run: |
-          python scripts/update_master_document.py add "${{ github.event.client_payload.form_submission }}"
+          python scripts/update_master_document.py edit "${{ github.event.client_payload.form_submission }}"
           export timestamp=$(($(date +%s%N)/1000000))
-          git branch -m "add_resource_$timestamp"
+          git branch -m "edit_resource_$timestamp"
           git config user.name "RiC Resource List"
           git config user.email "ric-resource-list@users.noreply.github.com"
           git add master-document/*
-          git commit -m "Add submitted resource"
-          git push -u origin "add_resource_$timestamp"
+          git commit -m "Edit submitted resource"
+          git push -u origin "edit_resource_$timestamp"
 
