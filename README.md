@@ -35,4 +35,13 @@ FILTERINGS_PATH=../filterings python resource_list.py filterings ../master-docum
 BACKEND_URL="" python resource_list.py add-resource > ../add_resource.html
 
 BACKEND_URL="" EDITS_PATH=../edits python resource_list.py edit-resource ../master-document/resource_list.csv
+
+python resource_list.py success addition > ../addition_success.html
+
+python resource_list.py success edit > ../edit_success.html
+
+python resource_list.py failure addition > ../addition_failure.html
+
+python resource_list.py failure edit > ../edit_failure.html
+
 ```

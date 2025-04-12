@@ -197,6 +197,18 @@ div.add-resource-section {
   margin: auto;
 }
 
+div.success, div.failure {
+  max-width: 750px;
+  margin: auto;
+  margin-top: 2em;
+  text-align: justify;
+}
+
+p.return-to-resource-list {
+  text-align: center;
+  margin-top: 1em;
+}
+
 div.add-resource-section label {
   display: block;
   margin-right: 1em;
@@ -291,34 +303,29 @@ span.contact-details {
     font-size: 0.7em;
   }
 
-div.ric-links {
-  margin-top: 1em;
-  margin-bottom: 1em;
-}
+  div.ric-links {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
 
-div.ric-links span {
-  margin-right: 3em;
-}
+  div.ric-links span {
+    margin-right: 3em;
+  }
 
-img.resource-details-icon {
-  margin-right: 5px;
-}
+  img.resource-details-icon {
+    margin-right: 5px;
+  }
 
-div.resource-list {
-  padding-left: 5px;
-  padding-right: 5px;
-}
+  div.resource-list, div.add-resource, div.success, div.failure {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
 
-div.introduction {
-  margin-bottom: 1em;
-}
+  div.introduction {
+    margin-bottom: 1em;
+  }
 
-div.add-resource-section fieldset label {
-  margin-right: 5px;
-}
-
-div.add-resource {
-  padding-left: 5px;
-  padding-right: 5px;
-}
+  div.add-resource-section fieldset label {
+    margin-right: 5px;
+  }
 }

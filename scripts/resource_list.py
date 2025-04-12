@@ -201,6 +201,15 @@ _add_resource_html_template = Template("""    <div class="add-resource">
       </form>
     </div>""")
 
+_success_html_template = Template("""    <div class="success">
+      <p>Resource $action successfully submitted! A pull request should in the next few minutes be generated <a href="https://github.com/ICA-EGAD/RiC-ResourceList/pulls">at GitHub</a>, which EGAD will review. Once the pull request is approved (it may take a few days for us to get to it!), the submission will be deployed to the resource list and become visible there.</p>
+      <p class="return-to-resource-list"><a href="./resource_list.html">Return to the resource list</a></p>
+    </div>""")
+
+_failure_html_template = Template("""    <div class="failure">
+      <p>Submission of the resource $action failed. Please contact us by <a href="https://github.com/ICA-EGAD/RiC-ResourceList/issues">raising an Issue</a> at GitHub, or otherwise. We will look into it as soon as we can!</p>
+      <p class="return-to-resource-list"><a href="./resource_list.html">Return to the resource list</a></p>
+    </div>""")
 
 AlternativeTitle = str
 Date = str
@@ -822,6 +831,38 @@ def edits(
                 ))
 
 
+def success(action: str) -> HTML:
+    """
+    Generates the HTML of the page redirected to following a successful
+    submission of a resource addition or edit.
+    """
+    return _site_template.substitute(
+        css_path=CSS_FILE_NAME,
+        resource_list_path="./resource_list.html",
+        javascript="",
+        introduction="",
+        add_or_edit_menu="",
+        filter_menu="",
+        content=_success_html_template.substitute(action=action)
+    )
+
+
+def failure(action: str) -> HTML:
+    """
+    Generates the HTML of the page redirected to following a failed
+    submission of a resource addition or edit.
+    """
+    return _site_template.substitute(
+        css_path=CSS_FILE_NAME,
+        resource_list_path="./resource_list.html",
+        javascript="",
+        introduction="",
+        add_or_edit_menu="",
+        filter_menu="",
+        content=_failure_html_template.substitute(action=action)
+    )
+
+
 def _arguments_parser() -> ArgumentParser:
     argument_parser = ArgumentParser(
         description=(
@@ -863,6 +904,16 @@ def _arguments_parser() -> ArgumentParser:
         "provided, which should be the URL of the backend endpoint to "
         "which the POST made when submitting the form to edit a "
         "resource is to be sent")
+    success_subparser = subparsers.add_parser(
+        "success",
+        help="For generating the page redirected to upon successful "
+             "submission of an addition or edit. Outputs the HTML of the "
+             "page to stdout")
+    failure_subparser = subparsers.add_parser(
+        "failure",
+        help="For generating the page redirected to upon failure of the "
+             "submission of an addition or edit. Outputs the HTML of the "
+             "page to stdout")
     resource_list_subparser.add_argument(
         "path_to_master_document",
         type=Path,
@@ -879,9 +930,20 @@ def _arguments_parser() -> ArgumentParser:
         "path_to_master_document",
         type=Path,
         help="Path to the CSV master document for the resource list")
+    success_subparser.add_argument(
+        "action",
+        type=str,
+        choices=["addition", "edit"],
+        help="Whether the success page is for an addition or an edit")
+    failure_subparser.add_argument(
+        "action",
+        type=str,
+        choices=["addition", "edit"],
+        help="Whether the failure page is for an addition or an edit")
     return argument_parser
 
 
+# pylint: disable=too-many-branches
 def _main() -> None:
     arguments = _arguments_parser().parse_args()
     if arguments.subcommand == "resource-list":
@@ -919,6 +981,10 @@ def _main() -> None:
         except KeyError:
             sys_exit("The environment variable EDITS_PATH must be set")
         edits(backend_url, path_to_edits, arguments.path_to_master_document)
+    elif arguments.subcommand == "success":
+        print(success(arguments.action))
+    elif arguments.subcommand == "failure":
+        print(failure(arguments.action))
     else:
         raise ValueError
 
