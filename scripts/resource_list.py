@@ -61,6 +61,11 @@ _EDIT_RESOURCE_INTRODUCTION_HTML = """    <div class="introduction">
       <p>Please make use of the form to edit the details of the resource you wish to add. The first five fields (up to and including 'Description') are required. The submission will be checked by moderators, and the edits should appear in a few days.</p>
     </div>"""
 
+_FAILURE_HTML = """    <div class="failure">
+      <p>An error occurred. Please contact us by raising an <a href="https://github.com/ICA-EGAD/RiC-ResourceList/issues">Issue</a> at GitHub, or otherwise. We will look into it as soon as we can!</p>
+      <p class="return-to-resource-list"><a href="./index.html">Return to the resource list</a></p>
+    </div>"""
+
 _add_or_edit_menu_html_template = Template("""      <span class="add-edit-menu">
 $components
       </span>""")
@@ -206,10 +211,6 @@ _success_html_template = Template("""    <div class="success">
       <p class="return-to-resource-list"><a href="./index.html">Return to the resource list</a></p>
     </div>""")
 
-_failure_html_template = Template("""    <div class="failure">
-      <p>Submission of the resource $action failed. Please contact us by <a href="https://github.com/ICA-EGAD/RiC-ResourceList/issues">raising an Issue</a> at GitHub, or otherwise. We will look into it as soon as we can!</p>
-      <p class="return-to-resource-list"><a href="./index.html">Return to the resource list</a></p>
-    </div>""")
 
 AlternativeTitle = str
 Date = str
@@ -847,7 +848,7 @@ def success(action: str) -> HTML:
     )
 
 
-def failure(action: str) -> HTML:
+def failure() -> HTML:
     """
     Generates the HTML of the page redirected to following a failed
     submission of a resource addition or edit.
@@ -859,7 +860,7 @@ def failure(action: str) -> HTML:
         introduction="",
         add_or_edit_menu="",
         filter_menu="",
-        content=_failure_html_template.substitute(action=action)
+        content=_FAILURE_HTML
     )
 
 
@@ -909,7 +910,7 @@ def _arguments_parser() -> ArgumentParser:
         help="For generating the page redirected to upon successful "
              "submission of an addition or edit. Outputs the HTML of the "
              "page to stdout")
-    failure_subparser = subparsers.add_parser(
+    subparsers.add_parser(
         "failure",
         help="For generating the page redirected to upon failure of the "
              "submission of an addition or edit. Outputs the HTML of the "
@@ -935,11 +936,6 @@ def _arguments_parser() -> ArgumentParser:
         type=str,
         choices=["addition", "edit"],
         help="Whether the success page is for an addition or an edit")
-    failure_subparser.add_argument(
-        "action",
-        type=str,
-        choices=["addition", "edit"],
-        help="Whether the failure page is for an addition or an edit")
     return argument_parser
 
 
@@ -984,7 +980,7 @@ def _main() -> None:
     elif arguments.subcommand == "success":
         print(success(arguments.action))
     elif arguments.subcommand == "failure":
-        print(failure(arguments.action))
+        print(failure())
     else:
         raise ValueError
 

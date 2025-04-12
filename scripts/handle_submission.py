@@ -193,6 +193,8 @@ def lambda_handler(event, _) -> Json:
     Function called by AWS when the Lambda is invoked
     """
     print(f"Event: {event}")
+    root_redirect_url = "https://https://ica-egad.github.io/RiC-ResourceList"
+    failure_url = f"{root_redirect_url}/failure.html"
     try:
         limiter.handle_invocation()
     except TooManyInvocationsThisHourException:
@@ -200,7 +202,7 @@ def lambda_handler(event, _) -> Json:
         return {
             "statusCode": 303,
             "headers": {
-                "Location": "https://rwilliamson-mathematics.info"
+                "Location": failure_url
             },
             "body": "Too many resources have been added during this hour"
 
@@ -210,7 +212,7 @@ def lambda_handler(event, _) -> Json:
         return {
             "statusCode": 303,
             "headers": {
-                "Location": "https://rwilliamson-mathematics.info"
+                "Location": failure_url
             },
             "body": "Too many resources have been added today"
         }
@@ -221,7 +223,7 @@ def lambda_handler(event, _) -> Json:
         return {
             "statusCode": 303,
             "headers": {
-                "Location": "https://rwilliamson-mathematics.info"
+                "Location": failure_url
             },
             "body": "Invalid HTTP method"
         }
@@ -231,11 +233,10 @@ def lambda_handler(event, _) -> Json:
         return {
             "statusCode": 303,
             "headers": {
-                "Location": "https://rwilliamson-mathematics.info"
+                "Location": failure_url
             },
             "body": "Called with path that is not /add or /edit"
         }
-    root_redirect_url = "https://https://ica-egad.github.io/RiC-ResourceList"
     try:
         _trigger_github_action(submission, submission_type)
     except HTTPError as exception:
@@ -243,9 +244,7 @@ def lambda_handler(event, _) -> Json:
         return {
             "statusCode": 303,
             "headers": {
-                "Location": f"{root_redirect_url}/{
-                    submission_type}_failure.html"
-
+                "Location": failure_url
             },
             "body": "An error occurred when making an API call involved in "
                     "triggering adding or editing a resource in github"

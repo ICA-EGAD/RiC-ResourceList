@@ -14,6 +14,4 @@ python scripts/resource_list.py success addition > add_success.html
 
 python scripts/resource_list.py success edit > edit_success.html
 
-python scripts/resource_list.py failure addition > add_failure.html
-
-python scripts/resource_list.py failure edit > edit_failure.html
+python scripts/resource_list.py failure > failure.html
