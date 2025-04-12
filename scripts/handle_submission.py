@@ -235,6 +235,7 @@ def lambda_handler(event, _) -> Json:
             },
             "body": "Called with path that is not /add or /edit"
         }
+    root_redirect_url = "https://https://ica-egad.github.io/RiC-ResourceList"
     try:
         _trigger_github_action(submission, submission_type)
     except HTTPError as exception:
@@ -242,7 +243,9 @@ def lambda_handler(event, _) -> Json:
         return {
             "statusCode": 303,
             "headers": {
-                "Location": "https://rwilliamson-mathematics.info"
+                "Location": f"{root_redirect_url}/{
+                    submission_type}_failure.html"
+
             },
             "body": "An error occurred when making an API call involved in "
                     "triggering adding or editing a resource in github"
@@ -252,7 +255,7 @@ def lambda_handler(event, _) -> Json:
     return {
         "statusCode": 303,
         "headers": {
-            "Location": "https://rwilliamson-mathematics.info"
+            "Location": f"{root_redirect_url}/{submission_type}_success.html"
         },
         "body": "Successfully passed on form submission to GitHub"
     }
