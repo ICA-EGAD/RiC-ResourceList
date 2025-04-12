@@ -203,12 +203,12 @@ _add_resource_html_template = Template("""    <div class="add-resource">
 
 _success_html_template = Template("""    <div class="success">
       <p>Resource $action successfully submitted! A pull request should in the next few minutes be generated <a href="https://github.com/ICA-EGAD/RiC-ResourceList/pulls">at GitHub</a>, which EGAD will review. Once the pull request is approved (it may take a few days for us to get to it!), the submission will be deployed to the resource list and become visible there.</p>
-      <p class="return-to-resource-list"><a href="./resource_list.html">Return to the resource list</a></p>
+      <p class="return-to-resource-list"><a href="./index.html">Return to the resource list</a></p>
     </div>""")
 
 _failure_html_template = Template("""    <div class="failure">
       <p>Submission of the resource $action failed. Please contact us by <a href="https://github.com/ICA-EGAD/RiC-ResourceList/issues">raising an Issue</a> at GitHub, or otherwise. We will look into it as soon as we can!</p>
-      <p class="return-to-resource-list"><a href="./resource_list.html">Return to the resource list</a></p>
+      <p class="return-to-resource-list"><a href="./index.html">Return to the resource list</a></p>
     </div>""")
 
 AlternativeTitle = str
@@ -555,7 +555,7 @@ def _resource_details(row: Row) -> tuple[HTML, ResourceId]:
     return _site_template.substitute(
         css_path=f"../{CSS_FILE_NAME}",
         icons_path=f"../{ICONS_DIRECTORY_NAME}",
-        resource_list_path="../resource_list.html",
+        resource_list_path="../index.html",
         javascript="",
         introduction=_RESOURCE_DETAILS_INTRODUCTION_HTML,
         add_or_edit_menu=_add_or_edit_menu_html_template.substitute(
@@ -656,7 +656,7 @@ def add_resource(backend_url: URL) -> HTML:
     """
     return _site_template.substitute(
         css_path=CSS_FILE_NAME,
-        resource_list_path="resource_list.html",
+        resource_list_path="index.html",
         javascript="",
         introduction=_ADD_RESOURCE_INTRODUCTION_HTML,
         add_or_edit_menu="",
@@ -720,7 +720,7 @@ def filterings(path_to_csv: Path, path_to_filterings: Path) -> None:
                 _site_template.substitute(
                     css_path=f"../{CSS_FILE_NAME}",
                     icons_path=f"../{ICONS_DIRECTORY_NAME}",
-                    resource_list_path="../resource_list.html",
+                    resource_list_path="../index.html",
                     javascript="",
                     introduction=_RESOURCE_LIST_INTRODUCTION_HTML,
                     add_or_edit_menu=_add_or_edit_menu_html_template.substitute(
@@ -792,7 +792,7 @@ def edits(
                     encoding="utf-8") as edit_file:
                 edit_file.write(_site_template.substitute(
                     css_path=f"../{CSS_FILE_NAME}",
-                    resource_list_path="../resource_list.html",
+                    resource_list_path="../index.html",
                     javascript="",
                     introduction=_EDIT_RESOURCE_INTRODUCTION_HTML,
                     add_or_edit_menu="",
@@ -838,7 +838,7 @@ def success(action: str) -> HTML:
     """
     return _site_template.substitute(
         css_path=CSS_FILE_NAME,
-        resource_list_path="./resource_list.html",
+        resource_list_path="./index.html",
         javascript="",
         introduction="",
         add_or_edit_menu="",
@@ -854,7 +854,7 @@ def failure(action: str) -> HTML:
     """
     return _site_template.substitute(
         css_path=CSS_FILE_NAME,
-        resource_list_path="./resource_list.html",
+        resource_list_path="./index.html",
         javascript="",
         introduction="",
         add_or_edit_menu="",
