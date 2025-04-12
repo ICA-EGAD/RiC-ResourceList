@@ -1,0 +1,24 @@
+name: generate-site
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-site:
+    name: "Re-generate site"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Re-generate site and push to main branch
+        run: |
+          bash scripts/generate_site.sh
+          git config user.name "RiC Resource List"
+          git config user.email "ric-resource-list@users.noreply.github.com"
+          git add *
+          set +e
+          git commit -m "Re-generate site"
+          set -e
+          git push
