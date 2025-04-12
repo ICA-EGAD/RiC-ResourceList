@@ -193,7 +193,7 @@ def lambda_handler(event, _) -> Json:
     Function called by AWS when the Lambda is invoked
     """
     print(f"Event: {event}")
-    root_redirect_url = "https://https://ica-egad.github.io/RiC-ResourceList"
+    root_redirect_url = "https://ica-egad.github.io/RiC-ResourceList"
     failure_url = f"{root_redirect_url}/failure.html"
     try:
         limiter.handle_invocation()

@@ -1,13 +1,23 @@
-AWS Lambda instructions
+Lambda instructions
 =======================
 
 Deployment
 ----------
 
-The following can be run to create a zip file appropriate for uploading. Various
-of the steps can be omitted in future iterations if they have already been
-carried out. The private key file must be named exactly as indicated; it can
-be downloaded from the EGAD organisation Settings page at GitHub.
+If only the file `handle_submission.py` has changed, the simplest way to create
+a zip file appropriate for uploading is to download the old one (if you do
+not already have it), rename it to `handle_submission.zip`, run
+
+```
+zip handle_submission.zip handle_submission.py
+```
+
+and then re-upload `handle_submission.zip`.
+
+To create the zip file for upload from scratch, one can proceed as follows.
+Various of the steps can be omitted in future iterations if they have already
+been carried out. The private key file must be named exactly as indicated; it
+can be downloaded from the EGAD organisation Settings page at GitHub.
 
 ```
 mkdir package
