@@ -1,47 +1,32 @@
 RiC Resource List
 =================
 
-Overview
---------
+Usage
+-----
 
-A little web tool over the top of the data in `master-document/resource_list.csv`. It is a static website: upon any changes to `master-document/resource_list.csv`, the script `scripts/resource_list.py` should be run a number of times to regenerate all of the HTML files (see below for details).
+Can be browsed as a [website](https://ica-egad.github.io/RiC-ResourceList/index.html). Additions and edits can be made via the website or by making a pull request changing the master document at `master-document/resource_list.csv`.
 
-- The landing page (list of resources containing a few summary details) is `resource_list.html`.
-- The landing page offers the possibility to filter by resource type; the resulting lists in each case are to be found in `filterings/`.
-- Adding a new resource is via the form at `add_resource.html`, which is also linked to from the landing page.
-- For each resource in the list at the landing page, one can click to obtain full details. The corresponding pages are at `resource-details/`.
-- For each resource in the list at the landing page, one can edit its details. The corresponding pages are at `edits/`. The edit page for a given resource is linked to from the page with the full details of this resource.
-- The CSS of the entire site is defined by `ric_resources.css`. No Javascript is used.
 
-Intended flow for adding/editing resources
-------------------------------------------
+Architecture
+------------
 
-A pull request should be made with an edit to `master-document/resource_list.csv`. When this pull request is merged in, a github action should be executed which runs the script `scripts/resource_list.py` as needed to regenerate the site.
+Has the following components.
 
-Such a pull request can be made manually, but a backend will also be set up which provides an endpoint for the forms for adding or editing a resource to call; this backend will edit the CSV programmatically and make a pull request.
+* A static [website](https://ica-egad.github.io/RiC-ResourceList/index.html), consisting of the HTML files in this repository along with the CSS file. No Javascript is used.
+* A master document `master-document/resource_list.csv` from which the static website is generated.
+* A very lightweight backend living in the cloud, fired as needed (function-as-a-service), functioning as reverse proxy towards GitHub for adding or editing resources via the website.
+* Three GitHub Actions, two of which are triggered by the backend to create a pull request updating the master document upon receipt of a resource addition or edit, and one of which re-generates the site upon the merging of such a pull request.
 
-Regenerating the site
----------------------
+Guide to the scripts:
 
-The script at `scripts/resource_list.py` should be run several times as follows, setting `BACKEND_URL` to the appropriate URLs. It is assumed below that one is running from within the `scripts` directory; this is not necessary, but the various paths must then be adjusted accordingly.
+* Re-generation of the site is by means of the script `scripts/generated_site.sh`, which calls `scripts/resource_list.py` numerous times.
+* The script `scripts/handle_submission.py` defines the on-demand function which serves as the backend/reverse proxy in the cloud.
+* The script `scripts/update_master_document.py` handles the form submissions from the website for adding or editing a resource.
 
-```
-python resource_list.py resource-list ../master-document/resource_list.csv > ../resource_list.html
 
-RESOURCE_DETAILS_PATH="../resource-details/" python resource_list.py resource-details ../master-document/resource_list.csv
+Deployment
+----------
 
-FILTERINGS_PATH=../filterings python resource_list.py filterings ../master-document/resource_list.csv
+To make any changes to the GitHub Actions, one can simply edit the relevant files in `scripts` and make a pull request.
 
-BACKEND_URL="" python resource_list.py add-resource > ../add_resource.html
-
-BACKEND_URL="" EDITS_PATH=../edits python resource_list.py edit-resource ../master-document/resource_list.csv
-
-python resource_list.py success addition > ../addition_success.html
-
-python resource_list.py success edit > ../edit_success.html
-
-python resource_list.py failure addition > ../addition_failure.html
-
-python resource_list.py failure edit > ../edit_failure.html
-
-```
+Deployment of the cloud backend is covered in the README file in `scripts`.
