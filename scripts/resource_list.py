@@ -19,6 +19,7 @@ from urllib.parse import urlparse as parse_url
 CSS_FILE_NAME = "ric_resources.css"
 EDITS_DIRECTORY_NAME = "edits"
 ICONS_DIRECTORY_NAME = "icons"
+LOGO_FILE_NAME = "EGAD_logo.svg"
 RESOURCE_DETAILS_DIRECTORY_NAME = "resource-details"
 
 _site_template = Template("""<!DOCTYPE html>
@@ -37,7 +38,7 @@ _site_template = Template("""<!DOCTYPE html>
       <p><span><a href="https://www.ica.org/resource/records-in-contexts-conceptual-model/">RiC-CM</a></span><span><a href="https://www.ica.org/standards/RiC/ontology">RiC-O</a></span><span class="last"><a href="https://groups.google.com/g/Records_in_Contexts_users">RiC users group</a></span></p>
     </div>
     <div class="header">
-      <img class="egad-logo" src="EGAD_logo.svg"/>
+      <img class="egad-logo" src="$logo_path"/>
     </div>$introduction
     <div class="menu" id="menu">
 $add_or_edit_menu
@@ -570,6 +571,7 @@ def _resource_details(row: Row) -> tuple[HTML, ResourceId]:
     )
     return _site_template.substitute(
         css_path=f"../{CSS_FILE_NAME}",
+        logo_path=f"../{LOGO_FILE_NAME}",
         icons_path=f"../{ICONS_DIRECTORY_NAME}",
         resource_list_path="../index.html",
         javascript="",
@@ -630,6 +632,7 @@ def resource_list(path_to_csv: Path) -> HTML:
         [resource for resource, _, _ in list_entries_with_date])
     return _site_template.substitute(
         css_path=CSS_FILE_NAME,
+        logo_path=LOGO_FILE_NAME,
         icons_path=ICONS_DIRECTORY_NAME,
         resource_list_path="",
         javascript="",
@@ -673,6 +676,7 @@ def add_resource(backend_url: URL) -> HTML:
     """
     return _site_template.substitute(
         css_path=CSS_FILE_NAME,
+        logo_path=LOGO_FILE_NAME,
         resource_list_path="index.html",
         javascript="",
         introduction=_ADD_RESOURCE_INTRODUCTION_HTML,
@@ -736,6 +740,7 @@ def filterings(path_to_csv: Path, path_to_filterings: Path) -> None:
             filtering_file.write(
                 _site_template.substitute(
                     css_path=f"../{CSS_FILE_NAME}",
+                    logo_path=f"../{LOGO_FILE_NAME}",
                     icons_path=f"../{ICONS_DIRECTORY_NAME}",
                     resource_list_path="../index.html",
                     javascript="",
@@ -810,6 +815,7 @@ def edits(
                     encoding="utf-8") as edit_file:
                 edit_file.write(_site_template.substitute(
                     css_path=f"../{CSS_FILE_NAME}",
+                    logo_path=f"../{LOGO_FILE_NAME}",
                     resource_list_path="../index.html",
                     javascript="",
                     introduction=_EDIT_RESOURCE_INTRODUCTION_HTML,
@@ -856,6 +862,7 @@ def success(action: str) -> HTML:
     """
     return _site_template.substitute(
         css_path=CSS_FILE_NAME,
+        logo_path=f"../{LOGO_FILE_NAME}",
         resource_list_path="./index.html",
         javascript="",
         introduction="",
@@ -872,6 +879,7 @@ def failure() -> HTML:
     """
     return _site_template.substitute(
         css_path=CSS_FILE_NAME,
+        logo_path=f"../{LOGO_FILE_NAME}",
         resource_list_path="./index.html",
         javascript="",
         introduction="",
