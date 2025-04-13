@@ -21,7 +21,7 @@ div.resource-list:after {
   display: block;
   border: 1px solid black;
   margin-bottom: 1em;
-  margin-top: 2em;
+  margin-top: 1em;
 }
 
 div.ric-links {
@@ -40,10 +40,15 @@ div.ric-links span.last {
 
 div.introduction {
   font-size: smaller;
-  text-align: center;
+  text-align: justify;
   max-width: 75%;
   margin: auto;
-  margin-bottom: 1.5em;
+  margin-bottom: 2.5em;
+  line-height: 1.25em;
+}
+
+div.introduction a {
+  padding-bottom: 0.5px
 }
 
 div.menu:after {
@@ -285,6 +290,21 @@ span.ric-part {
 }
 
 span.contact-details {
+  font-style: italic;
+}
+
+img.egad-logo {
+  width: 300px;
+  margin-top: -20px;
+  margin-bottom: -20px;
+}
+
+div.last-updated {
+  text-align: center;
+  font-size: smaller;
+}
+
+span.last-updated-timestamp {
   font-style: italic;
 }
 

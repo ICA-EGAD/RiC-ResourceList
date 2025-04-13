@@ -3,8 +3,11 @@ A tool which generates the static files of the Resource List website. Organised
 into several sub-commands which generate different parts of the website.
 """
 
+# pylint: disable=too-many-lines
+
 from argparse import ArgumentParser
 from csv import DictReader
+from datetime import datetime, timezone
 from os import environ
 from pathlib import Path
 from re import match as regex_match, split as regex_split
@@ -32,6 +35,9 @@ _site_template = Template("""<!DOCTYPE html>
     </div>
     <div class="ric-links">
       <p><span><a href="https://www.ica.org/resource/records-in-contexts-conceptual-model/">RiC-CM</a></span><span><a href="https://www.ica.org/standards/RiC/ontology">RiC-O</a></span><span class="last"><a href="https://groups.google.com/g/Records_in_Contexts_users">RiC users group</a></span></p>
+    </div>
+    <div class="header">
+      <img class="egad-logo" src="EGAD_logo.svg"/>
     </div>$introduction
     <div class="menu" id="menu">
 $add_or_edit_menu
@@ -46,7 +52,9 @@ _JAVASCRIPT_HTML = """
 
 _RESOURCE_LIST_INTRODUCTION_HTML = """
     <div class="introduction">
-      <p>Click on a resource for more details! The buttons below can be used to filter by resource type. We need your help to keep the list up to date and as complete as possible! Use the 'Add' button to include a resource.</p>
+      <p>A list of resources in which <a href="https://www.ica.org/ica-network/expert-groups/egad/records-in-contexts-ric/">Records in Contexts</a> (RiC) is used or discussed, sorted reverse chronologically. The list is built collaboratively by the RiC user community, and managed by EGAD. It is far from exhaustive — please contribute using the 'Add' button!</p>
+
+      <p>This list includes only a few details for each resource (e.g. not a full bibliographic reference in the case of articles) but more details can be obtained by clicking on a resource. The buttons below can be used to filter by resource type.</p>
     </div>"""
 
 _RESOURCE_DETAILS_INTRODUCTION_HTML = """    <div class="introduction">
@@ -81,18 +89,21 @@ $components
       </span>""")
 
 _filter_menu_components = {
-    "article": Template("""        <a href="$filterings_path/articles.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/article.svg" alt="Articles" id="filter-articles"/><figcaption>Articles</figcaption></figure></a>"""),  # pylint: disable=line-too-long
-    "tool": Template("""        <a href="$filterings_path/tools.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/tool.svg" alt="Tools" id="filter-tools"/><figcaption>Tools</figcaption></figure></a>"""),  # pylint: disable=line-too-long
-    "event": Template("""        <a href="$filterings_path/events.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/event.svg" alt="Events" id="filter-events"/><figcaption>Events</figcaption></figure></a>"""),  # pylint: disable=line-too-long
-    "thesis": Template("""        <a href="$filterings_path/theses.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/thesis.svg" alt="Theses" id="filter-theses"/><figcaption>Theses</figcaption></figure></a>"""),  # pylint: disable=line-too-long
-    "web application": Template("""        <a href="$filterings_path/applications.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/web_application.svg" alt="Web applications" id="filter-applications"/><figcaption>Apps</figcaption></figure></a>"""),  # pylint: disable=line-too-long
-    "dataset": Template("""        <a href="$filterings_path/datasets.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/dataset.svg" alt="Datasets" id="filter-datasets"/><figcaption>Datasets</figcaption></figure></a>""")  # pylint: disable=line-too-long
+    "article": Template("""        <a href="$filterings_path/articles.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/article.svg" alt="Articles" title="Journal articles discussing RiC" id="filter-articles"/><figcaption>Articles</figcaption></figure></a>"""),  # pylint: disable=line-too-long
+    "tool": Template("""        <a href="$filterings_path/tools.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/tool.svg" alt="Tools" id="filter-tools" title="Software, APIs, libraries, etc, which may be useful when working with RiC"/><figcaption>Tools</figcaption></figure></a>"""),  # pylint: disable=line-too-long
+    "event": Template("""        <a href="$filterings_path/events.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/event.svg" alt="Events" id="filter-events" title="Conferences, workshops, etc, in which RiC is a topic"/><figcaption>Events</figcaption></figure></a>"""),  # pylint: disable=line-too-long
+    "thesis": Template("""        <a href="$filterings_path/theses.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/thesis.svg" alt="Theses" id="filter-theses" title="Theses (doctoral, master, ...) which have RiC as their subject (at least partly)"/><figcaption>Theses</figcaption></figure></a>"""),  # pylint: disable=line-too-long
+    "web application": Template("""        <a href="$filterings_path/applications.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/web_application.svg" alt="Applications" id="filter-applications" title="Applications, e.g. on the web, which make use of RiC in their implementation"/><figcaption>Apps</figcaption></figure></a>"""),  # pylint: disable=line-too-long
+    "dataset": Template("""        <a href="$filterings_path/datasets.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/dataset.svg" alt="Datasets" id="filter-datasets" title="Datasets in RDF, OWL, or other formats in which RiC is involved"/><figcaption>Datasets</figcaption></figure></a>""")  # pylint: disable=line-too-long
 }
 
 _resource_list_html_template = Template(
     """    <div class="resource-list" id="resource-list">
       <ul class="resource-list">$list_entries
       </ul>
+    </div>
+    <div class="last-updated">
+      <p>Last updated: <span class="last-updated-timestamp">$last_updated</a></p>
     </div>""")
 
 _resource_entry_template = Template("""
@@ -276,6 +287,10 @@ _resource_type_filters = {
     "tool": "tools",
     "web application": "applications"
 }
+
+
+def _current_timestamp() -> str:
+    return datetime.strftime(datetime.now(timezone.utc), "%Y-%m-%d %H:%M (GMT)")
 
 
 def _is_link(word: str) -> bool:
@@ -631,7 +646,8 @@ def resource_list(path_to_csv: Path) -> HTML:
                     css_class="icon")
                 for template in _filter_menu_components.values())),
         content=_resource_list_html_template.substitute(
-            list_entries=list_entries)
+            list_entries=list_entries,
+            last_updated=_current_timestamp())
     )
 
 
@@ -739,7 +755,8 @@ def filterings(path_to_csv: Path, path_to_filterings: Path) -> None:
                             for resource_type, template in
                             _filter_menu_components.items())),
                     content=_resource_list_html_template.substitute(
-                        list_entries=list_entries)
+                        list_entries=list_entries,
+                        last_updated=_current_timestamp())
                 )
             )
 
