@@ -21,4 +21,7 @@ jobs:
           git add master-document/*
           git commit -m "Edit submitted resource"
           git push -u origin "edit_resource_$timestamp"
+          gh pr create -B main -H "edit_resource_$timestamp" --title "Edit resource" --body "Submitted via the website."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
