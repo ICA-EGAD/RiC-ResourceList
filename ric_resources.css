@@ -39,12 +39,13 @@ div.ric-links span.last {
 }
 
 div.introduction {
+  width: fit-content;
   font-size: smaller;
-  text-align: justify;
   max-width: 75%;
   margin: auto;
-  margin-bottom: 2.5em;
+  margin-bottom: 2em;
   line-height: 1.25em;
+  text-align: justify;
 }
 
 div.introduction a {
@@ -296,8 +297,8 @@ span.contact-details {
 
 img.egad-logo {
   width: 300px;
-  margin-top: -20px;
-  margin-bottom: -20px;
+  margin-top: -1em;
+  margin-bottom: -1.5em;
 }
 
 div.last-updated {
@@ -337,7 +338,7 @@ span.last-updated-timestamp {
     margin-right: 5px;
   }
 
-  div.resource-list, div.add-resource, div.success, div.failure {
+  div.resource-list, div.add-resource, div.success, div.failure, div.introduction {
     padding-left: 5px;
     padding-right: 5px;
   }
