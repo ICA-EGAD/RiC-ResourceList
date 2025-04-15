@@ -22,6 +22,7 @@ jobs:
           git commit -m "Re-generate site"
           set -e
           git push
+          sleep 10s
   deploy-site:
     name: "Deploy site"
     runs-on: ubuntu-latest

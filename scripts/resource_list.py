@@ -885,7 +885,7 @@ def success(action: str) -> HTML:
     """
     return _site_template.substitute(
         css_path=CSS_FILE_NAME,
-        logo_path=f"../{LOGO_FILE_NAME}",
+        logo_path=LOGO_FILE_NAME,
         resource_list_path="./index.html",
         javascript="",
         introduction="",
@@ -902,7 +902,7 @@ def failure() -> HTML:
     """
     return _site_template.substitute(
         css_path=CSS_FILE_NAME,
-        logo_path=f"../{LOGO_FILE_NAME}",
+        logo_path=LOGO_FILE_NAME,
         resource_list_path="./index.html",
         javascript="",
         introduction="",
