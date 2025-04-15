@@ -1,4 +1,4 @@
-name: "Re-generate and deploy site"
+name: "Re-generate site"
 
 on:
   push:
@@ -22,22 +22,3 @@ jobs:
           git commit -m "Re-generate site"
           set -e
           git push
-          sleep 10s
-  deploy-site:
-    name: "Deploy site"
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      pages: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup GitHub Pages
-        uses: actions/configure-pages@v5
-      - name: Upload GitHub Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
