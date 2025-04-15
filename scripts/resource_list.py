@@ -81,8 +81,8 @@ $components
 
 
 _add_or_edit_menu_components = {
-    "add": Template("""        <a href="$add_resource_path/add_resource.html" class="add-or-edit-link"><figure><img class="icon" src="$icons_path/add.svg" alt="Add resource" id="add-resource"/><figcaption>Add</figcaption></figure></a>"""),  # pylint: disable=line-too-long
-    "edit": Template("""        <a href="$edit_resource_path/$resource_id.html" class="add-or-edit-link"><figure><img class="icon" src="$icons_path/edit.svg" alt="Edit resource"/><figcaption>Edit</figcaption></figure></a>""")  # pylint: disable=line-too-long
+    "add": Template("""        <a href="$add_resource_path/add_resource.html" class="add-or-edit-link"><figure><img class="icon" src="$icons_path/add.svg" alt="Add resource" id="add-resource" title="Add a resource to the list"/><figcaption>Add</figcaption></figure></a>"""),  # pylint: disable=line-too-long
+    "edit": Template("""        <a href="$edit_resource_path/$resource_id.html" class="add-or-edit-link"><figure><img class="icon" src="$icons_path/edit.svg" alt="Edit resource" title="Edit the resource"/><figcaption>Edit</figcaption></figure></a>""")  # pylint: disable=line-too-long
 }
 
 _filter_menu_html_template = Template("""      <span class="filter-menu">
@@ -90,12 +90,12 @@ $components
       </span>""")
 
 _filter_menu_components = {
-    "article": Template("""        <a href="$filterings_path/articles.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/article.svg" alt="Articles" title="Journal articles discussing RiC" id="filter-articles"/><figcaption>Articles</figcaption></figure></a>"""),  # pylint: disable=line-too-long
-    "tool": Template("""        <a href="$filterings_path/tools.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/tool.svg" alt="Tools" id="filter-tools" title="Software, APIs, libraries, etc, which may be useful when working with RiC"/><figcaption>Tools</figcaption></figure></a>"""),  # pylint: disable=line-too-long
-    "event": Template("""        <a href="$filterings_path/events.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/event.svg" alt="Events" id="filter-events" title="Conferences, workshops, etc, in which RiC is a topic"/><figcaption>Events</figcaption></figure></a>"""),  # pylint: disable=line-too-long
-    "thesis": Template("""        <a href="$filterings_path/theses.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/thesis.svg" alt="Theses" id="filter-theses" title="Theses (doctoral, master, ...) which have RiC as their subject (at least partly)"/><figcaption>Theses</figcaption></figure></a>"""),  # pylint: disable=line-too-long
-    "web application": Template("""        <a href="$filterings_path/applications.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/web_application.svg" alt="Applications" id="filter-applications" title="Applications, e.g. on the web, which make use of RiC in their implementation"/><figcaption>Apps</figcaption></figure></a>"""),  # pylint: disable=line-too-long
-    "dataset": Template("""        <a href="$filterings_path/datasets.html" class="filter-link"><figure><img class="$css_class" src="$icons_path/dataset.svg" alt="Datasets" id="filter-datasets" title="Datasets in RDF, OWL, or other formats in which RiC is involved"/><figcaption>Datasets</figcaption></figure></a>""")  # pylint: disable=line-too-long
+    "article": Template("""        <a href="$articles_path" class="filter-link"><figure><img class="$css_class" src="$icons_path/article.svg" alt="Articles" title="Journal articles discussing RiC" id="filter-articles"/><figcaption>Articles</figcaption></figure></a>"""),  # pylint: disable=line-too-long
+    "tool": Template("""        <a href="$tools_path" class="filter-link"><figure><img class="$css_class" src="$icons_path/tool.svg" alt="Tools" id="filter-tools" title="Software, APIs, libraries, etc, which may be useful when working with RiC"/><figcaption>Tools</figcaption></figure></a>"""),  # pylint: disable=line-too-long
+    "event": Template("""        <a href="$events_path" class="filter-link"><figure><img class="$css_class" src="$icons_path/event.svg" alt="Events" id="filter-events" title="Conferences, workshops, etc, in which RiC is a topic"/><figcaption>Events</figcaption></figure></a>"""),  # pylint: disable=line-too-long
+    "thesis": Template("""        <a href="$theses_path" class="filter-link"><figure><img class="$css_class" src="$icons_path/thesis.svg" alt="Theses" id="filter-theses" title="Theses (doctoral, master, ...) which have RiC as their subject (at least partly)"/><figcaption>Theses</figcaption></figure></a>"""),  # pylint: disable=line-too-long
+    "web application": Template("""        <a href="$applications_path" class="filter-link"><figure><img class="$css_class" src="$icons_path/web_application.svg" alt="Applications" id="filter-applications" title="Applications, e.g. on the web, which make use of RiC in their implementation"/><figcaption>Apps</figcaption></figure></a>"""),  # pylint: disable=line-too-long
+    "dataset": Template("""        <a href="$datasets_path" class="filter-link"><figure><img class="$css_class" src="$icons_path/dataset.svg" alt="Datasets" id="filter-datasets" title="Datasets in RDF, OWL, or other formats in which RiC is involved"/><figcaption>Datasets</figcaption></figure></a>""")  # pylint: disable=line-too-long
 }
 
 _resource_list_html_template = Template(
@@ -644,7 +644,12 @@ def resource_list(path_to_csv: Path) -> HTML:
         filter_menu=_filter_menu_html_template.substitute(
             components="\n".join(
                 template.substitute(
-                    filterings_path="filterings",
+                    applications_path="filterings/applications.html",
+                    articles_path="filterings/articles.html",
+                    datasets_path="filterings/datasets.html",
+                    events_path="filterings/events.html",
+                    theses_path="filterings/theses.html",
+                    tools_path="filterings/tools.html",
                     icons_path=ICONS_DIRECTORY_NAME,
                     css_class="icon")
                 for template in _filter_menu_components.values())),
@@ -715,6 +720,13 @@ def _css_class(filter_type: ResourceType, resource_type: ResourceType) -> str:
     return "icon"
 
 
+def _filtering_path(
+        filter_type: ResourceType, resource_type: ResourceType) -> str:
+    if filter_type != resource_type:
+        return f"{_resource_type_filters[resource_type]}.html"
+    return "../index.html"
+
+
 def filterings(path_to_csv: Path, path_to_filterings: Path) -> None:
     """
     Generates HTML files for filterings of the resource list, one for each
@@ -753,7 +765,18 @@ def filterings(path_to_csv: Path, path_to_filterings: Path) -> None:
                     filter_menu=_filter_menu_html_template.substitute(
                         components="\n".join(
                             template.substitute(
-                                filterings_path=".",
+                                applications_path=_filtering_path(
+                                    filter_type, "web application"),
+                                articles_path=_filtering_path(
+                                    filter_type, "article"),
+                                datasets_path=_filtering_path(
+                                    filter_type, "dataset"),
+                                events_path=_filtering_path(
+                                    filter_type, "event"),
+                                theses_path=_filtering_path(
+                                    filter_type, "thesis"),
+                                tools_path=_filtering_path(
+                                    filter_type, "tool"),
                                 icons_path=f"../{ICONS_DIRECTORY_NAME}",
                                 css_class=_css_class(
                                     filter_type, resource_type))
