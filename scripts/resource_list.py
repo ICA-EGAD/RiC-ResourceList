@@ -37,7 +37,7 @@ _site_template = Template("""<!DOCTYPE html>
     <div class="ric-links">
       <p><span><a href="https://www.ica.org/resource/records-in-contexts-conceptual-model/">RiC-CM</a></span><span><a href="https://www.ica.org/standards/RiC/ontology">RiC-O</a></span><span class="last"><a href="https://groups.google.com/g/Records_in_Contexts_users">RiC users group</a></span></p>
     </div>
-    <div class="header">
+    <div class="egad-logo">
       <img class="egad-logo" src="$logo_path"/>
     </div>$introduction
     <div class="menu" id="menu">
@@ -595,7 +595,7 @@ def _resource(row, icons_path: str, resource_details_path: str) -> tuple[
     versioned_dates = list(_dates(row))
     dates = ", ".join(f"{date} (v{version})" if version is not None else date
                       for date, version in versioned_dates)
-    earliest_date, _ = versioned_dates[-1]
+    earliest_date, _ = versioned_dates[0]
     return _resource_entry_template.substitute(
         resource_id=row["id"],
         icons_path=icons_path,

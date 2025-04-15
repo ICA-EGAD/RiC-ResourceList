@@ -8,7 +8,7 @@ body {
   margin: auto;
 }
 
-div.header {
+div.header, div.egad-logo {
   text-align: center;
 }
 
@@ -297,8 +297,6 @@ span.contact-details {
 
 img.egad-logo {
   width: 300px;
-  margin-top: -1em;
-  margin-bottom: -1.5em;
 }
 
 div.last-updated {
@@ -341,10 +339,6 @@ span.last-updated-timestamp {
   div.resource-list, div.add-resource, div.success, div.failure, div.introduction {
     padding-left: 5px;
     padding-right: 5px;
-  }
-
-  div.introduction {
-    margin-bottom: 1em;
   }
 
   div.add-resource-section fieldset label {
