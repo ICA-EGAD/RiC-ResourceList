@@ -21,9 +21,8 @@ can be downloaded from the EGAD organisation Settings page at GitHub.
 
 ```
 mkdir package
-cd package
-zip -r ../handle_submission.zip .
-cd ../
+pip install -r requirements --target package
+zip -r handle_submission.zip package/
 zip handle_submission.zip egad_github_app_private_key.pem
 zip handle_submission.zip handle_submission.py
 ```
