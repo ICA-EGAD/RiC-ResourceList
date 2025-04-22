@@ -26,7 +26,7 @@
       <form action="https://sdtulcmi34dt5isrzeha65v7ja0mxdty.lambda-url.eu-north-1.on.aws/edit" method="post">
         <div class="add-resource-section">
           <label for="title">Title <span class="format-instruction">(can be provided in more than one language, each ending in a language tag such as [en], separated by |)</label>
-          <input type="text" id="title" name="title" value="Learn About RiC: Webinar Series on Records in Contexts" required/>
+          <input type="text" id="title" name="title" value="Call me by your name: towards an authority data control shared between archives and libraries" required/>
         </div>
         <div class="add-resource-section">
           <fieldset>
@@ -36,7 +36,7 @@
               <label for="application">Application</label>
             </div>
             <div class="resource-type">
-              <input type="radio" id="article" name="type" value="article"  required/>
+              <input type="radio" id="article" name="type" value="article" checked required/>
               <label for="article">Article</label>
             </div>
             <div class="resource-type">
@@ -44,7 +44,7 @@
               <label for="dataset">Dataset</label>
             </div>
             <div class="resource-type">
-              <input type="radio" id="event" name="type" value="event" checked required/>
+              <input type="radio" id="event" name="type" value="event"  required/>
               <label for="event">Event</label>
             </div>
             <div class="resource-type">
@@ -59,41 +59,41 @@
         </div>
         <div class="add-resource-section">
           <label for="responsible">Authors/creators/organisers <span class="format-instruction">(should be separated by |, and a webpage can optionally be provided in parantheses after each, e.g. name (webpage) | other name (webpage))</label>
-          <input type="text" id="responsible" name="responsible" value="ICA EGAD (Expert Group on Archival Description)" required/>
+          <input type="text" id="responsible" name="responsible" value="Feliciati, Pierluigi" required/>
         </div>
         <div class="add-resource-section">
           <label for="publication-date">Dates of publication/release/occurrence <span class="format-instruction">(as YYYY, YYYY-MM, or YYYY-MM-DD, optionally followed by [version n.n], and separated by | if more than one date is provided, e.g. 2023-12 or 2024-03 [version 1.0] | 2024-10 [version 2.0])</span></label>
-          <input type="text" id="publication-date" name="publication_date" value="2025-03" required/>
+          <input type="text" id="publication-date" name="publication_date" value="2022-01-13" required/>
         </div>
         <div class="add-resource-section">
           <label for="description">Description <span class="format-instruction">(simple Markdown syntax can optionally be used, e.g. for links as [text to display](url), and more than one language can be provided, separated by |, each ending with a language tag such as [en])</label>
-          <textarea id="description" name="description" rows="10" required/>Four introductory webinars about RiC, held in March 2025, in four different languages (English, French, German, and Spanish).Each webinar was facilitated by two members of EGAD and lasted about two hours, including questions and answers. The webinars cover the following topics: what is RiC in a few words; the history and evolution of Records in Contexts; key entities in RiC conceptual model (RiC-CM), including Record, Record Set, and Instantiation; the significance of context Entities (e.g., Place, Agent); understanding RiC-CM attributes and relationships; practical application of RiC-CM and of RiC-O; the RiC roadmap; how to get informed and involved.</textarea>
+          <textarea id="description" name="description" rows="10" required/>An important and not often addressed topic – considering the issues opened by cross-disciplinary projects – is the shared control of authority records, or better authority metadata, extended to other documentary and cultural heritage sciences. This paper will examine the potential opened by multi-dimensional and networked logics in the representation of entities in the form of data towards which the document communities are converging. This approach is even more valid if we consider the users’ point of view, presently forced to jump from one information environment to another, and confront different names, forms and attributes for the same entities. The core entities to work on are persons, corporate bodies, places, chronological contexts, events, qualifying their relationships. After a brief resume of archival description’s peculiarity, the paper highlights the updated standards available, mostly IFLA-LRM and RiC, precious documents to start from and stimulate an active collaboration. To facilitate the sharing, control, and enrichment of authority data in the form of RDF assertions, librarians and archivists may follow several pathways: matching the existing conceptual models, converging on a shared data playground like Wikidata, and developing foundational meta-ontology.</textarea>
         </div>
         <div class="add-resource-section">
           <label for="links">Links <span class="format-instruction">(should be separated by a | symbol, and each either in Markdown format [text to display](url) or a verbatim URL)</span></label>
-          <input type="text" id="links" name="links" value="[Web page in English, which provides links to the slides and video recordings](https://www.ica.org/learn-about-ric-webinar-series-on-records-in-contexts/) | [Page web en français donnant les liens vers les supports de présentation et enregistrements vidéo](https://www.ica.org/fr/en-savoir-plus-sur-ric-serie-de-webinaires-sur-records-in-contexts/) | [Página web en español, que proporciona enlaces a las presentaciones y grabaciones de vídeo](https://www.ica.org/es/learn-about-ric-webinar-series-on-records-in-contexts/)"/>
+          <input type="text" id="links" name="links" value="https://www.jlis.it/index.php/jlis/article/view/432"/>
         </div>
         <div class="add-resource-section">
           <label for="languages">Languages available in <span class="format-instruction">(should be separated by a | symbol, and short clarifications can be provided in parentheses, e.g. French | English (abstract))</span></label>
-          <input type="text" id="languages" name="languages" value="English | French | Spanish | German"/>
+          <input type="text" id="languages" name="languages" value="English"/>
         </div>
         <div class="add-resource-section">
           <fieldset>
             <legend>Relevant parts of RiC <span class="format-instruction">(ignoring patch versions, i.e. treating n.n.n as n.n)</span></legend>
             <div class="ric-part">
-              <input type="checkbox" id="ric-cm-1-0" name="relevant_parts_of_ric" value="RiC-CM 1.0" checked/>
+              <input type="checkbox" id="ric-cm-1-0" name="relevant_parts_of_ric" value="RiC-CM 1.0" />
               <label for="ric-cm-1-0">RiC-CM 1.0</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-cm-0-2" name="relevant_parts_of_ric" value="RiC-CM 0.2" />
+              <input type="checkbox" id="ric-cm-0-2" name="relevant_parts_of_ric" value="RiC-CM 0.2" checked/>
               <label for="ric-cm-0-2">RiC-CM 0.2</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-o-1-0" name="relevant_parts_of_ric" value="RiC-O 1.0" checked/>
+              <input type="checkbox" id="ric-o-1-0" name="relevant_parts_of_ric" value="RiC-O 1.0" />
               <label for="ric-o-1-0">RiC-O 1.0</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-o-0-2" name="relevant_parts_of_ric" value="RiC-O 0.2" />
+              <input type="checkbox" id="ric-o-0-2" name="relevant_parts_of_ric" value="RiC-O 0.2" checked/>
               <label for="ric-o-0-2">RiC-O 0.2</label>
             </div>
             <div class="ric-part">
@@ -104,16 +104,16 @@
         </div>
         <div class="add-resource-section">
           <label for="prospects">Prospects / status</label>
-          <textarea id="prospects" name="prospects" rows="10"/>The slides and video recordings of the webinars are now available (follow the links provided).</textarea>
+          <textarea id="prospects" name="prospects" rows="10"/>Feliciati, Pierluigi. 2022. “Call Me by Your Name: Towards an Authority Data Control Shared Between Archives and Libraries”. JLIS.It 13 (1):203-14. https://doi.org/10.4403/jlis.it-12733.</textarea>
         </div>
         <div class="add-resource-section">
           <label for="contact">Contacts <span class="format-instruction">(should be separated by a | symbol, can e.g. be an email address)</span></label>
-          <input type="text" id="contact" name="contact" value=""/>
+          <input type="text" id="contact" name="contact" value="pierluigi.feliciati@unimc.it"/>
         </div>
         <div class="add-resource-section">
           <label for="related-to">Related resources <span class="format-instruction">(should be separated by a | symbol, and can be either be the URL of another resource in the list, or be in the format #n, where n is the number at the end of such an URL)</span></label>
           <input type="text" id="related-to" name="related_to" value=""/>
-        </div><input type="hidden" name="id" value="27">
+        </div><input type="hidden" name="id" value="31">
         <div class="add-resource-section add-resource-section-button">
           <input type="submit" class="add-button" value="Edit"/>
         </div>
