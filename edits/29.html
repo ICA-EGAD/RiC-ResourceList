@@ -26,7 +26,7 @@
       <form action="https://sdtulcmi34dt5isrzeha65v7ja0mxdty.lambda-url.eu-north-1.on.aws/edit" method="post">
         <div class="add-resource-section">
           <label for="title">Title <span class="format-instruction">(can be provided in more than one language, each ending in a language tag such as [en], separated by |)</label>
-          <input type="text" id="title" name="title" value="Semantic representation of the Registos de Baptismos da Paróquia de Aldoar (Porto, Portugal)" required/>
+          <input type="text" id="title" name="title" value="Archives in a Graph. The Records in Contexts Ontology within the framework of standards and practices of Archival Description" required/>
         </div>
         <div class="add-resource-section">
           <fieldset>
@@ -36,11 +36,11 @@
               <label for="application">Application</label>
             </div>
             <div class="resource-type">
-              <input type="radio" id="article" name="type" value="article"  required/>
+              <input type="radio" id="article" name="type" value="article" checked required/>
               <label for="article">Article</label>
             </div>
             <div class="resource-type">
-              <input type="radio" id="dataset" name="type" value="dataset" checked required/>
+              <input type="radio" id="dataset" name="type" value="dataset"  required/>
               <label for="dataset">Dataset</label>
             </div>
             <div class="resource-type">
@@ -59,27 +59,23 @@
         </div>
         <div class="add-resource-section">
           <label for="responsible">Authors/creators/organisers <span class="format-instruction">(should be separated by |, and a webpage can optionally be provided in parantheses after each, e.g. name (webpage) | other name (webpage))</label>
-          <input type="text" id="responsible" name="responsible" value="Lucia Giagnolini | Inês Koch" required/>
+          <input type="text" id="responsible" name="responsible" value="Feliciati, Pierluigi" required/>
         </div>
         <div class="add-resource-section">
           <label for="publication-date">Dates of publication/release/occurrence <span class="format-instruction">(as YYYY, YYYY-MM, or YYYY-MM-DD, optionally followed by [version n.n], and separated by | if more than one date is provided, e.g. 2023-12 or 2024-03 [version 1.0] | 2024-10 [version 2.0])</span></label>
-          <input type="text" id="publication-date" name="publication_date" value="2025-04-02 " required/>
+          <input type="text" id="publication-date" name="publication_date" value="2021-01-15" required/>
         </div>
         <div class="add-resource-section">
           <label for="description">Description <span class="format-instruction">(simple Markdown syntax can optionally be used, e.g. for links as [text to display](url), and more than one language can be provided, separated by |, each ending with a language tag such as [en])</label>
-          <textarea id="description" name="description" rows="10" required/>This dataset comprises mappings of archival records from the National Archives of Portugal to the RiC-O framework, namely the baptism registries of the Parish of Aldoar (Porto, Portugal) (PT/ADPRT/PRQ/PPRT01/001).
-
-Includes diagrams in draw.io.
-
-The [RiC-O converter](https://ica-egad.github.io/RiC-ResourceList/resource-details/5.html) was used in a modified version to create the data. </textarea>
+          <textarea id="description" name="description" rows="10" required/>Description is one of the key activities of archival profession, a guarantee for correct management, access and conservation of archives. The cornerstones of the tradition, formalized in the last decade of the twentieth century in the standards of the International Council on Archives, are the respect of fonds and their contexts. The ICA standardization renewal process started in 2012 has produced two versions, both in draft, of the Reference Model of the brand new standard RiC-Records in Contexts, on which the very recent RiC-Ontology has been based. The descriptive hierarchy and the concept of the finding aid – even electronic – as a document isolated from the Linked Open Data available in the infosphere are overcome. This contribution aims to present RiC-CM and RiC-O, their criticalities and perspectives, contextualizing them within the debate and practices of archival description.</textarea>
         </div>
         <div class="add-resource-section">
           <label for="links">Links <span class="format-instruction">(should be separated by a | symbol, and each either in Markdown format [text to display](url) or a verbatim URL)</span></label>
-          <input type="text" id="links" name="links" value="https://doi.org/10.25747/15YG-GD86"/>
+          <input type="text" id="links" name="links" value="https://www.jlis.it/index.php/jlis/article/view/20"/>
         </div>
         <div class="add-resource-section">
           <label for="languages">Languages available in <span class="format-instruction">(should be separated by a | symbol, and short clarifications can be provided in parentheses, e.g. French | English (abstract))</span></label>
-          <input type="text" id="languages" name="languages" value="Portuguese (data) | English (description)"/>
+          <input type="text" id="languages" name="languages" value="Italian"/>
         </div>
         <div class="add-resource-section">
           <fieldset>
@@ -89,15 +85,15 @@ The [RiC-O converter](https://ica-egad.github.io/RiC-ResourceList/resource-detai
               <label for="ric-cm-1-0">RiC-CM 1.0</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-cm-0-2" name="relevant_parts_of_ric" value="RiC-CM 0.2" />
+              <input type="checkbox" id="ric-cm-0-2" name="relevant_parts_of_ric" value="RiC-CM 0.2" checked/>
               <label for="ric-cm-0-2">RiC-CM 0.2</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-o-1-0" name="relevant_parts_of_ric" value="RiC-O 1.0" checked/>
+              <input type="checkbox" id="ric-o-1-0" name="relevant_parts_of_ric" value="RiC-O 1.0" />
               <label for="ric-o-1-0">RiC-O 1.0</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-o-0-2" name="relevant_parts_of_ric" value="RiC-O 0.2" />
+              <input type="checkbox" id="ric-o-0-2" name="relevant_parts_of_ric" value="RiC-O 0.2" checked/>
               <label for="ric-o-0-2">RiC-O 0.2</label>
             </div>
             <div class="ric-part">
@@ -108,16 +104,16 @@ The [RiC-O converter](https://ica-egad.github.io/RiC-ResourceList/resource-detai
         </div>
         <div class="add-resource-section">
           <label for="prospects">Prospects / status</label>
-          <textarea id="prospects" name="prospects" rows="10"/></textarea>
+          <textarea id="prospects" name="prospects" rows="10"/>Feliciati, Pierluigi. 2021. “Archives in a Graph. The Records in Contexts Ontology Within the Framework of Standards and Practices of Archival Description”. JLIS.It 12 (1):92-101. https://doi.org/10.4403/jlis.it-12675.</textarea>
         </div>
         <div class="add-resource-section">
           <label for="contact">Contacts <span class="format-instruction">(should be separated by a | symbol, can e.g. be an email address)</span></label>
-          <input type="text" id="contact" name="contact" value=""/>
+          <input type="text" id="contact" name="contact" value="pierluigi.feliciati@unimc.it"/>
         </div>
         <div class="add-resource-section">
           <label for="related-to">Related resources <span class="format-instruction">(should be separated by a | symbol, and can be either be the URL of another resource in the list, or be in the format #n, where n is the number at the end of such an URL)</span></label>
-          <input type="text" id="related-to" name="related_to" value="#5"/>
-        </div><input type="hidden" name="id" value="23">
+          <input type="text" id="related-to" name="related_to" value=""/>
+        </div><input type="hidden" name="id" value="29">
         <div class="add-resource-section add-resource-section-button">
           <input type="submit" class="add-button" value="Edit"/>
         </div>
