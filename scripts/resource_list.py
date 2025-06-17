@@ -304,15 +304,19 @@ def _is_link(word: str) -> bool:
         return False
 
 
-def _to_link(word: str, url: str, css_class: str | None = None) -> str:
-    if url[-1] in [".", ",", "\n", ";", ":"]:
-        if css_class is None:
-            return f"<a href=\"{url[:-1]}\">{url[:-1]}</a>{url[-1]}"
-        return f"<a href=\"{url[:-1]}\" class=\"{css_class}\">{
-            url[:-1]}</a>{url[-1]}"
+def _to_link(word: str | None, url: str, css_class: str | None = None) -> str:
+    tidied_url = url
+    remainder = ""
+    while True:
+        if tidied_url[-1] not in [".", ",", "\n", ";", ":", ")"]:
+            break
+        remainder = tidied_url[-1] + remainder
+        tidied_url = tidied_url[:-1]
+    if word is None:
+        word = tidied_url
     if css_class is None:
-        return f"<a href=\"{url}\">{word}</a>"
-    return f"<a href=\"{url}\" class=\"{css_class}\">{word}</a>"
+        return f"<a href=\"{tidied_url}\">{word}</a>{remainder}"
+    return f"<a href=\"{tidied_url}\" class=\"{css_class}\">{word}</a>{remainder}"
 
 
 def _links_in_text(text: str) -> Generator[Word, None, None]:
@@ -321,13 +325,13 @@ def _links_in_text(text: str) -> Generator[Word, None, None]:
 
     1) If a 'word' (something between spaces) parses to a URL whose scheme is
     http, https, or ftp, then it is converted to a link whose text is the same
-    as the URL. If a word ends in '.', ',', ';', '\n', ';', or ':', then we
+    as the URL. If a word ends in '.', ',', ';', '\n', ';', ':', then we
     regard the URL as terminating at the character before this.
     2) If a 'word' is of the form [...], where ... does not contain ], would be
     converted to a link according to 1), then the previous word is converted to
     a link whose underlying URL is ... .
     """
-    text = " ".join(_to_link(word, word) if _is_link(word) else word
+    text = " ".join(_to_link(None, word) if _is_link(word) else word
                     for word in text.split(" "))
     for part in regex_split(r"(\[.+?\]\(.+?\))", text):
         match = regex_match(r"\[(.+?)\]\((.+?)\)", part)
@@ -404,7 +408,7 @@ def _parse_link(link: str, css_class: str | None = None) -> str:
         if not _is_link(link):
             raise NotALinkException(
                 f"The following seems not to be a link: {link}")
-        link = _to_link(link, link, css_class)
+        link = _to_link(None, link, css_class)
     else:
         link = _to_link(
             match.group(1), match.group(2), css_class)

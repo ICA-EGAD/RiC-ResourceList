@@ -48,10 +48,6 @@ div.introduction {
   text-align: justify;
 }
 
-div.introduction a {
-  padding-bottom: 0.5px
-}
-
 div.menu:after {
   content: '';
   display: block;
@@ -142,9 +138,7 @@ img.resource-details-icon {
 }
 
 a {
-  padding-bottom: 1px;
-  border-bottom: 1px solid;
-  text-decoration: none;
+  text-underline-offset: 3px;
   color: #1F51FF;
 }
 
@@ -153,7 +147,7 @@ a:hover {
 }
 
 a.resource-link, a.title, a.filter-link, a.add-or-edit-link {
-  border-bottom: none;
+  text-decoration: none;
   color: inherit;
 }
 
@@ -179,6 +173,10 @@ div.resource-details ul {
 
 div.resource-details ul li {
   margin-top: 1.5em;
+}
+
+div.resource-details li p {
+  line-height: 1.4em;
 }
 
 span.resource-details-responsible {
