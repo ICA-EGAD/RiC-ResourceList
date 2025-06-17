@@ -26,7 +26,7 @@
       <form action="https://sdtulcmi34dt5isrzeha65v7ja0mxdty.lambda-url.eu-north-1.on.aws/edit" method="post">
         <div class="add-resource-section">
           <label for="title">Title <span class="format-instruction">(can be provided in more than one language, each ending in a language tag such as [en], separated by |)</label>
-          <input type="text" id="title" name="title" value="RiC-O Converter" required/>
+          <input type="text" id="title" name="title" value="Comment gérer ses fonds d’archives sous forme de données liées au moyen de la plateforme libre ResearchSpace" required/>
         </div>
         <div class="add-resource-section">
           <fieldset>
@@ -44,7 +44,7 @@
               <label for="dataset">Dataset</label>
             </div>
             <div class="resource-type">
-              <input type="radio" id="event" name="type" value="event"  required/>
+              <input type="radio" id="event" name="type" value="event" checked required/>
               <label for="event">Event</label>
             </div>
             <div class="resource-type">
@@ -52,30 +52,34 @@
               <label for="thesis">Thesis</label>
             </div>
             <div class="resource-type">
-              <input type="radio" id="tool" name="type" value="tool" checked required/>
+              <input type="radio" id="tool" name="type" value="tool"  required/>
               <label for="tool">Tool</label>
             </div>
           </fieldset>
         </div>
         <div class="add-resource-section">
           <label for="responsible">Authors/creators/organisers <span class="format-instruction">(should be separated by |, and a webpage can optionally be provided in parantheses after each, e.g. name (webpage) | other name (webpage))</label>
-          <input type="text" id="responsible" name="responsible" value="Sparna company (France) | The Lab at the Archives nationales de France" required/>
+          <input type="text" id="responsible" name="responsible" value="Baptiste de Coulon ([Fondation SAPA](https://sapa.swiss))" required/>
         </div>
         <div class="add-resource-section">
           <label for="publication-date">Dates of publication/release/occurrence <span class="format-instruction">(as YYYY, YYYY-MM, or YYYY-MM-DD, optionally followed by [version n.n], and separated by | if more than one date is provided, e.g. 2023-12 or 2024-03 [version 1.0] | 2024-10 [version 2.0])</span></label>
-          <input type="text" id="publication-date" name="publication_date" value="2025-03 [version 3.0] | 2023-10 [version 2.0] | 2020-04 [version 1.0]" required/>
+          <input type="text" id="publication-date" name="publication_date" value="2025-09-09" required/>
         </div>
         <div class="add-resource-section">
           <label for="description">Description <span class="format-instruction">(simple Markdown syntax can optionally be used, e.g. for links as [text to display](url), and more than one language can be provided, separated by |, each ending with a language tag such as [en])</label>
-          <textarea id="description" name="description" rows="10" required/>A powerful, reliable, easy to install and adaptable, open source tool to convert EAD 2002 and EAC-CPF files to RDF/RiC-O knowledge graphs. Developed by Sparna and the Archives nationales de France. Fully documented in French and English. Includes mappings from EAD 2002 and EAC-CPF to RiC-O 0.2</textarea>
+          <textarea id="description" name="description" rows="10" required/>La gestion des métadonnées archivistiques sous forme de données liées (Linked Data) est au cœur de la nouvelle norme de description [Records in Contexts](https://www.ica.org/ica-network/expert-groups/egad/records-in-contexts-ric/) publiée par le Conseil international des archives. Mais quels outils libres peuvent nous permettre de la mettre en œuvre?
+
+La [Fondation SAPA, archives suisses des arts de la scène](https://sapa.swiss/), utilise en production depuis 2021 les données liées dans son outil de gestion des collections (c.f. pour plus de détails: https://doi.org/10.55790/journals/ressi.2024.e1511), et le fait depuis 2022, au moyen du logiciel open source [GLAM-Community (metaphacts Semantic Platform for Cultural Heritage and Digital Humanities)](https://hub.docker.com/r/metaphacts/glam-community) basé sur la plateforme libre [ResearchSpace](https://researchspace.org/).
+
+Cette présentation sera l’occasion d’un retour d’expérience sur son utilisation. Comme ces deux outils sont neutres du point de vue du métier, nous expliciterons ce qui est déjà développé pour répondre aux besoins spécifiques des archivistes et ce qui doit encore l’être. Cela sera l’occasion, nous l’espérons, de motiver d’autres institutions à se lancer afin de pouvoir mutualiser de futurs coûts de développement. La présentation se concentrera sur la plateforme en tant que système interne de gestion d’informations archivistiques (SIA/AIS). Nous n’aborderons pas les interfaces dédiées aux publics qui peuvent être prises en charge par d’autres outils.</textarea>
         </div>
         <div class="add-resource-section">
           <label for="links">Links <span class="format-instruction">(should be separated by a | symbol, and each either in Markdown format [text to display](url) or a verbatim URL)</span></label>
-          <input type="text" id="links" name="links" value="https://github.com/ArchivesNationalesFR/rico-converter"/>
+          <input type="text" id="links" name="links" value="[Journée](https://libreabc.ch)"/>
         </div>
         <div class="add-resource-section">
           <label for="languages">Languages available in <span class="format-instruction">(should be separated by a | symbol, and short clarifications can be provided in parentheses, e.g. French | English (abstract))</span></label>
-          <input type="text" id="languages" name="languages" value="English | French"/>
+          <input type="text" id="languages" name="languages" value="French"/>
         </div>
         <div class="add-resource-section">
           <fieldset>
@@ -104,16 +108,16 @@
         </div>
         <div class="add-resource-section">
           <label for="prospects">Prospects / status</label>
-          <textarea id="prospects" name="prospects" rows="10"/>Version 3, conforming to RiC-O 1.1, was released in March 2025. Later in 2025, a v4 will be released, which will include some SHACL validation rules. Version 5 should enable to convert XML/SEDA files.</textarea>
+          <textarea id="prospects" name="prospects" rows="10"/></textarea>
         </div>
         <div class="add-resource-section">
           <label for="contact">Contacts <span class="format-instruction">(should be separated by a | symbol, can e.g. be an email address)</span></label>
-          <input type="text" id="contact" name="contact" value="le-lab.archives-nationales@culture.gouv.fr | florence.clavaud@culture.gouv.fr"/>
+          <input type="text" id="contact" name="contact" value="baptiste.decoulon@sapa.swiss"/>
         </div>
         <div class="add-resource-section">
           <label for="related-to">Related resources <span class="format-instruction">(should be separated by a | symbol, and can be either be the URL of another resource in the list, or be in the format #n, where n is the number at the end of such an URL)</span></label>
-          <input type="text" id="related-to" name="related_to" value="#2"/>
-        </div><input type="hidden" name="id" value="5">
+          <input type="text" id="related-to" name="related_to" value=""/>
+        </div><input type="hidden" name="id" value="32">
         <div class="add-resource-section add-resource-section-button">
           <input type="submit" class="add-button" value="Edit"/>
         </div>
