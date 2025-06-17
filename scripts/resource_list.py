@@ -289,6 +289,9 @@ _resource_type_filters = {
     "web application": "applications"
 }
 
+class NotALinkException(ValueError):
+    def __init__(self, message: str) -> None:
+        super().__init__(message)
 
 def _current_timestamp() -> str:
     return datetime.strftime(datetime.now(timezone.utc), "%Y-%m-%d %H:%M (GMT)")
@@ -387,32 +390,34 @@ def _title(row: Row) -> tuple[Title, AlternativeTitle | None]:
         title_parts[1].strip()[:-4].rstrip()
     )
 
+def _parse_link(link: str, css_class: str | None = None) -> str:
+    language = None
+    if link[-1] == "]" and link[-4] == "[":
+        language = link[-3:-1]
+        if language not in _languages:
+            raise ValueError(
+                "The following is not a recognised language: "
+                f"{language}. Occurs in link: {link}")
+        link = link[:-4].rstrip()
+    match = regex_match(r"\[(.+?)\]\((.+?)\)", link)
+    if match is None or not _is_link(match.group(2)):
+        if not _is_link(link):
+            raise NotALinkException(
+                f"The following seems not to be a link: {link}")
+        link = _to_link(link, link, css_class)
+    else:
+        link = _to_link(
+            match.group(1), match.group(2), css_class)
+    if language is not None:
+        return f"{link} ({_languages[language]})"
+    return link
 
 def _links(row: Row) -> Generator[HTML, None, None]:
     for link in row["links"].split("|"):
         link = link.strip()
-        language = None
-        if link[-1] == "]" and link[-4] == "[":
-            language = link[-3:-1]
-            if language not in _languages:
-                raise ValueError(
-                    "The following is not a recognised language: "
-                    f"{language}. Occurs in link: {link}")
-            link = link[:-4].rstrip()
-        match = regex_match(r"\[(.+?)\]\((.+?)\)", link)
-        if match is None or not _is_link(match.group(2)):
-            if not _is_link(link):
-                raise ValueError(
-                    f"The following seems not to be a link: {link}")
-            link = _to_link(link, link, "link-from-resource")
-        else:
-            link = _to_link(
-                match.group(1), match.group(2), "link-from-resource")
-        if language is not None:
-            yield f"{link} ({_languages[language]})"
-        else:
-            yield link
-
+        if not link:
+            continue
+        yield _parse_link(link, "link-from-resource")
 
 def _responsible_without_links(row: Row) -> Generator[HTML, None, None]:
     for responsible in row["responsible"].split("|"):
@@ -431,12 +436,13 @@ def _responsible_with_links(row: Row) -> Generator[HTML, None, None]:
                 raise ValueError(
                     f"Expecting the following to end in ): {responsible}")
             entity, link = responsible[:-1].split("(", 1)
-            link = link.strip()
-            if not _is_link(link):
+            try:
+                link = _parse_link(link)
+            except NotALinkException:
                 yield responsible
                 continue
             yield (f"{entity.strip()} <span class=\"responsible-webpage\">"
-                   f"(<a href=\"{link}\">webpage</a>)</span>")
+                   f"({link})</span>")
         else:
             yield responsible
 
