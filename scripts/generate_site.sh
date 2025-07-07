@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 python scripts/resource_list.py resource-list master-document/resource_list.csv > index.html
 
 RESOURCE_DETAILS_PATH="resource-details/" python scripts/resource_list.py resource-details master-document/resource_list.csv
