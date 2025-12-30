@@ -26,7 +26,7 @@
       <form action="https://sdtulcmi34dt5isrzeha65v7ja0mxdty.lambda-url.eu-north-1.on.aws/edit" method="post">
         <div class="add-resource-section">
           <label for="title">Title <span class="format-instruction">(can be provided in more than one language, each ending in a language tag such as [en], separated by |)</label>
-          <input type="text" id="title" name="title" value="Records in Contexts : propostas para a sua implementação" required/>
+          <input type="text" id="title" name="title" value="예술기록 검색 서비스 개선을 위한 RiC-O 기반 온톨로지 모델링 [ko] | Ontology modeling based on RiC-O for improving  art record retrieval services: Focusing on the Art  Archives, Seoul Museum of Art [en]" required/>
         </div>
         <div class="add-resource-section">
           <fieldset>
@@ -59,31 +59,31 @@
         </div>
         <div class="add-resource-section">
           <label for="responsible">Authors/creators/organisers <span class="format-instruction">(should be separated by |, and a webpage can optionally be provided in parantheses after each, e.g. name (webpage) | other name (webpage))</label>
-          <input type="text" id="responsible" name="responsible" value="Susana Maria Noiva Inácio de Sousa" required/>
+          <input type="text" id="responsible" name="responsible" value="김 민 지 — Min-ji Kim" required/>
         </div>
         <div class="add-resource-section">
           <label for="publication-date">Dates of publication/release/occurrence <span class="format-instruction">(as YYYY, YYYY-MM, or YYYY-MM-DD, optionally followed by [version n.n], and separated by | if more than one date is provided, e.g. 2023-12 or 2024-03 [version 1.0] | 2024-10 [version 2.0])</span></label>
-          <input type="text" id="publication-date" name="publication_date" value="2025-07" required/>
+          <input type="text" id="publication-date" name="publication_date" value="2024-12" required/>
         </div>
         <div class="add-resource-section">
           <label for="description">Description <span class="format-instruction">(simple Markdown syntax can optionally be used, e.g. for links as [text to display](url), and more than one language can be provided, separated by |, each ending with a language tag such as [en])</label>
-          <textarea id="description" name="description" rows="10" required/>Master's thesis. Abstract includes the following: Based on the analysis of data collected from the scientific literature and the focus group, a proposal is presented for requirements considered necessary for the implementation of the Records in Contexts archival description standard.
+          <textarea id="description" name="description" rows="10" required/>Master's thesis. From the abstract: The art record is the totality of records produced and accumulated in the course of artistic activity, from creation to appreciation, and to fully understand it, we must not focus on individual records, but on the people, organisations, events, and relationships with other records to which they relate. This contextual information is essential to understanding not only the circumstances under which a record was produced, but also its intent, purpose, and value. The Art Archives, Seoul Museum of Art selects, collects, preserves, and researches Korean contemporary art records and materials, and provides art records to users through various contents. However, the current search service of the Art Archives, Seoul Museum of Art has limitations in reflecting the contextual information of art records or providing them systematically. In this study,  we aimed to devise a method for providing contextual information in the search service of the Art Archives, Seoul Museum of Art based on RiC-O.
 
-Includes a transcript of a group interview in English including Florence Clavaud, Richard Dancy, Pierluigi Feliciati, Sarah Romkey, and Joana Gomes Soares.</textarea>
+Includes an appendix with a modelling example.</textarea>
         </div>
         <div class="add-resource-section">
           <label for="links">Links <span class="format-instruction">(should be separated by a | symbol, and each either in Markdown format [text to display](url) or a verbatim URL)</span></label>
-          <input type="text" id="links" name="links" value="[thesis](https://repositorio.ulisboa.pt/entities/publication/bf51d57e-3c1b-435f-98a7-736955eb2ff1)"/>
+          <input type="text" id="links" name="links" value="[thesis](https://dspace.hansung.ac.kr/handle/2024.oak/7929)"/>
         </div>
         <div class="add-resource-section">
           <label for="languages">Languages available in <span class="format-instruction">(should be separated by a | symbol, and short clarifications can be provided in parentheses, e.g. French | English (abstract))</span></label>
-          <input type="text" id="languages" name="languages" value="Portuguese | English (abstract and appendix)"/>
+          <input type="text" id="languages" name="languages" value="Korean | English (abstract (at end))"/>
         </div>
         <div class="add-resource-section">
           <fieldset>
             <legend>Relevant parts of RiC <span class="format-instruction">(ignoring patch versions, i.e. treating n.n.n as n.n)</span></legend>
             <div class="ric-part">
-              <input type="checkbox" id="ric-cm-1-0" name="relevant_parts_of_ric" value="RiC-CM 1.0" checked/>
+              <input type="checkbox" id="ric-cm-1-0" name="relevant_parts_of_ric" value="RiC-CM 1.0" />
               <label for="ric-cm-1-0">RiC-CM 1.0</label>
             </div>
             <div class="ric-part">
@@ -115,7 +115,7 @@ Includes a transcript of a group interview in English including Florence Clavaud
         <div class="add-resource-section">
           <label for="related-to">Related resources <span class="format-instruction">(should be separated by a | symbol, and can be either be the URL of another resource in the list, or be in the format #n, where n is the number at the end of such an URL)</span></label>
           <input type="text" id="related-to" name="related_to" value=""/>
-        </div><input type="hidden" name="id" value="37">
+        </div><input type="hidden" name="id" value="38">
         <div class="add-resource-section add-resource-section-button">
           <input type="submit" class="add-button" value="Edit"/>
         </div>
