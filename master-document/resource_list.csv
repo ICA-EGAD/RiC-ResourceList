@@ -46,29 +46,9 @@ Cette présentation sera l’occasion d’un retour d’expérience sur son util
 34,Comparative insights into semantic archival modelling: evaluating RiC-O and ArchOnto representation capabilities,Lucia Giagnolini | Inês Koch | Francesca Tomasi | Carla Teixeira Lopes,"This study aims to comparatively evaluate two semantic models, ArchOnto (CIDOC CRM based) and Records in Contexts Ontology (RiC-O), for archival representation within the Linked Open Data framework. The research seeks to critically analyse their ability to represent archival documents, events, activities, and provenance through the application on a case study of historical baptism records.",2025-07-25,article,https://www.emerald.com/jd/article-abstract/81/4/1003/1270052/Comparative-insights-into-semantic-archival | [postprint](https://sigarra.up.pt/faup/en/pub_geral.show_file?pi_doc_id=488772),English,,RiC-O 1.0,,,
 35,Celebrating change in archives,Eric Ketelaar,"Includes a section on RiC, on pages 11-12 of the online article, pages 47-48 of the journal. Discusses RiC as an ""operationalisation of the view of 'provenance defined as context'"". ",2025-04-17,article,[journal article](https://doi.org/10.14195/2182-7974_38_1_2),English | Portuguese (abstract),,Other,,,
 36,Proof of Contexts: A New Accessibility for Archive Users,Nico Vriend | Merel Geerlings,"The Amsterdam City Archives and the Noord-Holland Archives examined what would happen if you transform a classic archive inventory to Records in Contexts, the new archival description standard based on Linked Data.",2025-04-15,article,[Final report (English)](https://zenodo.org/records/15148413) | [Final report (Dutch)](https://zenodo.org/records/15221397),English | Dutch,,RiC-CM 1.0,,,
-37,Records in Contexts : propostas para a sua implementação,Susana Maria Noiva Inácio de Sousa,"Master's thesis. Abstract includes the following: Based on the analysis of data collected from the scientific literature and the focus 
-group, a proposal is presented for requirements considered necessary for the 
-implementation of the Records in Contexts archival description standard. 
+37,Records in Contexts : propostas para a sua implementação,Susana Maria Noiva Inácio de Sousa,"Master's thesis. Abstract includes the following: Based on the analysis of data collected from the scientific literature and the focus group, a proposal is presented for requirements considered necessary for the implementation of the Records in Contexts archival description standard.
 
-Includes a transcript of a group interview in English including Florence Clavaud, Richard Dancy, Pierluigi Feliciati, Sarah Romkey, and Joana Gomes Soares.   ",2025-07,thesis,[thesis](https://repositorio.ulisboa.pt/entities/publication/bf51d57e-3c1b-435f-98a7-736955eb2ff1),Portuguese | English (abstract and appendix),,RiC-CM 1.0 | RiC-O 1.0,,,
-38,"예술기록 검색 서비스 개선을 위한 RiC-O 기반 온톨로지 모델링 [ko] | Ontology modeling based on RiC-O for improving  art record retrieval services: Focusing on the Art  Archives, Seoul Museum of Art [en]",김 민 지 - Min-ji Kim,"Master's thesis. From the abstract: The art record is the totality of records produced and accumulated 
- in the course of artistic activity, from creation to appreciation, and to 
- fully understand it, we must not focus on individual records, but on the 
-people, organisations, events, and relationships with other records to 
-which 
-they 
-relate. 
-This 
-contextual 
-information 
-is 
-essential 
-to 
-understanding not only the circumstances under which a record was 
-produced, but also its intent, purpose, and value. The Art Archives, Seoul 
-Museum of Art selects, collects, preserves, and researches Korean 
-contemporary art records and materials, and provides art records to users 
-through various contents. However, the current search service of the Art 
-Archives, Seoul Museum of Art has limitations in reflecting the contextual information of art records or providing them systematically. In this study,  we aimed to devise a method for providing contextual information in the search service of the Art Archives, Seoul Museum of Art based on RiC-O. 
+Includes a transcript of a group interview in English including Florence Clavaud, Richard Dancy, Pierluigi Feliciati, Sarah Romkey, and Joana Gomes Soares.",2025-07,thesis,[thesis](https://repositorio.ulisboa.pt/entities/publication/bf51d57e-3c1b-435f-98a7-736955eb2ff1),Portuguese | English (abstract and appendix),,RiC-CM 1.0 | RiC-O 1.0,,,
+38,"예술기록 검색 서비스 개선을 위한 RiC-O 기반 온톨로지 모델링 [ko] | Ontology modeling based on RiC-O for improving  art record retrieval services: Focusing on the Art  Archives, Seoul Museum of Art [en]",김 민 지 — Min-ji Kim,"Master's thesis. From the abstract: The art record is the totality of records produced and accumulated in the course of artistic activity, from creation to appreciation, and to fully understand it, we must not focus on individual records, but on the people, organisations, events, and relationships with other records to which they relate. This contextual information is essential to understanding not only the circumstances under which a record was produced, but also its intent, purpose, and value. The Art Archives, Seoul Museum of Art selects, collects, preserves, and researches Korean contemporary art records and materials, and provides art records to users through various contents. However, the current search service of the Art Archives, Seoul Museum of Art has limitations in reflecting the contextual information of art records or providing them systematically. In this study,  we aimed to devise a method for providing contextual information in the search service of the Art Archives, Seoul Museum of Art based on RiC-O.
 
 Includes an appendix with a modelling example.",2024-12,thesis,[thesis](https://dspace.hansung.ac.kr/handle/2024.oak/7929),Korean | English (abstract (at end)),,RiC-O 1.0,,,

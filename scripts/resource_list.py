@@ -277,6 +277,7 @@ _resource_icons = {
 _languages = {
     "en": "English",
     "fr": "French",
+    "ko": "Korean",
     "nl": "Dutch"
 }
 
