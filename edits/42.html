@@ -26,7 +26,7 @@
       <form action="https://sdtulcmi34dt5isrzeha65v7ja0mxdty.lambda-url.eu-north-1.on.aws/edit" method="post">
         <div class="add-resource-section">
           <label for="title">Title <span class="format-instruction">(can be provided in more than one language, each ending in a language tag such as [en], separated by |)</label>
-          <input type="text" id="title" name="title" value="RiC-CM NavTool" required/>
+          <input type="text" id="title" name="title" value="Draw RDF" required/>
         </div>
         <div class="add-resource-section">
           <fieldset>
@@ -59,19 +59,27 @@
         </div>
         <div class="add-resource-section">
           <label for="responsible">Authors/creators/organisers <span class="format-instruction">(should be separated by |, and a webpage can optionally be provided in parantheses after each, e.g. name (webpage) | other name (webpage))</label>
-          <input type="text" id="responsible" name="responsible" value="Matthew Damigos (Laboratory of Digital Libraries and Electronic Publishing, Department of Archives, Library Science and Museology, Ionian University)" required/>
+          <input type="text" id="responsible" name="responsible" value="Graph-Based Archival Description Project (https://github.com/gbad-project)" required/>
         </div>
         <div class="add-resource-section">
           <label for="publication-date">Dates of publication/release/occurrence <span class="format-instruction">(as YYYY, YYYY-MM, or YYYY-MM-DD, optionally followed by [version n.n], and separated by | if more than one date is provided, e.g. 2023-12 or 2024-03 [version 1.0] | 2024-10 [version 2.0])</span></label>
-          <input type="text" id="publication-date" name="publication_date" value="2026" required/>
+          <input type="text" id="publication-date" name="publication_date" value="2025-12-17 [version 0.1]" required/>
         </div>
         <div class="add-resource-section">
           <label for="description">Description <span class="format-instruction">(simple Markdown syntax can optionally be used, e.g. for links as [text to display](url), and more than one language can be provided, separated by |, each ending with a language tag such as [en])</label>
-          <textarea id="description" name="description" rows="10" required/>The RiC-CM NavTool is a web-based exploration tool developed by the Laboratory of Digital Libraries and Electronic Publishing, Department of Archives, Library Science and Museology, Ionian University, that enables users to browse, navigate, and understand the structure of the Records in Contexts Conceptual Model (RiC-CM). RiC-CM itself is a high-level archival metadata model designed to describe records, the agents involved (people or organizations), and the activities associated with them, along with the relationships between these entities.</textarea>
+          <textarea id="description" name="description" rows="10" required/>Draw RDF is a plugin that exports Draw.io diagrams to RDF graphs.
+
+This [5-minute video demo](https://www.youtube.com/watch?v=LaUAY8NCPqY) covers its basic functionalities like visual creation of URIs and literals, the use of base URI and preamble. We export the graph to RDF/Turtle, validate it using [GBAD VS Code extension](https://github.com/gbad-project/records_in_contexts_draw_io_parser/blob/cd4f0f692cec8a2096b1b596161b2f53c50e9091/vs_code_extension/gbad-vsce-0.0.2-prerelease.2.vsix), and visualization in an external viewer.
+
+Features not shown: export to [RDF Mapping Language](https://rml.io/docs/rml/introduction/) (RML) followed by mapping using [RMLMapper](https://github.com/RMLio/rmlmapper-java); parser settings; customization of literal definitions.
+
+The application is free and open source, no registration or credit card required. Available at: https://gbad-project.github.io/drawio/src/main/webapp/?p=rdf
+
+Brought to you by the Graph-Based Archival Description team from the Archives of Ontario and University of Toronto, co-funded from a Canadian federal research grant. Learn more about Graph-Based Archival Description: https://github.com/gbad-project</textarea>
         </div>
         <div class="add-resource-section">
           <label for="links">Links <span class="format-instruction">(should be separated by a | symbol, and each either in Markdown format [text to display](url) or a verbatim URL)</span></label>
-          <input type="text" id="links" name="links" value="https://dlib-ionian-university.github.io/ric-cm-nav/"/>
+          <input type="text" id="links" name="links" value="[Launch Draw RDF](https://gbad-project.github.io/drawio/src/main/webapp/?p=rdf) | [Draw RDF Documentation](https://drawrdf.readthedocs.io) | [GBAD project](https://github.com/gbad-project)"/>
         </div>
         <div class="add-resource-section">
           <label for="languages">Languages available in <span class="format-instruction">(should be separated by a | symbol, and short clarifications can be provided in parentheses, e.g. French | English (abstract))</span></label>
@@ -89,7 +97,7 @@
               <label for="ric-cm-0-2">RiC-CM 0.2</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-o-1-0" name="relevant_parts_of_ric" value="RiC-O 1.0" />
+              <input type="checkbox" id="ric-o-1-0" name="relevant_parts_of_ric" value="RiC-O 1.0" checked/>
               <label for="ric-o-1-0">RiC-O 1.0</label>
             </div>
             <div class="ric-part">
@@ -104,16 +112,16 @@
         </div>
         <div class="add-resource-section">
           <label for="prospects">Prospects / status</label>
-          <textarea id="prospects" name="prospects" rows="10"/></textarea>
+          <textarea id="prospects" name="prospects" rows="10"/>This version was tested successfully at the Archives of Ontario, and it is mentioned in the whitepaper we submitted for publication. It is the first public release of the tool, being released despite serious gaps in the Draw RDF documentation (though not in the performance) – for which I apologize. The project has now been completed and no active maintenance is planned, but do not hesitate to reach out if you have any questions or to report bugs. - Pavel Zhelnov, Developer</textarea>
         </div>
         <div class="add-resource-section">
           <label for="contact">Contacts <span class="format-instruction">(should be separated by a | symbol, can e.g. be an email address)</span></label>
-          <input type="text" id="contact" name="contact" value="mgdamigos@ionio.gr"/>
+          <input type="text" id="contact" name="contact" value="p.zhelnov@mail.utoronto.ca"/>
         </div>
         <div class="add-resource-section">
           <label for="related-to">Related resources <span class="format-instruction">(should be separated by a | symbol, and can be either be the URL of another resource in the list, or be in the format #n, where n is the number at the end of such an URL)</span></label>
-          <input type="text" id="related-to" name="related_to" value=""/>
-        </div><input type="hidden" name="id" value="41">
+          <input type="text" id="related-to" name="related_to" value="#15|#22"/>
+        </div><input type="hidden" name="id" value="42">
         <div class="add-resource-section add-resource-section-button">
           <input type="submit" class="add-button" value="Edit"/>
         </div>
