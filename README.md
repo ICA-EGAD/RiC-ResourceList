@@ -19,7 +19,7 @@ Has the following components.
 
 Guide to the scripts:
 
-* Re-generation of the site is by means of `scripts/generated_site.sh`, which calls `scripts/resource_list.py` numerous times. The latter is the heart of the tool.
+* Re-generation of the site is by means of `scripts/generate_site.sh`, which calls `scripts/resource_list.py` numerous times. The latter is the heart of the tool.
 * The on-demand function which serves as the backend/reverse proxy in the cloud is defined by `scripts/handle_submission.py`.
 * The handling of the form submissions from the website for adding or editing a resource is carried out in `scripts/update_master_document.py`.
 
