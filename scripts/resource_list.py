@@ -343,21 +343,25 @@ def _links_in_text(text: str) -> Generator[Word, None, None]:
         yield part
 
 
-def _description(row: Row) -> Generator[HTML, None, None]:
+def _split_by_language(text: str) -> Generator[HTML, None, None]:
     changed_language = False
     language = None
-    for description in row["description"].split("|"):
-        description = description.strip()
-        if description[-1] == "]" and description[-4] == "[":
-            language = description[-3:-1]
+    for language_part in text.split("|"):
+        language_part = language_part.strip()
+        if changed_language and not (language_part[
+                -1] == "]" and language_part[-4] == "["):
+            raise ValueError(f"Missing language tag: {language_part}")
+        if language_part[-1] == "]" and language_part[-4] == "[":
+            language = language_part[-3:-1]
             if language not in _languages:
                 raise ValueError(
                     "The following is not a recognised language: "
-                    f"{language}. Occurs in description: {description}")
-            description = "".join(_links_in_text(description[:-4].rstrip()))
+                    f"{language}. Occurs in: {language_part}")
+            language_part = "".join(
+                _links_in_text(language_part[:-4].rstrip()))
         else:
-            description = "".join(_links_in_text(description))
-        for paragraph in description.split("\n\n"):
+            language_part = "".join(_links_in_text(language_part))
+        for paragraph in language_part.split("\n\n"):
             paragraph = paragraph.strip()
             if changed_language:
                 if language is not None:
@@ -371,6 +375,9 @@ def _description(row: Row) -> Generator[HTML, None, None]:
             else:
                 yield f"<p>{paragraph}</p>"
         changed_language = True
+
+def _description(row: Row) -> Generator[HTML, None, None]:
+    yield from _split_by_language(row["description"])
 
 
 def _title(row: Row) -> tuple[Title, AlternativeTitle | None]:
@@ -516,6 +523,7 @@ def _remainder(row: Row) -> HTML:
         remainder += "\n" + " "*8 + f"<li>{relevant_parts_of_ric}</li>"
     prospects = row["prospects"]
     if prospects:
+        prospects = "\n\n            ".join(_split_by_language(prospects))
         remainder += "\n" + " "*8 + f"<li>{prospects}</li>"
     contact = row["contact"]
     if contact:

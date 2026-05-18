@@ -187,6 +187,10 @@ p.after-language-change {
   margin-top: 2em;
 }
 
+li p.after-language-change {
+  margin-top: 1em;
+}
+
 span.resource-details-date {
   margin-right: 1.5em;
 }
