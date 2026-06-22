@@ -72,4 +72,4 @@ The site has two front doors:
   - For developers & implementers: the four-document specification, JSON Schemas, SHACL shapes, an OpenAPI contract, a conformance probe, and a live reference API (with viewer and capture clients).
 
   Underneath: one versioned spec, a conformant reference API (ric.theahg.co.za), browser clients (viewer, capture), and the wizard — all CC-BY (spec) / AGPL (implementations), so institutions aren't locked into any one
-  vendor's reading of the standard.",2026-03,web application,https://openric.org/|https://openric.org/wizard/|https://ric.theahg.co.za/|,English,,RiC-CM 1.0 | RiC-O 1.0,Proof of Concept,johan@theahg.co.za,https://heratio.theahg.co.za/
+  vendor's reading of the standard.",2026-03,web application,https://openric.org/|https://openric.org/wizard/|https://ric.theahg.co.za/|https://heratio.theahg.co.za/,English,,RiC-CM 1.0 | RiC-O 1.0,Proof of Concept,johan@theahg.co.za,
