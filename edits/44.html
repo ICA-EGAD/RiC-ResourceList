@@ -59,7 +59,7 @@
         </div>
         <div class="add-resource-section">
           <label for="responsible">Authors/creators/organisers <span class="format-instruction">(should be separated by |, and a webpage can optionally be provided in parantheses after each, e.g. name (webpage) | other name (webpage))</label>
-          <input type="text" id="responsible" name="responsible" value="https://theahg.co.za|https://plainsailingisystems.co.za" required/>
+          <input type="text" id="responsible" name="responsible" value="The Archive and Heritage Group (https://theahg.co.za)|Plain Sailing Information Systems (https://plainsailingisystems.co.za)" required/>
         </div>
         <div class="add-resource-section">
           <label for="publication-date">Dates of publication/release/occurrence <span class="format-instruction">(as YYYY, YYYY-MM, or YYYY-MM-DD, optionally followed by [version n.n], and separated by | if more than one date is provided, e.g. 2023-12 or 2024-03 [version 1.0] | 2024-10 [version 2.0])</span></label>
@@ -70,11 +70,12 @@
           <textarea id="description" name="description" rows="10" required/>OpenRiC is an open, free specification for publishing and exchanging archival description as Records in Contexts over plain HTTP, a shared contract (like IIIF is for images) that any archival system can implement, not a single product. 
 
 The site has two front doors:
+
   - For archivists & researchers: explore the RiC model visually (the RiC-CM navigator), browse real archival data in a graph viewer, and learn by doing in the modelling wizard. No technical knowledge needed.
+
   - For developers & implementers: the four-document specification, JSON Schemas, SHACL shapes, an OpenAPI contract, a conformance probe, and a live reference API (with viewer and capture clients).
 
-  Underneath: one versioned spec, a conformant reference API (ric.theahg.co.za), browser clients (viewer, capture), and the wizard — all CC-BY (spec) / AGPL (implementations), so institutions aren't locked into any one
-  vendor's reading of the standard.</textarea>
+Underneath: one versioned spec, a conformant reference API (ric.theahg.co.za), browser clients (viewer, capture), and the wizard — all CC-BY (spec) / AGPL (implementations), so institutions aren't locked into any one vendor's reading of the standard.</textarea>
         </div>
         <div class="add-resource-section">
           <label for="links">Links <span class="format-instruction">(should be separated by a | symbol, and each either in Markdown format [text to display](url) or a verbatim URL)</span></label>
@@ -111,7 +112,7 @@ The site has two front doors:
         </div>
         <div class="add-resource-section">
           <label for="prospects">Prospects / status</label>
-          <textarea id="prospects" name="prospects" rows="10"/>Proof of Concept</textarea>
+          <textarea id="prospects" name="prospects" rows="10"/>Proof of concept</textarea>
         </div>
         <div class="add-resource-section">
           <label for="contact">Contacts <span class="format-instruction">(should be separated by a | symbol, can e.g. be an email address)</span></label>
