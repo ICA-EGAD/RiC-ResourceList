@@ -183,12 +183,8 @@ span.resource-details-responsible {
   font-style: italic;
 }
 
-p.after-language-change {
-  margin-top: 2em;
-}
-
 li p.after-language-change {
-  margin-top: 1em;
+  margin-top: 1.5em;
 }
 
 span.resource-details-date {

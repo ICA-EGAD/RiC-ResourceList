@@ -160,7 +160,7 @@ _add_resource_html_template = Template("""    <div class="add-resource">
           <input type="text" id="responsible" name="responsible" value="$responsible_value" required/>
         </div>
         <div class="add-resource-section">
-          <label for="publication-date">Dates of publication/release/occurrence <span class="format-instruction">(as YYYY, YYYY-MM, or YYYY-MM-DD, optionally followed by [version n.n], and separated by | if more than one date is provided, e.g. 2023-12 or 2024-03 [version 1.0] | 2024-10 [version 2.0])</span></label>
+          <label for="publication-date">Dates of publication/release/occurrence <span class="format-instruction">(as YYYY, YYYY-MM, or YYYY-MM-DD, optionally followed by [version n.n] or [... edition n.n], and separated by | if more than one date is provided, e.g. 2023-12, or 2024-03 [version 1.0] | 2024-10 [version 2.0], or 2025-08-01 [French edition 1.0] | 2025-09-01 [English edition 1.0])</span></label>
           <input type="text" id="publication-date" name="publication_date" value="$publication_date_value" required/>
         </div>
         <div class="add-resource-section">
@@ -179,20 +179,20 @@ _add_resource_html_template = Template("""    <div class="add-resource">
           <fieldset>
             <legend>Relevant parts of RiC <span class="format-instruction">(ignoring patch versions, i.e. treating n.n.n as n.n)</span></legend>
             <div class="ric-part">
-              <input type="checkbox" id="ric-cm-1-0" name="relevant_parts_of_ric" value="RiC-CM 1.0" $checked_ric_cm_1_0/>
-              <label for="ric-cm-1-0">RiC-CM 1.0</label>
+              <input type="checkbox" id="ric-cm" name="relevant_parts_of_ric" value="RiC-CM 1.0" $checked_ric_cm/>
+              <label for="ric-cm">RiC-CM</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-cm-0-2" name="relevant_parts_of_ric" value="RiC-CM 0.2" $checked_ric_cm_0_2/>
-              <label for="ric-cm-0-2">RiC-CM 0.2</label>
+              <input type="checkbox" id="ric-o" name="relevant_parts_of_ric" value="RiC-O" $checked_ric_o/>
+              <label for="ric-o">RiC-O</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-o-1-0" name="relevant_parts_of_ric" value="RiC-O 1.0" $checked_ric_o_1_0/>
-              <label for="ric-o-1-0">RiC-O 1.0</label>
+              <input type="checkbox" id="ric-ag" name="relevant_parts_of_ric" value="RiC-AG" $checked_ric_ag/>
+              <label for="ric-ag">RiC-AG</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-o-0-2" name="relevant_parts_of_ric" value="RiC-O 0.2" $checked_ric_o_0_2/>
-              <label for="ric-o-0-2">RiC-O 0.2</label>
+              <input type="checkbox" id="ric-fad" name="relevant_parts_of_ric" value="RiC-FAD" $checked_ric_fad/>
+              <label for="ric-fad">RiC-FAD</label>
             </div>
             <div class="ric-part">
               <input type="checkbox" id="ric-other" name="relevant_parts_of_ric" value="Other" $checked_ric_other/>
@@ -277,6 +277,7 @@ _resource_icons = {
 _languages = {
     "en": "English",
     "fr": "French",
+    "ja": "Japanese",
     "ko": "Korean",
     "nl": "Dutch"
 }
@@ -290,9 +291,11 @@ _resource_type_filters = {
     "web application": "applications"
 }
 
+
 class NotALinkException(ValueError):
     def __init__(self, message: str) -> None:
         super().__init__(message)
+
 
 def _current_timestamp() -> str:
     return datetime.strftime(datetime.now(timezone.utc), "%Y-%m-%d %H:%M (GMT)")
@@ -361,20 +364,28 @@ def _split_by_language(text: str) -> Generator[HTML, None, None]:
                 _links_in_text(language_part[:-4].rstrip()))
         else:
             language_part = "".join(_links_in_text(language_part))
-        for paragraph in language_part.split("\n\n"):
+        paragraphs = language_part.split("\n\n")
+        for paragraph in paragraphs[:-1]:
             paragraph = paragraph.strip()
             if changed_language:
-                if language is not None:
-                    yield f"<p class='after-language-change'>{paragraph} ({
-                        _languages[language]})</p>"
-                else:
-                    yield f"<p class='after-language-change'>{paragraph}</p>"
+                yield f"<p class='after-language-change'>{paragraph}</p>"
                 changed_language = False
-            elif language is not None:
-                yield f"<p>{paragraph}  ({_languages[language]})</p>"
             else:
                 yield f"<p>{paragraph}</p>"
+        paragraph = paragraphs[-1]
+        if changed_language:
+            if language is not None:
+                yield f"<p class='after-language-change'>{paragraph} ({
+                    _languages[language]})</p>"
+            else:
+                yield f"<p class='after-language-change'>{paragraph}</p>"
+            changed_language = False
+        elif language is not None:
+            yield f"<p>{paragraph}  ({_languages[language]})</p>"
+        else:
+            yield f"<p>{paragraph}</p>"
         changed_language = True
+
 
 def _description(row: Row) -> Generator[HTML, None, None]:
     yield from _split_by_language(row["description"])
@@ -402,6 +413,7 @@ def _title(row: Row) -> tuple[Title, AlternativeTitle | None]:
         title_parts[1].strip()[:-4].rstrip()
     )
 
+
 def _parse_link(link: str, css_class: str | None = None) -> str:
     language = None
     if link[-1] == "]" and link[-4] == "[":
@@ -424,12 +436,14 @@ def _parse_link(link: str, css_class: str | None = None) -> str:
         return f"{link} ({_languages[language]})"
     return link
 
+
 def _links(row: Row) -> Generator[HTML, None, None]:
     for link in row["links"].split("|"):
         link = link.strip()
         if not link:
             continue
         yield _parse_link(link, "link-from-resource")
+
 
 def _responsible_without_links(row: Row) -> Generator[HTML, None, None]:
     for responsible in row["responsible"].split("|"):
@@ -472,10 +486,38 @@ def _dates(row: Row) -> Generator[tuple[HTML, Version | None], None, None]:
             raise ValueError(
                 f"Missing ] at end of date with version: {date}")
         if not version.startswith("version"):
-            raise ValueError(
-                "Expecting all version strings to start with 'version': "
-                f"{dates}")
-        version = version[:-1].lstrip("version").strip()
+            version_parts = version.split()
+            if len(version_parts) != 3:
+                raise ValueError(
+                    "Expecting all version strings which do not start with "
+                    "'version' to have exactly three parts: "
+                    f"{version}")
+            if version_parts[1] != "edition":
+                raise ValueError(
+                    "Expecting all version strings which do not start with "
+                    "'version' to have 'edition' as their second part: "
+                    f"{version}")
+            if not version_parts[0] in _languages.values():
+                raise ValueError(
+                    "Expecting all version strings which do not start with "
+                    "'version' to have a language as their first part: "
+                    f"{version}")
+            final_part = version_parts[2].strip()[:-1]
+            if not regex_match(
+                    r"\d\.\d\.\d$|\d.\d$|\d$", final_part):
+                raise ValueError(
+                    "Expecting final part of version string to be of the "
+                    f"form 1.2.3, 1.2, or 1: {version}")
+            version = " ".join(
+                [version_parts[0], "edition", f"v{final_part}"])
+        else:
+            version_indicator = version[:-1].split("version")[1].strip()
+            if not regex_match(
+                    r"\d\.\d\.\d$|\d.\d$|\d$", version_indicator):
+                raise ValueError(
+                    "Expecting final part of version string to be of the "
+                    f"form 1.2.3, 1.2, or 1: {version}")
+            version = "v" + version_indicator
         yield date, version
 
 
@@ -492,8 +534,13 @@ def _relevant_parts_of_ric(row: Row) -> HTML | None:
     relevant_parts = row["relevant_parts_of_ric"]
     if not relevant_parts:
         return None
+    ric_parts = relevant_parts.split("|")
+    for ric_part in ric_parts:
+        if ric_part.strip() not in [
+                "RiC-CM", "RiC-O", "RiC-AG", "RiC-FAD", "Other"]:
+            raise ValueError(f"Unrecognised part of RiC: {ric_part}")
     return " ".join(f"<span class=\"ric-part\">{ric_part.strip()}</span>"
-                    for ric_part in relevant_parts.split("|"))
+                    for ric_part in ric_parts)
 
 
 def _related_to(row: Row) -> Generator[HTML, None, None]:
@@ -550,16 +597,16 @@ def _resource_details(row: Row) -> tuple[HTML, ResourceId]:
     versioned_dates = list(_dates(row))
     if len(versioned_dates) == 1:
         date, version = versioned_dates[0]
-        dates = f"{date} (v{version})" if version is not None else date
+        dates = f"{date} ({version})" if version is not None else date
     else:
         dates = "<ul>"
         for date, version in versioned_dates:
             if version is not None:
-                dates += f"<li class=\"version\">{date} (v{version})</li>"
+                dates += f"<li class=\"version\">{date} ({version})</li>"
             else:
                 dates += f"<li class=\"version\">{date}</li>"
     "".join(
-        f"<span class='resource-details-date'>{date} (v{version})</span>"
+        f"<span class='resource-details-date'>{date} ({version})</span>"
         if version is not None else f"<span class='resource-details-date'>{
             date}</span>"
         for date, version in _dates(row))
@@ -612,7 +659,7 @@ def _resource(row, icons_path: str, resource_details_path: str) -> tuple[
     else:
         responsible = ", ".join(_responsible_without_links(row))
     versioned_dates = list(_dates(row))
-    dates = ", ".join(f"{date} (v{version})" if version is not None else date
+    dates = ", ".join(f"{date} ({version})" if version is not None else date
                       for date, version in versioned_dates)
     earliest_date, _ = versioned_dates[0]
     return _resource_entry_template.substitute(
@@ -720,10 +767,10 @@ def add_resource(backend_url: URL) -> HTML:
             description_value="",
             links_value="",
             languages_value="",
-            checked_ric_cm_1_0="",
-            checked_ric_cm_0_2="",
-            checked_ric_o_1_0="",
-            checked_ric_o_0_2="",
+            checked_ric_cm="",
+            checked_ric_o="",
+            checked_ric_ag="",
+            checked_ric_fad="",
             checked_ric_other="",
             prospects_value="",
             contact_value="",
@@ -818,8 +865,7 @@ def _ric_parts_to_check(row: Row) -> Generator[RiCPart, None, None]:
     for part in row["relevant_parts_of_ric"].split("|"):
         part = part.strip()
         found = False
-        for ric_part in [
-                "RiC-CM 1.0", "RiC-CM 0.2", "RiC-O 1.0", "RiC-O 0.2"]:
+        for ric_part in ["RiC-CM", "RiC-O", "RiC-AG", "RiC-FAD"]:
             if part == ric_part:
                 yield ric_part
                 found = True
@@ -878,14 +924,14 @@ def edits(
                         description_value=row["description"],
                         links_value=row["links"],
                         languages_value=row["languages"],
-                        checked_ric_cm_1_0=_checked_ric_part(
-                            ric_parts, "RiC-CM 1.0"),
-                        checked_ric_cm_0_2=_checked_ric_part(
-                            ric_parts, "RiC-CM 0.2"),
-                        checked_ric_o_1_0=_checked_ric_part(
-                            ric_parts, "RiC-O 1.0"),
-                        checked_ric_o_0_2=_checked_ric_part(
-                            ric_parts, "RiC-O 0.2"),
+                        checked_ric_cm=_checked_ric_part(
+                            ric_parts, "RiC-CM"),
+                        checked_ric_o=_checked_ric_part(
+                            ric_parts, "RiC-O"),
+                        checked_ric_ag=_checked_ric_part(
+                            ric_parts, "RiC-AG"),
+                        checked_ric_fad=_checked_ric_part(
+                            ric_parts, "RiC-FAD"),
                         checked_ric_other=_checked_ric_part(
                             ric_parts, "Other"),
                         prospects_value=row["prospects"],

@@ -26,7 +26,7 @@
       <form action="https://sdtulcmi34dt5isrzeha65v7ja0mxdty.lambda-url.eu-north-1.on.aws/edit" method="post">
         <div class="add-resource-section">
           <label for="title">Title <span class="format-instruction">(can be provided in more than one language, each ending in a language tag such as [en], separated by |)</label>
-          <input type="text" id="title" name="title" value="The Archives nationales de France authority records and vocabularies" required/>
+          <input type="text" id="title" name="title" value="Records in Contexts: An Introduction --- Understanding the New International Standard for Archival Description [en] | Records in Contexts 入門 --- アーカイブズ記述の新しい国際標準を理解する [ja]" required/>
         </div>
         <div class="add-resource-section">
           <fieldset>
@@ -36,11 +36,11 @@
               <label for="application">Application</label>
             </div>
             <div class="resource-type">
-              <input type="radio" id="article" name="type" value="article"  required/>
+              <input type="radio" id="article" name="type" value="article" checked required/>
               <label for="article">Article</label>
             </div>
             <div class="resource-type">
-              <input type="radio" id="dataset" name="type" value="dataset" checked required/>
+              <input type="radio" id="dataset" name="type" value="dataset"  required/>
               <label for="dataset">Dataset</label>
             </div>
             <div class="resource-type">
@@ -59,29 +59,35 @@
         </div>
         <div class="add-resource-section">
           <label for="responsible">Authors/creators/organisers <span class="format-instruction">(should be separated by |, and a webpage can optionally be provided in parantheses after each, e.g. name (webpage) | other name (webpage))</label>
-          <input type="text" id="responsible" name="responsible" value="The Lab at the Archives nationales de France" required/>
+          <input type="text" id="responsible" name="responsible" value="Tetsuji Kuboyama (https://tk.cc.gakushuin.ac.jp/en/)" required/>
         </div>
         <div class="add-resource-section">
           <label for="publication-date">Dates of publication/release/occurrence <span class="format-instruction">(as YYYY, YYYY-MM, or YYYY-MM-DD, optionally followed by [version n.n] or [... edition n.n], and separated by | if more than one date is provided, e.g. 2023-12, or 2024-03 [version 1.0] | 2024-10 [version 2.0], or 2025-08-01 [French edition 1.0] | 2025-09-01 [English edition 1.0])</span></label>
-          <input type="text" id="publication-date" name="publication_date" value="2022-06 [version 1.1]" required/>
+          <input type="text" id="publication-date" name="publication_date" value="2026-08-22 [Japanese edition 1.4.3] | 2026-08-23 [English edition 1.0]" required/>
         </div>
         <div class="add-resource-section">
           <label for="description">Description <span class="format-instruction">(simple Markdown syntax can optionally be used, e.g. for links as [text to display](url), and more than one language can be provided, separated by |, each ending with a language tag such as [en])</label>
-          <textarea id="description" name="description" rows="10" required/>A RDF/RiC-O version (and also CSV one) of the about 16000 authority records on archival creators, 60 000 records about places, and 20 authoritative lists and controlled vocabularies produced and used by the AnF. </textarea>
+          <textarea id="description" name="description" rows="10" required/>A free textbook that introduces Records in Contexts to readers meeting it for the first time. The primary sources are written for implementers; this book is written for the first encounter, and works throughout from RiC-FAD 1.0, RiC-CM 1.0, RiC-O 1.1 and RiC-AG 0.1 — the text, the OWL source, the official documentation, the official crosswalks and the sample data.
+
+It covers what the move from multilevel to multidimensional description means, how to read entities, attributes and relations, an introduction to RDF, Turtle, OWL, description logic and SPARQL, six situations in which inference does useful work, the steps of converting from EAD, and how much computer science the work requires. Each chapter ends with exercises. The appendices hold reference tables and a glossary of words that shift meaning between archival science, library science and computer science.
+
+Sample data accompanies the book and is published separately: four Turtle datasets, the fourteen SPARQL queries that appear in the text, SHACL shapes with data that violates them, and a script that checks every file against RiC-O. All of it is fictional and carries the same CC BY 4.0 licence, so it may be adapted for teaching.
+
+The Japanese edition came first, in July 2026. The English edition replaces the Japanese records, institutions and legislation used in the examples rather than translating them, so that they can be followed without knowledge of Japanese archival practice. [en] | 国際文書館評議会(ICA)の記述専門家グループ EGAD が策定した Records in Contexts の入門テキスト。RiC-FAD 1.0・RiC-CM 1.0・RiC-O 1.1・RiC-AG 0.1 の一次資料に基づき、ISAD(G) の多段階記述から RiC の多次元記述への移行の意味、実体・属性・関係の読み方、RDF・OWL・記述論理・SPARQL の入門、推論の具体例、EAD からの変換の手順を扱う。作例を実行できるサンプルデータを併せて配布している。CC BY 4.0。 [ja]</textarea>
         </div>
         <div class="add-resource-section">
           <label for="links">Links <span class="format-instruction">(should be separated by a | symbol, and each either in Markdown format [text to display](url) or a verbatim URL)</span></label>
-          <input type="text" id="links" name="links" value="https://github.com/ArchivesNationalesFR/Referentiels"/>
+          <input type="text" id="links" name="links" value="[English edition](https://tkub.github.io/edu/ric/en/) | [Japanese edition](https://tkub.github.io/edu/ric/) | [PDF, English](https://tkub.github.io/edu/ric/en/ric-introduction-en.pdf) | [Sample data, English](https://tkub.github.io/edu/ric/en/ric-introduction-en-examples.zip)"/>
         </div>
         <div class="add-resource-section">
           <label for="languages">Languages available in <span class="format-instruction">(should be separated by a | symbol, and short clarifications can be provided in parentheses, e.g. French | English (abstract))</span></label>
-          <input type="text" id="languages" name="languages" value="French"/>
+          <input type="text" id="languages" name="languages" value="English | Japanese"/>
         </div>
         <div class="add-resource-section">
           <fieldset>
             <legend>Relevant parts of RiC <span class="format-instruction">(ignoring patch versions, i.e. treating n.n.n as n.n)</span></legend>
             <div class="ric-part">
-              <input type="checkbox" id="ric-cm" name="relevant_parts_of_ric" value="RiC-CM 1.0" />
+              <input type="checkbox" id="ric-cm" name="relevant_parts_of_ric" value="RiC-CM 1.0" checked/>
               <label for="ric-cm">RiC-CM</label>
             </div>
             <div class="ric-part">
@@ -89,11 +95,11 @@
               <label for="ric-o">RiC-O</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-ag" name="relevant_parts_of_ric" value="RiC-AG" />
+              <input type="checkbox" id="ric-ag" name="relevant_parts_of_ric" value="RiC-AG" checked/>
               <label for="ric-ag">RiC-AG</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-fad" name="relevant_parts_of_ric" value="RiC-FAD" />
+              <input type="checkbox" id="ric-fad" name="relevant_parts_of_ric" value="RiC-FAD" checked/>
               <label for="ric-fad">RiC-FAD</label>
             </div>
             <div class="ric-part">
@@ -104,16 +110,16 @@
         </div>
         <div class="add-resource-section">
           <label for="prospects">Prospects / status</label>
-          <textarea id="prospects" name="prospects" rows="10"/>New release to be published before March 2025, conforming to RiC-0 1.1 and including a lot of enrichments.</textarea>
+          <textarea id="prospects" name="prospects" rows="10"/>Freely available under CC BY 4.0. The Japanese edition is revised periodically; the English edition follows it. Both are published on the author's site with the accompanying sample data.</textarea>
         </div>
         <div class="add-resource-section">
           <label for="contact">Contacts <span class="format-instruction">(should be separated by a | symbol, can e.g. be an email address)</span></label>
-          <input type="text" id="contact" name="contact" value="le-lab.archives-nationales@culture.gouv.fr | florence.clavaud@culture.gouv.fr"/>
+          <input type="text" id="contact" name="contact" value="tkuboyama@tk.cc.gakushuin.ac.jp"/>
         </div>
         <div class="add-resource-section">
           <label for="related-to">Related resources <span class="format-instruction">(should be separated by a | symbol, and can be either be the URL of another resource in the list, or be in the format #n, where n is the number at the end of such an URL)</span></label>
           <input type="text" id="related-to" name="related_to" value=""/>
-        </div><input type="hidden" name="id" value="4">
+        </div><input type="hidden" name="id" value="47">
         <div class="add-resource-section add-resource-section-button">
           <input type="submit" class="add-button" value="Edit"/>
         </div>
