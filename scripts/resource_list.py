@@ -179,7 +179,7 @@ _add_resource_html_template = Template("""    <div class="add-resource">
           <fieldset>
             <legend>Relevant parts of RiC <span class="format-instruction">(ignoring patch versions, i.e. treating n.n.n as n.n)</span></legend>
             <div class="ric-part">
-              <input type="checkbox" id="ric-cm" name="relevant_parts_of_ric" value="RiC-CM 1.0" $checked_ric_cm/>
+              <input type="checkbox" id="ric-cm" name="relevant_parts_of_ric" value="RiC-CM" $checked_ric_cm/>
               <label for="ric-cm">RiC-CM</label>
             </div>
             <div class="ric-part">
