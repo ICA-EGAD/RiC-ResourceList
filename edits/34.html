@@ -62,7 +62,7 @@
           <input type="text" id="responsible" name="responsible" value="Lucia Giagnolini | Inês Koch | Francesca Tomasi | Carla Teixeira Lopes" required/>
         </div>
         <div class="add-resource-section">
-          <label for="publication-date">Dates of publication/release/occurrence <span class="format-instruction">(as YYYY, YYYY-MM, or YYYY-MM-DD, optionally followed by [version n.n], and separated by | if more than one date is provided, e.g. 2023-12 or 2024-03 [version 1.0] | 2024-10 [version 2.0])</span></label>
+          <label for="publication-date">Dates of publication/release/occurrence <span class="format-instruction">(as YYYY, YYYY-MM, or YYYY-MM-DD, optionally followed by [version n.n] or [... edition n.n], and separated by | if more than one date is provided, e.g. 2023-12, or 2024-03 [version 1.0] | 2024-10 [version 2.0], or 2025-08-01 [French edition 1.0] | 2025-09-01 [English edition 1.0])</span></label>
           <input type="text" id="publication-date" name="publication_date" value="2025-07-25" required/>
         </div>
         <div class="add-resource-section">
@@ -81,20 +81,20 @@
           <fieldset>
             <legend>Relevant parts of RiC <span class="format-instruction">(ignoring patch versions, i.e. treating n.n.n as n.n)</span></legend>
             <div class="ric-part">
-              <input type="checkbox" id="ric-cm-1-0" name="relevant_parts_of_ric" value="RiC-CM 1.0" />
-              <label for="ric-cm-1-0">RiC-CM 1.0</label>
+              <input type="checkbox" id="ric-cm" name="relevant_parts_of_ric" value="RiC-CM 1.0" />
+              <label for="ric-cm">RiC-CM</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-cm-0-2" name="relevant_parts_of_ric" value="RiC-CM 0.2" />
-              <label for="ric-cm-0-2">RiC-CM 0.2</label>
+              <input type="checkbox" id="ric-o" name="relevant_parts_of_ric" value="RiC-O" checked/>
+              <label for="ric-o">RiC-O</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-o-1-0" name="relevant_parts_of_ric" value="RiC-O 1.0" checked/>
-              <label for="ric-o-1-0">RiC-O 1.0</label>
+              <input type="checkbox" id="ric-ag" name="relevant_parts_of_ric" value="RiC-AG" />
+              <label for="ric-ag">RiC-AG</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-o-0-2" name="relevant_parts_of_ric" value="RiC-O 0.2" />
-              <label for="ric-o-0-2">RiC-O 0.2</label>
+              <input type="checkbox" id="ric-fad" name="relevant_parts_of_ric" value="RiC-FAD" />
+              <label for="ric-fad">RiC-FAD</label>
             </div>
             <div class="ric-part">
               <input type="checkbox" id="ric-other" name="relevant_parts_of_ric" value="Other" />
