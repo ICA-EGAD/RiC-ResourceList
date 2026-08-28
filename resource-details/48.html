@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Records in Contexts — Resource List</title>
+    <link rel="stylesheet" href="../ric_resources.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  </head>
+  <body>
+    <div class="header">
+      <a href="../index.html" class="title"><h1>Records in Contexts — Resource List</h1></a>
+    </div>
+    <div class="ric-links">
+      <p><span><a href="https://www.ica.org/resource/records-in-contexts-conceptual-model/">RiC-CM</a></span><span><a href="https://www.ica.org/standards/RiC/ontology">RiC-O</a></span><span class="last"><a href="https://groups.google.com/g/Records_in_Contexts_users">RiC users group</a></span></p>
+    </div>
+    <div class="egad-logo">
+      <img class="egad-logo" src="../EGAD_logo.svg"/>
+    </div>    <div class="introduction">
+      <p>Use the green button to edit the resource (moderated: it may take a few days before changes appear).</p>
+    </div>
+    <div class="menu" id="menu">
+      <span class="add-edit-menu">
+        <a href="../edits/48.html" class="add-or-edit-link"><figure><img class="icon" src="../icons/edit.svg" alt="Edit resource" title="Edit the resource"/><figcaption>Edit</figcaption></figure></a>
+      </span>
+
+    </div>
+    <div class="resource-details" id="resource-details">
+      <h2><img class="resource-details-icon" src="../icons/web_application.svg" alt="Application"/>ระบบถาม-ตอบ GraphRAG บนกราฟความรู้ RiC-O ของหอจดหมายเหตุพุทธทาส อินทปัญโญ</h2>
+      <ul>
+        (GraphRAG question answering over a RiC-O knowledge graph at the Buddhadasa Indapanno Archives)
+        <li><span class="resource-details-responsible">Buddhadasa Indapanno Archives (BIA), Bangkok (https://www.bia.or.th/)</span></li>
+        <li>2026-08</li>
+        <li><p>The Buddhadasa Indapanno Archives (BIA, Bangkok, Thailand) publishes its archival description as a knowledge graph conforming to RiC-O 1.1, and answers natural-language questions over it in production. ISAD(G) metadata for 1,378 manuscript items in 11 series, 334 digitised books, and a curated layer of 344 life events, 160 persons and 247 dhamma concepts are expressed as ~100,000 triples. A question-answering service on the Archives' public website translates Thai questions to SPARQL over this graph (GraphRAG), composes the answer with an LLM, and cites every statement back to the digitised source page. Entities are published as dereferenceable linked data at <a href="https://id.bia.or.th/">https://id.bia.or.th/</a> (HTTP 303, content negotiation, VoID description). Two aspects may interest the RiC community: (1) a small extension ontology (biax:, 28 terms, CC BY 4.0, owl:imports RiC-O 1.1) covering concepts the standard has no vocabulary for in a Thai Buddhist context — e.g. monastic ordination and royal title conferral, where a monk's name changes with each title; (2) an empirical comparison in which a vector-RAG baseline over the same collection failed on counting, relation and negation questions that the graph answers routinely.</p></li>
+        <li><a href="https://www.buddhadasa.org/ask/" class="link-from-resource">Question answering (Thai, English beta)</a></li>
+        <li><a href="https://id.bia.or.th/" class="link-from-resource">Linked data entry point</a></li>
+        <li><a href="https://id.bia.or.th/ns" class="link-from-resource">Extension ontology biax</a></li>
+        <li><a href="https://id.bia.or.th/.well-known/void" class="link-from-resource">VoID description</a></li>
+        <li>Available in: Thai, English (question answering in beta; ontology documentation bilingual)</li>
+        <li><span class="ric-part">RiC-O</span></li>
+        <li><p>In production. The software stack is Apache 2.0 and the extension ontology CC BY 4.0; open terms for the dataset itself are in preparation.</p></li>
+        <li>Contact: <span class="contact-details">somrak_n (at) bia.or.th</span></li>
+      </ul>
+    </div>
+  </body>
+</html>

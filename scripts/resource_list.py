@@ -279,7 +279,8 @@ _languages = {
     "fr": "French",
     "ja": "Japanese",
     "ko": "Korean",
-    "nl": "Dutch"
+    "nl": "Dutch",
+    "th": "Thai"
 }
 
 _resource_type_filters = {
