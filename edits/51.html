@@ -26,17 +26,17 @@
       <form action="https://sdtulcmi34dt5isrzeha65v7ja0mxdty.lambda-url.eu-north-1.on.aws/edit" method="post">
         <div class="add-resource-section">
           <label for="title">Title <span class="format-instruction">(can be provided in more than one language, each ending in a language tag such as [en], separated by |)</label>
-          <input type="text" id="title" name="title" value="Records in Contexts : un nouveau modèle de description archivistique" required/>
+          <input type="text" id="title" name="title" value="Interroger le réservoir RDF de FranceArchives avec Sparnatural et Yasgui" required/>
         </div>
         <div class="add-resource-section">
           <fieldset>
             <legend>Resource type</legend>
             <div class="resource-type">
-              <input type="radio" id="application" name="type" value="web application"  required/>
+              <input type="radio" id="application" name="type" value="web application" checked required/>
               <label for="application">Application</label>
             </div>
             <div class="resource-type">
-              <input type="radio" id="article" name="type" value="article" checked required/>
+              <input type="radio" id="article" name="type" value="article"  required/>
               <label for="article">Article</label>
             </div>
             <div class="resource-type">
@@ -59,21 +59,25 @@
         </div>
         <div class="add-resource-section">
           <label for="responsible">Authors/creators/organisers <span class="format-instruction">(should be separated by |, and a webpage can optionally be provided in parantheses after each, e.g. name (webpage) | other name (webpage))</label>
-          <input type="text" id="responsible" name="responsible" value="Service interministériel des Archives de France (SIAF)" required/>
+          <input type="text" id="responsible" name="responsible" value="Service interministériel des Archives de France (SIAF)|Logilab" required/>
         </div>
         <div class="add-resource-section">
           <label for="publication-date">Dates of publication/release/occurrence <span class="format-instruction">(as YYYY, YYYY-MM, or YYYY-MM-DD, optionally followed by [version n.n] or [... edition n.n], and separated by | if more than one date is provided, e.g. 2023-12, or 2024-03 [version 1.0] | 2024-10 [version 2.0], or 2025-08-01 [French edition 1.0] | 2025-09-01 [English edition 1.0])</span></label>
-          <input type="text" id="publication-date" name="publication_date" value="2025-03" required/>
+          <input type="text" id="publication-date" name="publication_date" value="2022" required/>
         </div>
         <div class="add-resource-section">
           <label for="description">Description <span class="format-instruction">(simple Markdown syntax can optionally be used, e.g. for links as [text to display](url), and more than one language can be provided, separated by |, each ending with a language tag such as [en])</label>
-          <textarea id="description" name="description" rows="10" required/>À l’instar des modèles CIDOC CRM et IFLA LRM, le Groupe d’experts sur la description archivistique (EGAD) du Conseil international des Archives (ICA), a lancé en 2013 les travaux d’élaboration de Records in Contexts (RiC), un nouveau cadre de référence unique et global de description pour les archives. Il s’agit d’un modèle unique orienté entités-relations,  qui vise à augmenter la cohérence entre les différents éléments de la description archivistique. Il permet ainsi de proposer une description plus fine et détaillée des archives.
+          <textarea id="description" name="description" rows="10" required/>Le portail agrégateur des données archivistiques françaises FranceArchives dispose d'un réservoir de données en RDF. Deux outils ont été intégrés au portail afin d'interroger ce réservoir, l'un permettant au plus grand nombre d'effectuer des requêtes grâce à une interface pensée pour les utilisateurs et l'autre, plus technique, offrant la possibilité de rédiger des requêtes plus abouties.
 
-Dans cet article sont abordés les points suivants : Qu'est-ce que RiC ?, Transposition de RiC-CM en XML : ce que cela change, Transposition de RiC-CM en RDF conformément à RiC-O, La position du service interministériel des Archives de France.</textarea>
+L’outil Sparnatural est un outil d’aide à formuler des requêtes SPARQL sans en connaître le langage, développé par la Société Sparna et de plus en plus utilisé pour des projets culturels. Il est proposé sur FranceArchives pour offrir un accès nouveau aux métadonnées archivistiques, complémentaire de la recherche classique par le moteur du portail, puisqu'il permet de fouiller les données et d'obtenir des résultats de recherche comportant des liens vers les pages du portail pour visualiser les notices complètes. Afin de limiter le risque de requêtes sans résultats ou se terminant par une impasse, le périmètre des données interrogées est restreint aux inventaires, composants, notices descriptives de producteurs d’archives et fiches signalétiques des services d’archives liés à une autorité de qualité, soit environ 70% des métadonnées du portail. Ce réservoir continuera à s’enrichir au fur et à mesure de l’import de nouvelles données, de l’avancement des travaux de mise en qualité des autorités et de l'amélioration des données fournies au portail par les services d'archives partenaires.
+
+L'outil Yasgui est outil de requêtes SPARQL classique qui permet d’interroger l’ensemble du réservoir RDF de FranceArchives. Il permet ainsi de palier l'absence d'une partie des données dans le réservoir interrogé par l'outil Sparnatural mais nécessite de maîtriser le langage de requêtes SPARQL.
+
+Deux pages de documentation accessibles depuis le portail FranceArchives permettent d'en savoir plus sur les données présentes dans le réservoir RDF du portail et son fonctionnement mais également de faciliter la prise en main de l'outil Sparnatural : [Le réservoir RDF de FranceArchives](https://francearchives.gouv.fr/fr/article/756183859) et [Effectuer des requêtes SPARQL guidées avec l'outil Sparnatural](https://francearchives.gouv.fr/fr/article/756183860)</textarea>
         </div>
         <div class="add-resource-section">
           <label for="links">Links <span class="format-instruction">(should be separated by a | symbol, and each either in Markdown format [text to display](url) or a verbatim URL)</span></label>
-          <input type="text" id="links" name="links" value="https://francearchives.gouv.fr/fr/article/334841641"/>
+          <input type="text" id="links" name="links" value="[Sparnatural](https://francearchives.gouv.fr/fr/requeteurnaturel)|[Yasgui](https://francearchives.gouv.fr/sparql)"/>
         </div>
         <div class="add-resource-section">
           <label for="languages">Languages available in <span class="format-instruction">(should be separated by a | symbol, and short clarifications can be provided in parentheses, e.g. French | English (abstract))</span></label>
@@ -83,7 +87,7 @@ Dans cet article sont abordés les points suivants : Qu'est-ce que RiC ?, Transp
           <fieldset>
             <legend>Relevant parts of RiC <span class="format-instruction">(ignoring patch versions, i.e. treating n.n.n as n.n)</span></legend>
             <div class="ric-part">
-              <input type="checkbox" id="ric-cm" name="relevant_parts_of_ric" value="RiC-CM" checked/>
+              <input type="checkbox" id="ric-cm" name="relevant_parts_of_ric" value="RiC-CM" />
               <label for="ric-cm">RiC-CM</label>
             </div>
             <div class="ric-part">
@@ -91,7 +95,7 @@ Dans cet article sont abordés les points suivants : Qu'est-ce que RiC ?, Transp
               <label for="ric-o">RiC-O</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-ag" name="relevant_parts_of_ric" value="RiC-AG" checked/>
+              <input type="checkbox" id="ric-ag" name="relevant_parts_of_ric" value="RiC-AG" />
               <label for="ric-ag">RiC-AG</label>
             </div>
             <div class="ric-part">
@@ -115,7 +119,7 @@ Dans cet article sont abordés les points suivants : Qu'est-ce que RiC ?, Transp
         <div class="add-resource-section">
           <label for="related-to">Related resources <span class="format-instruction">(should be separated by a | symbol, and can be either be the URL of another resource in the list, or be in the format #n, where n is the number at the end of such an URL)</span></label>
           <input type="text" id="related-to" name="related_to" value=""/>
-        </div><input type="hidden" name="id" value="50">
+        </div><input type="hidden" name="id" value="51">
         <div class="add-resource-section add-resource-section-button">
           <input type="submit" class="add-button" value="Edit"/>
         </div>
