@@ -280,6 +280,7 @@ _languages = {
     "ja": "Japanese",
     "ko": "Korean",
     "nl": "Dutch",
+    "pt": "Portuguese",
     "th": "Thai"
 }
 
