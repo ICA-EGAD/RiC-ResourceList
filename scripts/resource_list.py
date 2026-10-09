@@ -281,6 +281,7 @@ _languages = {
     "ko": "Korean",
     "nl": "Dutch",
     "pt": "Portuguese",
+    "pt-BR": "Brazilian Portuguese",
     "th": "Thai"
 }
 
@@ -353,8 +354,7 @@ def _split_by_language(text: str) -> Generator[HTML, None, None]:
     language = None
     for language_part in text.split("|"):
         language_part = language_part.strip()
-        if changed_language and not (language_part[
-                -1] == "]" and language_part[-4] == "["):
+        if changed_language and (language_part[-1] != "]"):
             raise ValueError(f"Missing language tag: {language_part}")
         if language_part[-1] == "]" and language_part[-4] == "[":
             language = language_part[-3:-1]
@@ -364,6 +364,14 @@ def _split_by_language(text: str) -> Generator[HTML, None, None]:
                     f"{language}. Occurs in: {language_part}")
             language_part = "".join(
                 _links_in_text(language_part[:-4].rstrip()))
+        elif language_part[-1] == "]" and language_part[-7] == "[":
+            language = language_part[-6:-1]
+            if language not in _languages:
+                raise ValueError(
+                    "The following is not a recognised language: "
+                    f"{language}. Occurs in: {language_part}")
+            language_part = "".join(
+                _links_in_text(language_part[:-7].rstrip()))
         else:
             language_part = "".join(_links_in_text(language_part))
         paragraphs = language_part.split("\n\n")
@@ -400,20 +408,27 @@ def _title(row: Row) -> tuple[Title, AlternativeTitle | None]:
     title_parts = title.split("|")
     if len(title_parts) > 2:
         raise ValueError(f"Too many title parts: {title}")
+    stripped_title_parts = []
     for title_part in title_parts:
         title_part = title_part.strip()
-        if not (title_part[-1] == "]" and title_part[-4] == "["):
+        if (title_part[-1] == "]" and title_part[-4] == "["):
+            language = title_part[-3:-1]
+            stripped_title_parts.append(
+                title_part.strip()[:-4].rstrip())
+        elif (title_part[-1] == "]" and title_part[-7] == "["):
+            language = title_part[-6:-1]
+            stripped_title_parts.append(
+                title_part.strip()[:-7].rstrip())
+        else:
             raise ValueError(
                 f"Expecting title part to end in language tag: {title_part}")
-        language = title_part[-3:-1]
         if language not in _languages:
             raise ValueError(
                 "The following is not a recognised language: "
                 f"{language}. Occurs in title part: {title_part}")
-    return (
-        title_parts[0].strip()[:-4].rstrip(),
-        title_parts[1].strip()[:-4].rstrip()
-    )
+    if len(stripped_title_parts) == 1:
+        return (stripped_title_parts[0], None)
+    return tuple(stripped_title_parts)
 
 
 def _parse_link(link: str, css_class: str | None = None) -> str:
