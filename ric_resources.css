@@ -306,6 +306,10 @@ span.last-updated-timestamp {
   font-style: italic;
 }
 
+span.monospace {
+  font-family: monospace;
+}
+
 @media only screen and (max-width: 800px) {
   body {
     padding-left: 5px;
