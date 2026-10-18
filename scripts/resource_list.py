@@ -231,6 +231,7 @@ ResourceId = str
 ResourceType = str
 RiCPart = str
 Row = dict[str, str]
+Text = str
 Title = str
 Version = str
 Word = str
@@ -304,6 +305,26 @@ def _current_timestamp() -> str:
     return datetime.strftime(datetime.now(timezone.utc), "%Y-%m-%d %H:%M (GMT)")
 
 
+def _to_monospace(word: Word) -> HTML:
+    return f"<span class=\"monospace\">{word}</span>"
+
+
+def _parser(text: Text) -> Generator[HTML, None, None]:
+    for word in text.split(" "):
+        if _is_link(word):
+            yield _to_link(None, word)
+            continue
+        if (len(word) > 1) and (word[0] == '`'):
+            if word[-1] == "`":
+                yield _to_monospace(word[1:-1])
+            elif word[-2:] == "`.":
+                yield _to_monospace(word[1:-2]) + "."
+            else:
+                raise ValueError(f"Unclosed monospace word: {word}")
+            continue
+        yield word
+
+
 def _is_link(word: str) -> bool:
     try:
         return parse_url(word).scheme in ["http", "https", "ftp"]
@@ -311,7 +332,7 @@ def _is_link(word: str) -> bool:
         return False
 
 
-def _to_link(word: str | None, url: str, css_class: str | None = None) -> str:
+def _to_link(word: str | None, url: str, css_class: str | None = None) -> HTML:
     tidied_url = url
     remainder = ""
     while True:
@@ -323,10 +344,11 @@ def _to_link(word: str | None, url: str, css_class: str | None = None) -> str:
         word = tidied_url
     if css_class is None:
         return f"<a href=\"{tidied_url}\">{word}</a>{remainder}"
-    return f"<a href=\"{tidied_url}\" class=\"{css_class}\">{word}</a>{remainder}"
+    return f"<a href=\"{tidied_url}\" class=\"{css_class}\">{word}</a>{
+        remainder}"
 
 
-def _links_in_text(text: str) -> Generator[Word, None, None]:
+def _links_in_text(text: Text) -> Generator[HTML, None, None]:
     """
     Two kinds of syntax are supported.
 
@@ -338,9 +360,8 @@ def _links_in_text(text: str) -> Generator[Word, None, None]:
     converted to a link according to 1), then the previous word is converted to
     a link whose underlying URL is ... .
     """
-    text = " ".join(_to_link(None, word) if _is_link(word) else word
-                    for word in text.split(" "))
-    for part in regex_split(r"(\[.+?\]\(.+?\))", text):
+    html = " ".join(_parser(text))
+    for part in regex_split(r"(\[.+?\]\(.+?\))", html):
         match = regex_match(r"\[(.+?)\]\((.+?)\)", part)
         if match is not None:
             if _is_link(match.group(2)):
@@ -349,7 +370,7 @@ def _links_in_text(text: str) -> Generator[Word, None, None]:
         yield part
 
 
-def _split_by_language(text: str) -> Generator[HTML, None, None]:
+def _split_by_language(text: Text) -> Generator[HTML, None, None]:
     changed_language = False
     language = None
     for language_part in text.split("|"):
@@ -428,10 +449,10 @@ def _title(row: Row) -> tuple[Title, AlternativeTitle | None]:
                 f"{language}. Occurs in title part: {title_part}")
     if len(stripped_title_parts) == 1:
         return (stripped_title_parts[0], None)
-    return tuple(stripped_title_parts)
+    return (stripped_title_parts[0], stripped_title_parts[1])
 
 
-def _parse_link(link: str, css_class: str | None = None) -> str:
+def _parse_link(link: str, css_class: str | None = None) -> HTML:
     language = None
     if link[-1] == "]" and link[-4] == "[":
         language = link[-3:-1]
