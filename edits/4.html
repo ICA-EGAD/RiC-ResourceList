@@ -26,7 +26,7 @@
       <form action="https://sdtulcmi34dt5isrzeha65v7ja0mxdty.lambda-url.eu-north-1.on.aws/edit" method="post">
         <div class="add-resource-section">
           <label for="title">Title <span class="format-instruction">(can be provided in more than one language, each ending in a language tag such as [en], separated by |)</label>
-          <input type="text" id="title" name="title" value="The Archives nationales de France authority records and vocabularies" required/>
+          <input type="text" id="title" name="title" value="The Archives nationales de France authority records and vocabularies [en] | Les référentiels des Archives nationales de France [fr]" required/>
         </div>
         <div class="add-resource-section">
           <fieldset>
@@ -63,19 +63,23 @@
         </div>
         <div class="add-resource-section">
           <label for="publication-date">Dates of publication/release/occurrence <span class="format-instruction">(as YYYY, YYYY-MM, or YYYY-MM-DD, optionally followed by [version n.n] or [... edition n.n], and separated by | if more than one date is provided, e.g. 2023-12, or 2024-03 [version 1.0] | 2024-10 [version 2.0], or 2025-08-01 [French edition 1.0] | 2025-09-01 [English edition 1.0])</span></label>
-          <input type="text" id="publication-date" name="publication_date" value="2022-06 [version 1.1]" required/>
+          <input type="text" id="publication-date" name="publication_date" value="2026-10-15 [version 2.0] | 2022-06 [version 1.1]" required/>
         </div>
         <div class="add-resource-section">
           <label for="description">Description <span class="format-instruction">(simple Markdown syntax can optionally be used, e.g. for links as [text to display](url), and more than one language can be provided, separated by |, each ending with a language tag such as [en])</label>
-          <textarea id="description" name="description" rows="10" required/>A RDF/RiC-O version (and also CSV one) of the about 16000 authority records on archival creators, 60 000 records about places, and 20 authoritative lists and controlled vocabularies produced and used by the AnF. </textarea>
+          <textarea id="description" name="description" rows="10" required/>A RDF/RiC-O 1.1 and SKOS version of the 18,400 authority records on persons, families and corporate bodies, 54,120 records about places, and 13 authoritative lists and controlled vocabularies (defining about 3,560 concepts) produced and used by the AnF, as contextual entities for the records preserved by the institution. This RDF knowledge graph is far richer than the source files managed by the institution in its information system, as the data has been restructured and enriched through various automatic or semi-automatic processes.
+
+For more information about the dataset, see the notes of [the latest release, dated October 2026](https://github.com/ArchivesNationalesFR/Referentiels/releases/tag/2.0), and [this page, which also exists in English](https://rdf.archives-nationales.culture.gouv.fr/garance/pages/fr/project/).
+
+This knowledge graph has also been accessible, from April 2026, through a web interface and a SPARQL end point (see the links below).</textarea>
         </div>
         <div class="add-resource-section">
           <label for="links">Links <span class="format-instruction">(should be separated by a | symbol, and each either in Markdown format [text to display](url) or a verbatim URL)</span></label>
-          <input type="text" id="links" name="links" value="https://github.com/ArchivesNationalesFR/Referentiels"/>
+          <input type="text" id="links" name="links" value="[GitHub repository](https://github.com/ArchivesNationalesFR/Referentiels) | [Latest release, v2.0, dated October 2026](https://github.com/ArchivesNationalesFR/Referentiels/releases/tag/2.0) | [Web interface, including search functionalities and a UI for the SPARQL end point](https://rdf.archives-nationales.culture.gouv.fr/garance/)| [SPARQL end point](https://sparql.archives-nationales.culture.gouv.fr/garance/sparql)"/>
         </div>
         <div class="add-resource-section">
           <label for="languages">Languages available in <span class="format-instruction">(should be separated by a | symbol, and short clarifications can be provided in parentheses, e.g. French | English (abstract))</span></label>
-          <input type="text" id="languages" name="languages" value="French"/>
+          <input type="text" id="languages" name="languages" value="French (dataset and web interface)| English (web interface)"/>
         </div>
         <div class="add-resource-section">
           <fieldset>
@@ -104,7 +108,9 @@
         </div>
         <div class="add-resource-section">
           <label for="prospects">Prospects / status</label>
-          <textarea id="prospects" name="prospects" rows="10"/>New release to be published before March 2025, conforming to RiC-0 1.1 and including a lot of enrichments.</textarea>
+          <textarea id="prospects" name="prospects" rows="10"/>The latest release is a major step.
+
+The Lab of the Archives nationales de France will continue to work on the dataset. You can find some information on the project roadmap [here](https://rdf.archives-nationales.culture.gouv.fr/garance/pages/en/project/#project-roadmap).</textarea>
         </div>
         <div class="add-resource-section">
           <label for="contact">Contacts <span class="format-instruction">(should be separated by a | symbol, can e.g. be an email address)</span></label>
