@@ -511,14 +511,32 @@ def _responsible_with_links(row: Row) -> Generator[HTML, None, None]:
             yield responsible
 
 
+def _check_date_format(date: str) -> None:
+    try:
+        datetime.strptime(date, "%Y-%m-%d")
+        return
+    except ValueError:
+        try:
+            datetime.strptime(date, "%Y-%m")
+            return
+        except ValueError:
+            try:
+                datetime.strptime(date, "%Y")
+            except ValueError:
+                raise ValueError(f"Date not in expected format: {date}")
+
+
 def _dates(row: Row) -> Generator[tuple[HTML, Version | None], None, None]:
     dates = row["publication_date"].split("|")
     if len(dates) == 1 and "[" not in dates[0]:
-        yield row["publication_date"].strip(), None
+        date = row["publication_date"].strip()
+        _check_date_format(date)
+        yield date, None
         return
     for date in dates:
         date, version = date.split("[")
         date = date.strip()
+        _check_date_format(date)
         version = version.strip()
         if version[-1] != "]":
             raise ValueError(

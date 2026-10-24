@@ -120,5 +120,5 @@ Archivists describe in ISAD(G), ISAAR(CPF) and ISDIAH screens that label each fi
 
 A public catalogue needs no sign-in. It shows each entity's relationship graph in 2D or 3D, with the same relationships as an accessible list, and offers RiC-O JSON-LD, OAI-PMH and an OpenRiC read API. The demonstration catalogue is tested with authority records, places and finding aids from the Archives nationales de France's open data (Référentiels 2.0), credited on its home page.
 
-It is one implementation of the OpenRiC specification, not the specification itself. ",2026/10,web application,https://workspace.openric.org/discover | https://openric.org/application/ | https://github.com/openric/workspace,English,,RiC-CM | RiC-O,"In development since 19 October 2026 (release v0.0.44). V0.1, the first release meant for archivists, has not been reached yet. AGPL-3.0.",johan@theahg.co.za, #44
+It is one implementation of the OpenRiC specification, not the specification itself. ",2026-10,web application,https://workspace.openric.org/discover | https://openric.org/application/ | https://github.com/openric/workspace,English,,RiC-CM | RiC-O,"In development since 19 October 2026 (release v0.0.44). V0.1, the first release meant for archivists, has not been reached yet. AGPL-3.0.",johan@theahg.co.za, #44
 
