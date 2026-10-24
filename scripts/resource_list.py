@@ -591,7 +591,12 @@ def _related_to(row: Row) -> Generator[HTML, None, None]:
             raise ValueError(
                 "Expecting the following 'related_to' entry to begin with #: "
                 f"{resource}")
-        resource_id = resource[1:]
+        try:
+            resource_id = int(resource[1:])
+        except ValueError:
+            raise ValueError(
+                "The following 'related_to' entry does not have an integer "
+                f"after the '#' character: {resource}")
         yield (f"<a href=\"../resource-details/{resource_id}.html\" "
                f"class=\"related-to\">#{resource_id}</a>")
 
