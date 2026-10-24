@@ -3,6 +3,9 @@ Given a form submission for adding a resource, appends a new row to the
 master document CSV file with the submitted data. Given a form submission for
 editing a resource, replaces the affected row in the master document CSV file
 with the submitted data.
+
+Line breaks in a POST are encoded as \r\n. When a resource is added, these
+are changed to \n.
 """
 
 from argparse import ArgumentParser
@@ -37,7 +40,7 @@ def _largest_id_of_master_document() -> int:
 
 def _add(form_submission: str) -> None:
     details = {
-        field: " | ".join(values)
+        field: " | ".join(values).replace("\r\n", "\n")
         for field, values in parse_form_data(form_submission).items()
     }
     details["id"] = str(_largest_id_of_master_document() + 1)
