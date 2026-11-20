@@ -32,7 +32,7 @@
           <fieldset>
             <legend>Resource type</legend>
             <div class="resource-type">
-              <input type="radio" id="application" name="type" value="web application" checked required/>
+              <input type="radio" id="application" name="type" value="web application"  required/>
               <label for="application">Application</label>
             </div>
             <div class="resource-type">
@@ -52,34 +52,28 @@
               <label for="thesis">Thesis</label>
             </div>
             <div class="resource-type">
-              <input type="radio" id="tool" name="type" value="tool"  required/>
+              <input type="radio" id="tool" name="type" value="tool" checked required/>
               <label for="tool">Tool</label>
             </div>
           </fieldset>
         </div>
         <div class="add-resource-section">
           <label for="responsible">Authors/creators/organisers <span class="format-instruction">(should be separated by |, and a webpage can optionally be provided in parantheses after each, e.g. name (webpage) | other name (webpage))</label>
-          <input type="text" id="responsible" name="responsible" value="The Archive and Heritage Group (https://theahg.co.za)|Plain Sailing Information Systems (https://plainsailingisystems.co.za)" required/>
+          <input type="text" id="responsible" name="responsible" value="Dr Johan Pieterse|The Archive and Heritage Digital Commons Group (https://theahg.co.za)|Plain Sailing Information Systems (https://plainsailingisystems.co.za)" required/>
         </div>
         <div class="add-resource-section">
           <label for="publication-date">Dates of publication/release/occurrence <span class="format-instruction">(as YYYY, YYYY-MM, or YYYY-MM-DD, optionally followed by [version n.n] or [... edition n.n], and separated by | if more than one date is provided, e.g. 2023-12, or 2024-03 [version 1.0] | 2024-10 [version 2.0], or 2025-08-01 [French edition 1.0] | 2025-09-01 [English edition 1.0])</span></label>
-          <input type="text" id="publication-date" name="publication_date" value="2026-03" required/>
+          <input type="text" id="publication-date" name="publication_date" value="2026-10 [version 0.49] | 2026-03" required/>
         </div>
         <div class="add-resource-section">
           <label for="description">Description <span class="format-instruction">(simple Markdown syntax can optionally be used, e.g. for links as [text to display](url), and more than one language can be provided, separated by |, each ending with a language tag such as [en])</label>
-          <textarea id="description" name="description" rows="10" required/>OpenRiC is an open, free specification for publishing and exchanging archival description as Records in Contexts over plain HTTP, a shared contract (like IIIF is for images) that any archival system can implement, not a single product.
+          <textarea id="description" name="description" rows="10" required/>OpenRiC is an open specification for publishing and exchanging archival description as Records in Contexts over plain HTTP: a JSON-LD API following RiC-O 1.1, a mapping from ISAD(G), ISAAR(CPF), ISDIAH and ISDF that follows RiC-AG's crosswalks, named conformance profiles, JSON Schemas and SHACL shapes, a fixture pack, and a conformance probe that tests any server. Think of IIIF for images: a shared contract, not a product.
 
-The site has two front doors:
-
-  - For archivists & researchers: explore the RiC model visually (the RiC-CM navigator), browse real archival data in a graph viewer, and learn by doing in the modelling wizard. No technical knowledge needed.
-
-  - For developers & implementers: the four-document specification, JSON Schemas, SHACL shapes, an OpenAPI contract, a conformance probe, and a live reference API (with viewer and capture clients).
-
-Underneath: one versioned spec, a conformant reference API (ric.theahg.co.za), browser clients (viewer, capture), and the wizard — all CC-BY (spec) / AGPL (implementations), so institutions aren't locked into any one vendor's reading of the standard.</textarea>
+It is an independent project, not issued or endorsed by the ICA or EGAD, and adds no terms to the RiC-O namespace; its own extension terms live in a separate one. The specification is CC BY 4.0 and the software is AGPL-3.0. A reference API, a graph viewer and a modelling wizard show it working on demonstration data, and the specification can be tested from a signed release without any of AHG's code (https://openric.org/guides/evaluate-independently.html). Reviews of the mapping, the API or its usefulness to archivists are welcome at https://openric.org/review/.</textarea>
         </div>
         <div class="add-resource-section">
           <label for="links">Links <span class="format-instruction">(should be separated by a | symbol, and each either in Markdown format [text to display](url) or a verbatim URL)</span></label>
-          <input type="text" id="links" name="links" value="https://openric.org/|https://openric.org/wizard/|https://ric.theahg.co.za/|https://heratio.theahg.co.za/"/>
+          <input type="text" id="links" name="links" value="[Specification](https://openric.org) | [Review OpenRiC](https://openric.org/review/) | [Reference API](https://ric.theahg.co.za/api/ric/v1/) | [Graph viewer](https://viewer.openric.org) | [Modelling wizard](https://openric.org/wizard/) | [Source code](https://github.com/openric)"/>
         </div>
         <div class="add-resource-section">
           <label for="languages">Languages available in <span class="format-instruction">(should be separated by a | symbol, and short clarifications can be provided in parentheses, e.g. French | English (abstract))</span></label>
@@ -97,7 +91,7 @@ Underneath: one versioned spec, a conformant reference API (ric.theahg.co.za), b
               <label for="ric-o">RiC-O</label>
             </div>
             <div class="ric-part">
-              <input type="checkbox" id="ric-ag" name="relevant_parts_of_ric" value="RiC-AG" />
+              <input type="checkbox" id="ric-ag" name="relevant_parts_of_ric" value="RiC-AG" checked/>
               <label for="ric-ag">RiC-AG</label>
             </div>
             <div class="ric-part">
@@ -112,7 +106,7 @@ Underneath: one versioned spec, a conformant reference API (ric.theahg.co.za), b
         </div>
         <div class="add-resource-section">
           <label for="prospects">Prospects / status</label>
-          <textarea id="prospects" name="prospects" rows="10"/>Proof of concept</textarea>
+          <textarea id="prospects" name="prospects" rows="10"/>Proof of concept. Specification v0.49, before 1.0; one reference implementation. A second, independently built implementation is the condition for v1.0.</textarea>
         </div>
         <div class="add-resource-section">
           <label for="contact">Contacts <span class="format-instruction">(should be separated by a | symbol, can e.g. be an email address)</span></label>

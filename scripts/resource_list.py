@@ -326,14 +326,18 @@ def _parser(text: Text) -> Generator[HTML, None, None]:
 
 
 def _is_link(word: str) -> bool:
+
     try:
-        return parse_url(word).scheme in ["http", "https", "ftp"]
+        return (parse_url(word.lstrip("(")).scheme in [
+            "http", "https", "ftp"]) and (
+            word.lstrip("(").lower() not in ["http:", "https:", "ftp:"])
     except ValueError:
         return False
 
 
 def _to_link(word: str | None, url: str, css_class: str | None = None) -> HTML:
-    tidied_url = url
+    tidied_url = url.lstrip("(")
+    prefix = url[:len(url) - len(tidied_url)]
     remainder = ""
     while True:
         if tidied_url[-1] not in [".", ",", "\n", ";", ":", ")"]:
@@ -343,8 +347,8 @@ def _to_link(word: str | None, url: str, css_class: str | None = None) -> HTML:
     if word is None:
         word = tidied_url
     if css_class is None:
-        return f"<a href=\"{tidied_url}\">{word}</a>{remainder}"
-    return f"<a href=\"{tidied_url}\" class=\"{css_class}\">{word}</a>{
+        return f"{prefix}<a href=\"{tidied_url}\">{word}</a>{remainder}"
+    return f"{prefix}<a href=\"{tidied_url}\" class=\"{css_class}\">{word}</a>{
         remainder}"
 
 
@@ -534,9 +538,15 @@ def _dates(row: Row) -> Generator[tuple[HTML, Version | None], None, None]:
         yield date, None
         return
     for date in dates:
-        date, version = date.split("[")
+        if "[" in date:
+            date, version = date.split("[")
+        else:
+            version = None
         date = date.strip()
         _check_date_format(date)
+        if version is None:
+            yield date, None
+            continue
         version = version.strip()
         if version[-1] != "]":
             raise ValueError(
@@ -560,7 +570,7 @@ def _dates(row: Row) -> Generator[tuple[HTML, Version | None], None, None]:
                     f"{version}")
             final_part = version_parts[2].strip()[:-1]
             if not regex_match(
-                    r"\d\.\d\.\d$|\d.\d$|\d$", final_part):
+                    r"\d+\.\d+\.\d+$|\d+.\d+$|\d+$", final_part):
                 raise ValueError(
                     "Expecting final part of version string to be of the "
                     f"form 1.2.3, 1.2, or 1: {version}")
@@ -569,7 +579,7 @@ def _dates(row: Row) -> Generator[tuple[HTML, Version | None], None, None]:
         else:
             version_indicator = version[:-1].split("version")[1].strip()
             if not regex_match(
-                    r"\d\.\d\.\d$|\d.\d$|\d$", version_indicator):
+                    r"\d+\.\d+\.\d+$|\d+.\d+$|\d+$", version_indicator):
                 raise ValueError(
                     "Expecting final part of version string to be of the "
                     f"form 1.2.3, 1.2, or 1: {version}")
